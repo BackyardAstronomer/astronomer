@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Concept-Model</title>
+	</head>
+	<body>
+		<h1>Concept Model</h1>
+
+		<h2>Entities</h2>
+		<h3>PROFILE</h3>
+		<ul>
+			<li>profileId (primary Key) -Unique</li>
+			<li>profileEmail -unique</li>
+			<li>profileName</li>
+			<li>profileImage</li>
+			<li>profileBio</li>
+			<li>profileHash -unique</li>
+			<li>profileActivationToken -unique</li>
+		</ul>
+
+		<h3>EVENT</h3>
+		<ul>
+			<li>eventId (primary key) -unique</li>
+			<li>eventProfileId (foriegn key) -unique</li>
+			<li>eventEventTypeId (foreign Key) -unique</li>
+			<li>eventContent</li>
+			<li>eventTitle</li>
+			<li>eventCounter</li>
+			<li>eventStartDate</li>
+			<li>eventEndDate</li>
+		</ul>
+
+		<h3>COMMENT</h3>
+		<ul>
+			<li>commentId (primary key) -unique</li>
+			<li>commentEventId (foriegn key) -unique</li>
+			<li>commentProfileId (foriegn key) -unique</li>
+			<li>commentDate</li>
+			<li>commentContent</li>
+		</ul>
+
+		<h3>EVENT TYPE</h3>
+		<ul>
+			<li>eventTypeId (primary key)</li>
+			<li>eventTypeName</li>
+		</ul>
+
+		<h3>RSVP</h3>
+		<ul>
+			<li>rsvpProfileId (foreign key)</li>
+			<li>rsvpEventId (foreign key)</li>
+			<li>rsvpId (composite (rsvpProfileId, rsvpEventId))</li>
+			<li>rsvpEventCounter </li>
+		</ul>
+
+		<h3>WEATHER API (NEED CLARIFICATION)</h3>
+		<ul>
+			<li>weatherSecretKey</li>
+		</ul>
+
+		<h3>GOOGLE AUTHENTICATION</h3>
+		<ul>
+			<li>googleSecretKey</li>
+		</ul>
+
+		<br>
+		<br>
+
+
+
+
+	</body>
+</html>
