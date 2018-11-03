@@ -19,3 +19,19 @@ CREATE TABLE profile (
 	UNIQUE (profileActivationToken),
 	PRIMARY KEY(profileId)
 );
+
+/**
+This will be the third table. Chamisa, you'll want to insert the "event" table above this one
+ */
+CREATE TABLE comment (
+commentId BINARY(16) NOT NULL,
+commentEventId BINARY(16) NOT NULL,
+commentProfileId BINARY(16) NOT NULL,
+commentDate DATETIME(6) NOT NULL,
+commentContent VARCHAR (255) NOT NULL,
+INDEX (commentEventId),
+INDEX (commentProfileId),
+FOREIGN KEY (commentEventId) REFERENCES event(eventId),
+FOREIGN KEY (commentProfileId) REFERENCES profile(profileId),
+PRIMARY KEY (commentId)
+);
