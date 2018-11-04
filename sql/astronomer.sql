@@ -8,21 +8,21 @@ DROP TABLE IF EXISTS comment
 DROP TABLE IF EXISTS event
 DROP TABLE IF EXISTS profile
 
---
+-- This table creates the user profiles and allows initial interaction with the site.
 CREATE TABLE profile (
-	profileId BINARY(16) NOT NULL, --
-	profileEmail VARCHAR(32) NOT NULL, --
-	profileBio VARCHAR(255), --
-	profileName VARCHAR(32) NOT NULL, --
-	profileImage VARBINARY(64), --
-	profileActivationToken VARCHAR(128) NOT NULL, --
-	profileHash BINARY(64) NOT NULL, --
---
-	UNIQUE (profileId), --
-	UNIQUE (profileEmail), --
-	UNIQUE (profileActivationToken), --
---
-	PRIMARY KEY(profileId) --
+	profileId BINARY(16) NOT NULL, -- holds the uuid stored as binary
+	profileEmail VARCHAR(32) NOT NULL, -- holds the users email
+	profileBio VARCHAR(255), -- short paragraph describing the user
+	profileName VARCHAR(32) NOT NULL, -- users display name within the site
+	profileImage VARBINARY(64), -- allows for the use of a small image on the users profile
+	profileActivationToken VARCHAR(128) NOT NULL, -- used to authenticate the user's email
+	profileHash BINARY(64) NOT NULL, -- hash of the users password AE6 encryption
+-- The UNIQUE statements ensure user creation is not overlapped
+	UNIQUE (profileId), -- every user need a unique primary key
+	UNIQUE (profileEmail), -- the same email cannot be used twice
+	UNIQUE (profileActivationToken), -- activation tokens must be used only once
+--This is the declaration of a primary key
+	PRIMARY KEY(profileId) -- identifies unique profiles
 );
 
 --This table establishes the variables for events and event creation.
