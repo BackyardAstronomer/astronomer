@@ -20,6 +20,16 @@ CREATE TABLE profile (
 	PRIMARY KEY(profileId)
 );
 
+CREATE TABLE event (
+eventId BINARY(16) NOT NULL, --creates an unique 32 digit id for each event that is created, cannot be blank
+eventProfileId BINARY(16) NOT NULL, --
+eventEventTypeId BINARY(16) NOT NULL,
+eventContent VARCHAR(255) NOT NULL,
+eventTitle VARCHAR(32) NOT NULL,
+eventCounter
+eventStartDate DATETIME(6) NOT NULL,
+eventEndDate DATETIME(6) NOT NULL
+);
 /**
 This will be the third table. Chamisa, you'll want to insert the "event" table above this one
  */
