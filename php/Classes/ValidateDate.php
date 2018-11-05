@@ -1,5 +1,5 @@
 <?php
-namespace Backyardastronomer\astronomer;
+namespace BackyardAstronomer\Astronomer;
 /**
  * Trait to Validate a mySQL Date
  *
