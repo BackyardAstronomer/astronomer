@@ -72,6 +72,39 @@ class EventType implements \JsonSerializable {
 		$this->EventTypeId = $uuid;
 	}
 
+	/**
+	 * accessor method for Event Type Name
+	 *
+	 * @return string value of Event Type Name content
+	 **/
+	public function getEventTypeName() : string {
+		return ($this->eventTypeName);
+	}
+
+	/**
+	 * mutator method for Event Type Name
+	 *
+	 * @param string $newEventTypeName new value of Event Type Name
+	 * @throws \InvalidArgumentException if $newTweetContent is not a string or insecure
+	 * @throws \RangeException if $newTweetContent is > 140 characters
+	 * @throws \TypeError if $newTweetContent is not a string
+	 **/
+public function setEventTypeName(string $newEventTypeName) : void {
+		// verify the tweet content is secure
+		$newEventTypeName = trim($newEventTypeName);
+		$newEventTypeName = filter_var($newEventTypeName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newEventTypeName) === true) {
+			throw(new \InvalidArgumentException("Event type name content is empty or insecure"));
+		}
+
+	// verify the Event Type Name content will fit in the database
+	if(strlen($newEventTypeNamet) > 32) {
+		throw(new \RangeException("tweet content too large"));
+	}
+
+	// store the Event Type Name content
+	$this->eventTypeName = $newEventTypeNamet;
+}
 
 
 
