@@ -32,7 +32,6 @@ eventProfileId BINARY(16) NOT NULL, --creates a unique 32 digit id that associat
 eventEventTypeId BINARY(16) NOT NULL, --creates a unique 32 digit id that associates the event to an event type, not blank
 eventContent VARCHAR(255) NOT NULL, --allows user to write a 255 character content blob detailing event, cannot be blank
 eventTitle VARCHAR(32) NOT NULL, --allows user to write short 32 character title for their event, cannot be blank
-eventCounter INT(6), --not positive if this is the correct var type for a counter..
 eventStartDate DATETIME(6) NOT NULL, --mm/dd/yy format, cannot be blank
 eventEndDate DATETIME(6) NOT NULL, --mm/dd/yy, cannot be blank
 --the following establishes an index before making a foreign key.
