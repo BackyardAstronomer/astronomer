@@ -25,6 +25,14 @@ CREATE TABLE profile (
 	PRIMARY KEY(profileId) -- identifies unique profiles
 );
 
+--The following creates the Event Type table
+CREATE TABLE eventType (
+eventTypeId BINARY(16) NOT NULL,--creates an unique 32 digit id that associates event with type, cannot be blank
+eventTypeName VARCHAR (32) NOT NULL,--allows user to write short 32 character title for their event, cannot be blank
+--the following establishes the eventType primary key
+primary key (eventTypeId)
+);
+
 --This table establishes the variables for events and event creation.
 CREATE TABLE event (
 eventId BINARY(16) NOT NULL, --creates an unique 32 digit id for each event that is created, cannot be blank
@@ -58,14 +66,6 @@ FOREIGN KEY (commentEventId) REFERENCES event(eventId), --this is the foreign ke
 FOREIGN KEY (commentProfileId) REFERENCES profile(profileId), --this is the foreign key of the profile that created the comment
 --
 PRIMARY KEY (commentId) --this is the primary key of our comment
-);
-
---The following creates the Event Type table
-CREATE TABLE eventType (
-eventTypeId BINARY(16) NOT NULL,--creates an unique 32 digit id that associates event with type, cannot be blank
-eventTypeName VARCHAR (32) NOT NULL,--allows user to write short 32 character title for their event, cannot be blank
-
-primary key (eventTypeId)
 );
 
 --The following creates the RSVP table
