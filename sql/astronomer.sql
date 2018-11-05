@@ -67,23 +67,24 @@ PRIMARY KEY (commentId) --
 
 --The following creates the Event Type table
 CREATE TABLE eventType (
-eventTypeId BINARY(16) NOT NULL,--
-eventTypeName VARCHAR (32) NOT NULL,--
+eventTypeId BINARY(16) NOT NULL,--creates an unique 32 digit id that associates event with type, cannot be blank
+eventTypeName VARCHAR (32) NOT NULL,--allows user to write short 32 character title for their event, cannot be blank
 
 primary key (eventTypeId)
 );
 
 --The following creates the RSVP table
 
-CREATE TABLE RSVP (
-rsvpProfileId
-rsvpEventId BINARY(16) NOT NULL,--
-rsvpId BINARY(16) NOT NULL,--
-rsvpEventCounter INT(16)--
+CREATE TABLE rsvp (
+rsvpProfileId BINARY(16) NOT NULL,--creates a unique 32 digit id that associates rsvp to profileID
+rsvpEventID BINARY(16) NOT NULL,--creates a unique 32 digit id that associates rsvp to eventID
+rsvpId BINARY(16) NOT NULL,--This is a composite of rsvpProfileId and rsvpEventId
+rsvpEventCounter INT(16)--This integer that counts the number of people that RSVP
 
-FOREIGN KEY (rsvpProfileId) REFERENCES profile(profileId), --
-FOREIGN KEY (rsvpEventId) REFERENCES event(eventId), --
---COMPOSITE KEY (rsvpId) COMPOSITE (rsvpProfileId, rsvpEventId))--
+FOREIGN KEY (rsvpProfileId) REFERENCES profile(profileId),
+FOREIGN KEY (rsvpEventId) REFERENCES event(eventId),
+--COMPOSITE KEY (rsvpId) COMPOSITE (rsvpProfileId, rsvpEventId))
 
 );
+creates a unique 32 digit id that associates profile to event
 
