@@ -51,18 +51,18 @@ PRIMARY KEY(eventId)
 
 --
 CREATE TABLE comment (
-commentId BINARY(16) NOT NULL, --
-commentEventId BINARY(16) NOT NULL, --
-commentProfileId BINARY(16) NOT NULL, --
-commentDate DATETIME(6) NOT NULL, --
-commentContent VARCHAR (255) NOT NULL, --
-INDEX (commentEventId), --
-INDEX (commentProfileId), --
+commentId BINARY(16) NOT NULL, --this will create a 32 digit id that associates comment, cannot be left blank
+commentEventId BINARY(16) NOT NULL, --this links the comment with the event it is attached to, cannot be left blank
+commentProfileId BINARY(16) NOT NULL, --this links the comment with the profile that created it, cannot be left blank
+commentDate DATETIME(6) NOT NULL, --this marks when the comment was created, cannot be left blank
+commentContent VARCHAR (255) NOT NULL, --this is the actual comment, cannot be left blank
+INDEX (commentEventId), --this makes it easier to retrieve the comment
+INDEX (commentProfileId), --this makes it easier to retrieve the comment
 --
-FOREIGN KEY (commentEventId) REFERENCES event(eventId), --
-FOREIGN KEY (commentProfileId) REFERENCES profile(profileId), --
+FOREIGN KEY (commentEventId) REFERENCES event(eventId), --this is the foreign key of the event the comment is attached to
+FOREIGN KEY (commentProfileId) REFERENCES profile(profileId), --this is the foreign key of the profile that created the comment
 --
-PRIMARY KEY (commentId) --
+PRIMARY KEY (commentId) --this is the primary key of our comment
 );
 
 --The following creates the Event Type table
