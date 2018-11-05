@@ -12,15 +12,15 @@ class EventType implements \JsonSerializable {
 	use ValidateDate;
 
 	/**
-	 * *this ID for the event type:
+	 * this ID for the event type:
 	 * this is a primary key identifies unique profiles
 	 * @var Uuid $eventTypeId
-	 */
+	 **/
 	private $eventTypeId;
 	/**
 	 * *this is the event type by name:
 	 * @var string
-	 */
+	 **/
 	private $eventTypeName;
 
 	/**
@@ -34,7 +34,23 @@ class EventType implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-
+	public function __construct($newEventTypeId, string $newEventTypeName) {
+		try {
+			$this->setEventTypeId($newEventTypeId);
+			$this->setEventTypeName($newEventTypeName);
+		} //determine what exception type was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+	}
+	/**
+	 * accessor method for event Type id
+	 *
+	 * @return Uuid value of event Type id
+	 **/
+	public function getEventTypeName() : Uuid {
+		return($this->EventTypeName);
 
 
 
@@ -46,7 +62,6 @@ class EventType implements \JsonSerializable {
 
 
 }
-
 
 ?>
 
