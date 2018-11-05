@@ -74,7 +74,7 @@ CREATE TABLE rsvp (
 rsvpProfileId BINARY(16) NOT NULL,--creates a unique 32 digit id that associates rsvp to profileID
 rsvpEventID BINARY(16) NOT NULL,--creates a unique 32 digit id that associates rsvp to eventID
 rsvpId BINARY(16) NOT NULL,--This is a composite of rsvpProfileId and rsvpEventId
-rsvpEventCounter INT(16)--This integer that counts the number of people that RSVP
+rsvpEventCounter TINYINT(127)--This integer that counts the number of people that RSVP
 
 FOREIGN KEY (rsvpProfileId) REFERENCES profile(profileId),
 FOREIGN KEY (rsvpEventId) REFERENCES event(eventId),
