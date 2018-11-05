@@ -3,9 +3,9 @@ ALTER DATABASE - CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 --dropping tables to run again with fresh inputs, eliminates run errors
 DROP TABLE IF EXISTS rsvp
-DROP TABLE IF EXISTS eventType
 DROP TABLE IF EXISTS comment
 DROP TABLE IF EXISTS event
+DROP TABLE IF EXISTS eventType
 DROP TABLE IF EXISTS profile
 
 -- This table creates the user profiles and allows initial interaction with the site.
