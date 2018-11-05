@@ -14,11 +14,10 @@ CREATE TABLE profile (
 	profileEmail VARCHAR(32) NOT NULL, -- holds the users email
 	profileBio VARCHAR(255), -- short paragraph describing the user
 	profileName VARCHAR(32) NOT NULL, -- users display name within the site
-	profileImage VARBINARY(64), -- allows for the use of a small image on the users profile
-	profileActivationToken VARCHAR(128) NOT NULL, -- used to authenticate the user's email
-	profileHash BINARY(64) NOT NULL, -- hash of the users password AE6 encryption
+	profileImage VARCHAR(255), -- allows for the use of a small image on the users profile
+	profileActivationToken VARCHAR(32) NOT NULL, -- used to authenticate the user's email
+	profileHash CHAR(97) NOT NULL, -- hash of the users password AE6 encryption
 -- The UNIQUE statements ensure user creation is not overlapped
-	UNIQUE (profileId), -- every user need a unique primary key
 	UNIQUE (profileEmail), -- the same email cannot be used twice
 	UNIQUE (profileActivationToken), -- activation tokens must be used only once
 --This is the declaration of a primary key
