@@ -50,8 +50,27 @@ class EventType implements \JsonSerializable {
 	 * @return Uuid value of event Type id
 	 **/
 	public function getEventTypeId() : Uuid {
-		return($this->eventTypeId);
+		return ($this->eventTypeId);
+	}
 
+	/**
+	 * mutator method for event type id
+	 *
+	 * @param Uuid|string $newEventTypeId new value of event type id
+	 * @throws \RangeException if $newEventTypeId is not positive
+	 * @throws \TypeError if $newEventTypeId is not a uuid or string
+	 **/
+	public function  setEventTypeId($newEventTypeId) : void {
+		try {
+			$uuid = self::validateUuid($newEventTypeId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+
+		// convert and store the tweet id
+		$this->EventTypeId = $uuid;
+	}
 
 
 
