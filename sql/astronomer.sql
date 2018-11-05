@@ -35,10 +35,6 @@ eventTitle VARCHAR(32) NOT NULL, --allows user to write short 32 character title
 eventCounter INT(6), --not positive if this is the correct var type for a counter..
 eventStartDate DATETIME(6) NOT NULL, --mm/dd/yy format, cannot be blank
 eventEndDate DATETIME(6) NOT NULL, --mm/dd/yy, cannot be blank
---the following makes sure duplicate data cannot exist.
-UNIQUE(eventId),
-UNIQUE(eventProfileId),
-UNIQUE(eventEventTypeId),
 --the following establishes an index before making a foreign key.
 INDEX(eventProfileId),
 INDEX(eventEventTypeId),
