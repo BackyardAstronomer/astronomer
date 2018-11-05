@@ -27,4 +27,10 @@ private $commentEventId;
  * this is the foreign key of the event the comment is posted on
  * @var Uuid $commentEventId
  */
+
+private $commentContent;
+/**
+ * this is the actual content of the comment
+ * @var Uuid $commentContentId
+ */
 }
