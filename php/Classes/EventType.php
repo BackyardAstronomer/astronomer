@@ -49,8 +49,8 @@ class EventType implements \JsonSerializable {
 	 *
 	 * @return Uuid value of event Type id
 	 **/
-	public function getEventTypeName() : Uuid {
-		return($this->EventTypeName);
+	public function getEventTypeId() : Uuid {
+		return($this->eventTypeId);
 
 
 
