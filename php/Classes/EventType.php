@@ -98,15 +98,13 @@ public function setEventTypeName(string $newEventTypeName) : void {
 		}
 
 	// verify the Event Type Name content will fit in the database
-	if(strlen($newEventTypeNamet) > 32) {
+	if(strlen($newEventTypeName) > 32) {
 		throw(new \RangeException("tweet content too large"));
 	}
 
 	// store the Event Type Name content
-	$this->eventTypeName = $newEventTypeNamet;
+	$this->eventTypeName = $newEventTypeName;
 }
-
-
 
 
 
