@@ -113,7 +113,7 @@ public function getCommentProfileId(): Uuid {
  * @throws \TypeError if $newCommentProfile is not an integer
  **/
 
-public function setCommentProfileId($newCommentProfile): void {
+public function setCommentProfileId($newCommentProfileId): void {
 	try {
 		$uuid = self::validateUuid($newCommentProfileId);
 	} catch(\InvalidArgumentException |\ RangeException |\ Exception |\TypeError $exception) {
