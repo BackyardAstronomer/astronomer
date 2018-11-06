@@ -66,11 +66,11 @@ class Rsvp implements \JsonSerializable {
 	 * @return Uuid value of rsvp id
 	 **/
 	public function getRsvpId() : Uuid {
-		return($this->RsvpId);
+		return($this->rsvpId);
 	}
 
 	/**
-	 * mutator method for tweet id
+	 * mutator method for rsvp id
 	 *
 	 * @param Uuid|string $newRsvpId new value of Rsvp Id
 	 * @throws \RangeException if $newRsvpId is not positive
@@ -84,10 +84,37 @@ class Rsvp implements \JsonSerializable {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 
-		// convert and store the Rsvp Id
+		// convert and store the rsvp Id
 		$this->rsvpId = $uuid;
 	}
 
+	/**
+	 * accessor method for rsvp profile Id
+	 *
+	 * @return Uuid value of rsvpProfileId
+	 **/
+	public function getRsvpProfileId() : Uuid {
+		return($this->rsvpProfileId);
+	}
+
+	/**
+	 * mutator method for rsvp profile Id
+	 *
+	 * @param Uuid|string $newRsvpProfileId new value of rsvp Profile Id
+	 * @throws \RangeException if $newRsvpProfileId is not positive
+	 * @throws \TypeError if $newRsvpProfileId is not a uuid or string
+	 **/
+	public function setRsvpProfileId( $newRsvpProfileId) : void {
+		try {
+			$uuid = self::validateUuid($newRsvpProfileId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+
+		// convert and store the rsvp Profile Id
+		$this->rsvpProfileId = $uuid;
+	}
 
 
 
