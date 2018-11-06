@@ -39,7 +39,7 @@ class Rsvp implements \JsonSerializable {
 	 * @param string|Uuid $rsvpId id of this event. composite of rsvpProfileId and rsvpEventID
 	 * @param string|Uuid $rsvpProfileId id of rsvp to profile Id
 	 * @param string|Uuid $rsvpEventID id of rsvp to event Id
-	 * @param string rsvpEventCounter this counts the number of people RSVP to an event
+	 * @param integer $rsvpEventCounter this counts the number of people RSVP to an event
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
@@ -143,9 +143,41 @@ class Rsvp implements \JsonSerializable {
 		// convert and store the rsvp Event ID
 		$this->rsvpEventID = $uuid;
 	}
+*******************************************************************************************************
 
+	/**
+	 * accessor method for rsvp Event Counter
+	 *
+	 * @return integer value of rsvp Event Counter content
+	 **/
+	public function getRsvpEventCounter() : integer {
+		return ($this->rsvpEventCounter);
+	}
 
+	/**
+	 * mutator method for rsvp Event Counter
+	 *
+	 * @param integer $newRsvpEventCounter new value of rsvp Event Counter Name
+	 * @throws \InvalidArgumentException if $newRsvpEventCounter is not a integer or insecure
+	 * @throws \RangeException if $newRsvpEventCounter is > 225 characters
+	 * @throws \TypeError if $newRsvpEventCounter is not a integer
+	 **/
+	public function setRsvpEventCounter(string $newRsvpEventCounter) : void {
+		// verify the Rsvp Event Counter content is secure
+		$newRsvpEventCounter = trim($newRsvpEventCounter);
+		$newRsvpEventCounter = filter_var($newRsvpEventCounter, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newRsvpEventCounter) === true) {
+			throw(new \InvalidArgumentException(""));
+		}
 
+		// verify the Rsvp Event Counter content will fit in the database
+		if(strlen($newRsvpEventCounter) > 225) {
+			throw(new \RangeException("rsvp event counter content too large"));
+		}
+
+		// store the Event Type Name content
+		$this->rsvpEventCounter = $newRsvpEventCounter;
+	}
 
 
 
