@@ -90,7 +90,7 @@ class EventType implements \JsonSerializable {
 	 * @throws \TypeError if $newEventTypeName is not a string
 	 **/
 public function setEventTypeName(string $newEventTypeName) : void {
-		// verify the tweet content is secure
+		// verify the Event Type Name content is secure
 		$newEventTypeName = trim($newEventTypeName);
 		$newEventTypeName = filter_var($newEventTypeName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newEventTypeName) === true) {

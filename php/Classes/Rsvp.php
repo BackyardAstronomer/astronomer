@@ -143,26 +143,25 @@ class Rsvp implements \JsonSerializable {
 		// convert and store the rsvp Event ID
 		$this->rsvpEventID = $uuid;
 	}
-*******************************************************************************************************
 
 	/**
 	 * accessor method for rsvp Event Counter
 	 *
 	 * @return integer value of rsvp Event Counter content
 	 **/
-	public function getRsvpEventCounter() : integer {
+	public function getRsvpEventCounter() : tinyint {
 		return ($this->rsvpEventCounter);
 	}
 
 	/**
 	 * mutator method for rsvp Event Counter
 	 *
-	 * @param integer $newRsvpEventCounter new value of rsvp Event Counter Name
-	 * @throws \InvalidArgumentException if $newRsvpEventCounter is not a integer or insecure
+	 * @param tinyint $newRsvpEventCounter new value of rsvp Event Counter Name
+	 * @throws \InvalidArgumentException if $newRsvpEventCounter is not a tinyint or insecure
 	 * @throws \RangeException if $newRsvpEventCounter is > 225 characters
-	 * @throws \TypeError if $newRsvpEventCounter is not a integer
+	 * @throws \TypeError if $newRsvpEventCounter is not a tinyint
 	 **/
-	public function setRsvpEventCounter(string $newRsvpEventCounter) : void {
+	public function setRsvpEventCounter(tinyint $newRsvpEventCounter) : void {
 		// verify the Rsvp Event Counter content is secure
 		$newRsvpEventCounter = trim($newRsvpEventCounter);
 		$newRsvpEventCounter = filter_var($newRsvpEventCounter, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -175,7 +174,7 @@ class Rsvp implements \JsonSerializable {
 			throw(new \RangeException("rsvp event counter content too large"));
 		}
 
-		// store the Event Type Name content
+		// store the rsvpEventCounter content
 		$this->rsvpEventCounter = $newRsvpEventCounter;
 	}
 
