@@ -156,8 +156,41 @@ public function setProfileEmail(string $newProfileEmail) : void {
 }
 
 /**
+ *the following is the accessor method for the profile bio
  *
+ * @return bio as string value
  */
+
+public function getProfileBio() : string {
+	return($this->profileBio);
+}
+/**
+ * The following is the mutator method for the profile bio content
+ *
+ * @param string $newProfileBio inserts new profile bio information
+ * @throws \InvalidArgumentException if content is not string or insecure
+ * @throws \RangeException if content is > 240
+ * @throws \TypeError if content is not a string
+ */
+
+public function setProfileBio(string $newProfileBio) : void {
+
+	//the following verifies the bio content is secure
+	$newProfileBio = trim($newProfileBio);
+	$newProfileBio = filter_var($newProfileBio, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if(empty($newProfileBio) === true) {
+		throw(new \InvalidArgumentException("Your bio is longer than 240 characters"));
+	}
+
+	//the following verifies the content will fit in the database. must be less than 240
+	if(strlen($newTweetContent) > 240) {
+		throw(new \RangeException("Your bio is too large, must be less than 240 characters"));
+	}
+
+//the following stores the tweet content
+	$this->profileBio = $newProfileBio;
+}
+
 
 
 } //class closing bracket
