@@ -183,7 +183,7 @@ public function setProfileBio(string $newProfileBio) : void {
 	}
 
 	//the following verifies the content will fit in the database. must be less than 240
-	if(strlen($newTweetContent) > 240) {
+	if(strlen($newProfileBio) > 240) {
 		throw(new \RangeException("Your bio is too large, must be less than 240 characters"));
 	}
 
