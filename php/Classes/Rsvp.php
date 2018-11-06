@@ -60,6 +60,15 @@ class Rsvp implements \JsonSerializable {
 		}
 }
 
+	/**
+	 * accessor method for rsvp id
+	 *
+	 * @return Uuid value of rsvp id
+	 **/
+	public function getRsvpId() : Uuid {
+		return($this->RsvpId);
+	}
+
 
 
 

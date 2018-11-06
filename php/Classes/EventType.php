@@ -68,7 +68,7 @@ class EventType implements \JsonSerializable {
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 
-		// convert and store the tweet id
+		// convert and store the Event Type Id
 		$this->EventTypeId = $uuid;
 	}
 
@@ -85,9 +85,9 @@ class EventType implements \JsonSerializable {
 	 * mutator method for Event Type Name
 	 *
 	 * @param string $newEventTypeName new value of Event Type Name
-	 * @throws \InvalidArgumentException if $newTweetContent is not a string or insecure
-	 * @throws \RangeException if $newTweetContent is > 140 characters
-	 * @throws \TypeError if $newTweetContent is not a string
+	 * @throws \InvalidArgumentException if $newEventTypeName is not a string or insecure
+	 * @throws \RangeException if $newEventTypeName is > 32 characters
+	 * @throws \TypeError if $newEventTypeName is not a string
 	 **/
 public function setEventTypeName(string $newEventTypeName) : void {
 		// verify the tweet content is secure
