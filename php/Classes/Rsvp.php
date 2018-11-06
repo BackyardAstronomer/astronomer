@@ -46,8 +46,19 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-
-
+	public function __construct($newRsvpId, $newRsvpProfileId, $newRsvpEventID, $newRsvpEventCounter = null) {
+		try {
+			$this->setRsvpId($newRsvpId);
+			$this->setRsvpProfileId($newRsvpProfileId);
+			$this->setRsvpEventID($newRsvpEventID);
+			$this->setRsvpEventCounter($newRsvpEventCounter);
+		}
+			//determine what exception type was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+}
 
 
 
