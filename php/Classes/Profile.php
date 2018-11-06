@@ -92,7 +92,40 @@ $newProfileActivationToken, $newProfileHash = null) {
 	}
 }
 
+	/**
+	 * the following is the accessor method for the profile id
+	 *
+	 * it will @return Uuid value of tweet id
+	 */
+	public function getProfileId() : Uuid {
+		return($this->profileId);
+	}
 
+	/**
+	 * mutator method for the profile id
+	 *
+	 * @param Uuid|string $newProfileId inserts new value of profile id
+	 * @throws \RangeException if $newProfileId is not positive
+	 * @throws \TypeError if $newProfileId is not a uuid
+	 */
+
+	public function setProfileId( $newProfileId) : void {
+		try {
+			$uuid = self::validateUuid($newProfileId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+
+		//the following converts and stores the new profile id
+		$this->profileId = $uuid;
+	}
+
+	/**
+	 * the following is the accessor method for the profile email
+	 *
+	 * @return email as string value
+	 */
 
 
 
