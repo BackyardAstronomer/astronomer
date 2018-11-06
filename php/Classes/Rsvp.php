@@ -69,6 +69,25 @@ class Rsvp implements \JsonSerializable {
 		return($this->RsvpId);
 	}
 
+	/**
+	 * mutator method for tweet id
+	 *
+	 * @param Uuid|string $newRsvpId new value of Rsvp Id
+	 * @throws \RangeException if $newRsvpId is not positive
+	 * @throws \TypeError if $newRsvpId is not a uuid or string
+	 **/
+	public function setRsvpId( $newRsvpId) : void {
+		try {
+			$uuid = self::validateUuid($newRsvpId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+
+		// convert and store the Rsvp Id
+		$this->rsvpId = $uuid;
+	}
+
 
 
 
