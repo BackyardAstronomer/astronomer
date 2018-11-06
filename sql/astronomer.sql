@@ -73,7 +73,7 @@ CREATE TABLE rsvp (
 rsvpId BINARY(16) NOT NULL,--This is a composite of rsvpProfileId and rsvpEventId
 rsvpProfileId BINARY(16) NOT NULL,--creates a unique 32 digit id that associates rsvp to profileID
 rsvpEventID BINARY(16) NOT NULL,--creates a unique 32 digit id that associates rsvp to eventID
-rsvpEventCounter TINYINT(127),--This integer that counts the number of people that RSVP
+rsvpEventCounter TINYINT(225),--This integer that counts the number of people that RSVP
 INDEX(rsvpProfileId), --this makes it easier to retrieve the comment
 INDEX(rsvpEventId), --this makes it easier to retrieve the comment
 --the following establishes the primary key for this composite table

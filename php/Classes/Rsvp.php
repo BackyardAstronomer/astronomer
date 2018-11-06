@@ -116,6 +116,36 @@ class Rsvp implements \JsonSerializable {
 		$this->rsvpProfileId = $uuid;
 	}
 
+	/**
+	 * accessor method for rsvp Event ID
+	 *
+	 * @return Uuid value of rsvpEventID
+	 **/
+	public function getRsvpEventID() : Uuid {
+		return($this->rsvpEventID);
+	}
+
+	/**
+	 * mutator method for rsvp Event ID
+	 *
+	 * @param Uuid|string $newRsvpEventID new value of rsvp Event ID
+	 * @throws \RangeException if $newRsvpEventID is not positive
+	 * @throws \TypeError if $newRsvpEventID is not a uuid or string
+	 **/
+	public function setRsvpEventID( $newRsvpEventID) : void {
+		try {
+			$uuid = self::validateUuid($newRsvpEventID);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+
+		// convert and store the rsvp Event ID
+		$this->rsvpEventID = $uuid;
+	}
+
+
+
 
 
 
