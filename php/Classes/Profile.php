@@ -52,8 +52,48 @@ class Profile {
 	private $profileHash;
 
 	/**
+	 * @param Uuid $newProfileId for a new user's new profile
+	 * @param string $newProfileEmail string containing the user's new email
+	 * @param string $newProfileBio string containing a new bio the user can choose to create
+	 * @param string $newProfileName string containing a user's new profile name
+	 * @param string $newProfileImage string containing a user's profile photo
+	 * @param string $newProfileActivationToken string containing the required profile activation token
+	 * needed to make account
+	 * @param string $newProfileHash string containing the user's encrypted password
 	 *
+	 * and
+	 *
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (strings too long)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
 	 */
 
+/**
+ * The following creates the constructor function for this class
+ */
 
+public function __construct($newProfileId, $newProfileEmail, $newProfileBio, $newProfileName, $newProfileImage,
+$newProfileActivationToken, $newProfileHash = null) {
+
+	try {
+		$this->profileId($newProfileId);
+		$this->profileEmail($newProfileEmail);
+		$this->profileBio($newProfileBio);
+		$this->profileName($newProfileName);
+		$this->profileImage($newProfileImage);
+		$this->profileActivationToken($newProfileActivationToken);
+		$this->profileHash($newProfileHash);
+	}
+	//the following determines what exception type was thrown
+	catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		$exceptionType = get_class($exception);
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	}
 }
+
+
+
+
+
+} //class closing bracket
