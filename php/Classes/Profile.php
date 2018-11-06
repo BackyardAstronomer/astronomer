@@ -69,36 +69,35 @@ class Profile {
 	 * @throws \Exception if some other exception occurs
 	 */
 
-/**
- * The following creates the constructor function for this class
- */
+	/**
+	 * The following creates the constructor function for this class
+	 */
 
-public function __construct($newProfileId, $newProfileEmail, $newProfileBio, $newProfileName, $newProfileImage,
-$newProfileActivationToken, $newProfileHash = null) {
+	public function __construct($newProfileId, $newProfileEmail, $newProfileBio, $newProfileName, $newProfileImage,
+										 $newProfileActivationToken, $newProfileHash = null) {
 
-	try {
-		$this->profileId($newProfileId);
-		$this->profileEmail($newProfileEmail);
-		$this->profileBio($newProfileBio);
-		$this->profileName($newProfileName);
-		$this->profileImage($newProfileImage);
-		$this->profileActivationToken($newProfileActivationToken);
-		$this->profileHash($newProfileHash);
+		try {
+			$this->profileId($newProfileId);
+			$this->profileEmail($newProfileEmail);
+			$this->profileBio($newProfileBio);
+			$this->profileName($newProfileName);
+			$this->profileImage($newProfileImage);
+			$this->profileActivationToken($newProfileActivationToken);
+			$this->profileHash($newProfileHash);
+		} //the following determines what exception type was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
 	}
-	//the following determines what exception type was thrown
-	catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-		$exceptionType = get_class($exception);
-		throw(new $exceptionType($exception->getMessage(), 0, $exception));
-	}
-}
 
 	/**
 	 * the following is the accessor method for the profile id
 	 *
 	 * it will @return Uuid value of tweet id
 	 */
-	public function getProfileId() : Uuid {
-		return($this->profileId);
+	public function getProfileId(): Uuid {
+		return ($this->profileId);
 	}
 
 	/**
@@ -109,7 +108,7 @@ $newProfileActivationToken, $newProfileHash = null) {
 	 * @throws \TypeError if $newProfileId is not a uuid
 	 */
 
-	public function setProfileId( $newProfileId) : void {
+	public function setProfileId($newProfileId): void {
 		try {
 			$uuid = self::validateUuid($newProfileId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -127,70 +126,108 @@ $newProfileActivationToken, $newProfileHash = null) {
 	 * @return email as string value
 	 */
 
-public function getProfileEmail() : string {
-	return($this->profileEmail);
-}
-/**
- * the following is the mutator method for the profile email content
- *
- * @param string $newProfileEmail inserts new profile email value
- * @throws \InvalidArgumentException if email is empty or insecure
- * @throws \RangeException if email is too long
- */
-
-public function setProfileEmail(string $newProfileEmail) : void {
-
-	//the following verifies whether the email content is secure
-	$newProfileEmail = trim($newProfileEmail);
-	$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	if(empty($newProfileEmail) === true) {
-		throw(new \InvalidArgumentException("email input is empty or insecure"))
-	}
-	//the following verifies the email content will fit in the database
-	if(strlen($newProfileEmail) > 50) {
-		throw(new \RangeException("this email is too long"));
+	public function getProfileEmail(): string {
+		return ($this->profileEmail);
 	}
 
-	//the following stores the new email content
-	$this->profileEmail = $newProfileEmail;
-}
+	/**
+	 * the following is the mutator method for the profile email content
+	 *
+	 * @param string $newProfileEmail inserts new profile email value
+	 * @throws \InvalidArgumentException if email is empty or insecure
+	 * @throws \RangeException if email is too long
+	 */
 
-/**
- *the following is the accessor method for the profile bio
- *
- * @return bio as string value
- */
+	public function setProfileEmail(string $newProfileEmail): void {
 
-public function getProfileBio() : string {
-	return($this->profileBio);
-}
-/**
- * The following is the mutator method for the profile bio content
- *
- * @param string $newProfileBio inserts new profile bio information
- * @throws \InvalidArgumentException if content is not string or insecure
- * @throws \RangeException if content is > 240
- * @throws \TypeError if content is not a string
- */
+		//the following verifies whether the email content is secure
+		$newProfileEmail = trim($newProfileEmail);
+		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileEmail) === true) {
+			throw(new \InvalidArgumentException("email input is empty or insecure"))
+	}
+		//the following verifies the email content will fit in the database
+		if(strlen($newProfileEmail) > 50) {
+			throw(new \RangeException("this email is too long"));
+		}
 
-public function setProfileBio(string $newProfileBio) : void {
-
-	//the following verifies the bio content is secure
-	$newProfileBio = trim($newProfileBio);
-	$newProfileBio = filter_var($newProfileBio, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	if(empty($newProfileBio) === true) {
-		throw(new \InvalidArgumentException("Your bio is longer than 240 characters"));
+		//the following stores the new email content
+		$this->profileEmail = $newProfileEmail;
 	}
 
-	//the following verifies the content will fit in the database. must be less than 240
-	if(strlen($newProfileBio) > 240) {
-		throw(new \RangeException("Your bio is too large, must be less than 240 characters"));
+	/**
+	 *the following is the accessor method for the profile bio
+	 *
+	 * @return bio as string value
+	 */
+
+	public function getProfileBio(): string {
+		return ($this->profileBio);
 	}
+
+	/**
+	 * The following is the mutator method for the profile bio content
+	 *
+	 * @param string $newProfileBio inserts new profile bio information
+	 * @throws \InvalidArgumentException if content is not string or insecure
+	 * @throws \RangeException if content is > 240
+	 * @throws \TypeError if content is not a string
+	 */
+
+	public function setProfileBio(string $newProfileBio): void {
+
+		//the following verifies the bio content is secure
+		$newProfileBio = trim($newProfileBio);
+		$newProfileBio = filter_var($newProfileBio, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileBio) === true) {
+			throw(new \InvalidArgumentException("Your bio is longer than 240 characters"));
+		}
+
+		//the following verifies the content will fit in the database. must be less than 240
+		if(strlen($newProfileBio) > 240) {
+			throw(new \RangeException("Your bio is too large, must be less than 240 characters"));
+		}
 
 //the following stores the tweet content
-	$this->profileBio = $newProfileBio;
+		$this->profileBio = $newProfileBio;
+	}
+
+/**
+ * the following is the accessor method for the profile name field
+ *
+ * @return profile name as a string
+ */
+
+public function getProfileName() : string {
+	return ($this->profileName);
 }
 
+/**
+ * the following is the mutator method for the profile name field
+ *
+ * @param string $newProfileName inserts a new name for the profile
+ * @throws \InvalidArgumentException if not string or insecure
+ * @throws \RangeException if the name is too long for our database
+ * @throws \TypeError if the name is not actually a text name.. *insert dolphin noise*.
+ */
+
+public function setProfileName(string $newProfileName) : void {
+
+	//the following verifies the content is secure
+	$newProfileName = trim($newProfileName);
+	$newProfileName = filter_var(FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if(empty($newProfileName) === true) {
+		throw(new \RangeException("This name is tooooo looong"));
+	}
+
+	//the following verifies the tweet content will fit in the database
+	if(strlen($newProfileName) > 50) {
+		throw(new \RangeException("Sorry, this name is too long for our database."));
+	}
+
+	//the following stores the name content
+	$this->profileName = $newProfileName;
+}
 
 
 } //class closing bracket
