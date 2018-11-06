@@ -149,19 +149,19 @@ class Rsvp implements \JsonSerializable {
 	 *
 	 * @return integer value of rsvp Event Counter content
 	 **/
-	public function getRsvpEventCounter() : tinyint {
+	public function getRsvpEventCounter() : integer {
 		return ($this->rsvpEventCounter);
 	}
 
 	/**
 	 * mutator method for rsvp Event Counter
 	 *
-	 * @param tinyint $newRsvpEventCounter new value of rsvp Event Counter Name
+	 * @param integer $newRsvpEventCounter new value of rsvp Event Counter Name
 	 * @throws \InvalidArgumentException if $newRsvpEventCounter is not a tinyint or insecure
 	 * @throws \RangeException if $newRsvpEventCounter is > 225 characters
 	 * @throws \TypeError if $newRsvpEventCounter is not a tinyint
 	 **/
-	public function setRsvpEventCounter(tinyint $newRsvpEventCounter) : void {
+	public function setRsvpEventCounter(integer $newRsvpEventCounter) : void {
 		// verify the Rsvp Event Counter content is secure
 		$newRsvpEventCounter = trim($newRsvpEventCounter);
 		$newRsvpEventCounter = filter_var($newRsvpEventCounter, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
