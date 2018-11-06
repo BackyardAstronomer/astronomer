@@ -33,6 +33,20 @@ class Rsvp implements \JsonSerializable {
 	 **/
 	private $rsvpEventCounter;
 
+	/**
+	 * constructor EventTypes
+	 *
+	 * @param string|Uuid $rsvpId id of this event. composite of rsvpProfileId and rsvpEventID
+	 * @param string|Uuid $rsvpProfileId id of rsvp to profile Id
+	 * @param string|Uuid $rsvpEventID id of rsvp to event Id
+	 * @param string rsvpEventCounter this counts the number of people RSVP to an event
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
+	 **/
+
 
 
 
