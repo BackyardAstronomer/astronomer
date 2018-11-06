@@ -10,27 +10,179 @@ use Ramsey\Uuid\Uuid;
  * @package BackyardAstronomer\astronomer
  */
 class Comment {
-private $commentId;
-/**
- * this is the primary key for comment
- * @var Uuid $commentId;
- */
+	/**
+	 * this is the primary key for comment
+	 * @var Uuid $commentId;
+	 */
+	private $commentId;
+
+	/**
+	 * this is the foreign key of the profile that made the comment
+	 * @var Uuid $commentProfileId;
+	 */
 
 private $commentProfileId;
-/**
- * this is the foreign key of the profile that made the comment
- * @var Uuid $commentProfileId;
- */
-
+	/**
+	 * this is the foreign key of the event the comment is posted on
+	 * @var Uuid $commentEventId
+	 */
 private $commentEventId;
+
+	/**
+	 * this is the actual content of the comment
+	 * @var Uuid $commentContentId
+	 */
+private $commentContent;
+
 /**
- * this is the foreign key of the event the comment is posted on
- * @var Uuid $commentEventId
+ *constructor of this Comment
+ *
+ *@param string|Uuid $newCommentId id of this comment or null if new comment
+ * @param string|Uuid $newCommentProfileId id of the Profile that made this Comment
+ * @param string|Uuid $newCommentContent string containing actual content data
+ * @param \DateTime|string|null $newCommentDate date and time Comment was sent or null if set ot current date and time
+ * @throws \InvalidArgumentException if data types are not valid
+ * @throws \RangeException if data values are out of bounds (e.g., strings are too long, negative integers)
+ * @throws \TypeError if data types violate type hints
+ * @throws \Exception if some other exception occurs
+ **/
+
+public function __construct($newCommentId, $newCommentProfileId, string $newCommentContent, $newCommentDate = null) {
+	try {
+		$this->setCommentId($newCommentId);
+		$this->setCommentProfileId($newCommentProfileId);
+		$this->setCommentContent($newCommentContent);
+		$this->setCommentDate($newCommentDate);
+	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		$exceptiontype = get_class($exception);
+		throw(new $exception($exception->getMessage(), 0, $exception));
+
+		}
+	}
+
+/**
+ *
+ * accessor methid for comment id
+ *
+ * @return Uuid value of comment id
  */
 
-private $commentContent;
+
+	public function getCommentId(): Uuid {
+		return ($this->commentId);
+	}
+
+//this outside of class
+//$comment->CommentId()
+
 /**
- * this is the actual content of the comment
- * @var Uuid $commentContentId
+ *
+ * mutator method for comment id
+ *
+ * @param Uuid|string $newCommentId new value of comment id
+ * @throws \RangeException if new comment is not positive
+ * @throws \TypeError if @newCommentId is not uuid or string
  */
+
+public function setCommentId($newCommentId): void {
+	try {
+		$uuid = self::validateUuid($newCommentId);
+	}
+	catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+	}
+	$this->commentId = $uuid;
 }
+
+/**
+ *
+ *accessor method for comment profile id
+ *
+ * @return Uuid value of comment profile id
+ */
+
+
+public function getCommentProfileId(): Uuid {
+	return ($this->commentProfileId);
+}
+
+/**
+ * mutator method for comment profile id
+ *
+ * @param string | Uuid $newCommentProfileId new value of comment profile id
+ * @throws \RangeException if $newProfileId is not positive
+ * @throws \TypeError if $newCommentProfile is not an integer
+ **/
+
+public function setCommentProfileId($newCommentProfile): void {
+	try {
+		$uuid = self::validateUuid($newcommentProfileId);
+	} catch(\InvalidArgumentException |\ RangeException |\ Exception |\TypeError $exception) {
+		$exceptionType = get_class($exception);
+		throw (new$exceptionType($exception->getMessage(), 0, $exception));
+	}
+}
+
+/**
+ * accessor method for comment content
+ *
+ * @return string value of comment content
+ */
+
+public function getCommentContent(): string {
+	return ($this->commentContent);
+}
+
+
+/**
+ * mutator method for post content
+ *
+ * @param string $newCommentContent new value of comment content
+ * @throws \InvalidArgumentException if $newCommentContent is not a string or is insecure
+ * @throws \RangeException if $newCommentContent is >255 characters
+ * @throws \TypeError if $newCommentContent is not a string
+ **/
+
+
+public function setCommentContent(string $newCommentContent) : void {
+	//verify that the comment content is secure
+	$newCommentContent = trim($newCommentContent);
+	$newCommentContent = filter_var($newCommentContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if(empty($newCommentContent) === true) {
+		throw(new \RangeException("Comment content is empty or insecure"));
+	}
+
+	//store the comment content
+	$this->commentContent = $newCommentContent;
+}
+
+/**
+ * accessor method for comment date
+ *
+ * @return \DateTime value of comment date
+ **/
+
+public function getCommentDate() : \DateTime {
+	return ($this->commentDate);
+}
+
+/**
+ *mutator method for comment date
+ *
+ * @param \DateTime|string|null $newCommentDate comment date as a DatetTime object or string (or null to load the current time)
+ * @throws \InvalidArgumentException if $newContentDate is not a valid object or string
+ * @throws \RangeException if $newCommentDate is a date that does not exist
+ **/
+
+
+public function setCommentDate($newCommentDate = null): void {
+	// base case: if the date is null, use the current date and time
+	if($newCommentDate ===$newCommentDate){
+		$this->commentDate = new \DateTime();
+		return;
+	}
+
+	//store the comment date
+}
+
+
+} //this last one closes the class as a whole
