@@ -9,30 +9,38 @@ use Ramsey\Uuid\Uuid;
  * Class Comment
  * @package BackyardAstronomer\astronomer
  */
+
+/**
+ * this is the primary key for comment
+ * @var Uuid $commentId;
+ */
 class Comment {
 	/**
-	 * this is the primary key for comment
+	 * this is the primary key of the comment
 	 * @var Uuid $commentId;
 	 */
-	private $commentId;
+private $commentId;
 
 	/**
-	 * this is the foreign key of the profile that made the comment
-	 * @var Uuid $commentProfileId;
+	 * this is the foreign key of the profile the comment is posted on
+	 * @var Uuid $commentProfileId
 	 */
 
 private $commentProfileId;
 	/**
+	 *
 	 * this is the foreign key of the event the comment is posted on
 	 * @var Uuid $commentEventId
 	 */
 private $commentEventId;
 
 	/**
-	 * this is the actual content of the comment
-	 * @var Uuid $commentContentId
-	 */
+ * this is the actual content of the comment
+ * @var Uuid $commentContentId
+ */
 private $commentContent;
+
+
 
 /**
  *constructor of this Comment
@@ -47,14 +55,15 @@ private $commentContent;
  * @throws \Exception if some other exception occurs
  **/
 
-public function __construct($newCommentId, $newCommentProfileId, string $newCommentContent, $newCommentDate = null) {
+public function __construct($newCommentId, $newCommentProfileId, string $newCommentContent, $newCommentDate = null, $newCommentEventId) {
 	try {
 		$this->setCommentId($newCommentId);
 		$this->setCommentProfileId($newCommentProfileId);
 		$this->setCommentContent($newCommentContent);
 		$this->setCommentDate($newCommentDate);
+		$this->setCommentEventId($newCommentEventId);
 	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-		$exceptiontype = get_class($exception);
+		$exceptionType = get_class($exception);
 		throw(new $exception($exception->getMessage(), 0, $exception));
 
 		}
@@ -62,7 +71,7 @@ public function __construct($newCommentId, $newCommentProfileId, string $newComm
 
 /**
  *
- * accessor methid for comment id
+ * accessor method for comment id
  *
  * @return Uuid value of comment id
  */
@@ -190,6 +199,34 @@ public function setCommentDate($newCommentDate = null): void {
 	}
 	$this->commentDate = $newCommentDate;
 }
+
+/**
+ *
+ * accessor method for comment event
+ *
+ * @return Uuid of comment event id
+ */
+
+public function getCommentEventId() : Uuid {
+	return ($this->commentEventId);
+}
+
+	/**
+	 * mutator method for comment event id
+	 *
+	 * @param string | Uuid $newCommentEventId new value of comment event id
+	 * @throws \RangeException if $newCommentEventId is not positive
+	 * @throws \TypeError if $newCommentEventId is not an integer
+	 **/
+
+	public function setCommentEventId($newCommentEventId): void {
+		try {
+			$uuid = self::validateUuid($newCommentEventId);
+		} catch(\InvalidArgumentException |\ RangeException |\ Exception |\TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw (new$exceptionType($exception->getMessage(), 0, $exception));
+		}
+	}
 
 
 } //this last one closes the class as a whole
