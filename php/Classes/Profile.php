@@ -144,7 +144,7 @@ class Profile {
 		$newProfileEmail = trim($newProfileEmail);
 		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileEmail) === true) {
-			throw(new \InvalidArgumentException("email input is empty or insecure"))
+			throw(new \InvalidArgumentException("email input is empty or insecure"));
 	}
 		//the following verifies the email content will fit in the database
 		if(strlen($newProfileEmail) > 50) {
