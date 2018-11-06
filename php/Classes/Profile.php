@@ -127,6 +127,37 @@ $newProfileActivationToken, $newProfileHash = null) {
 	 * @return email as string value
 	 */
 
+public function getProfileEmail() : string {
+	return($this->profileEmail);
+}
+/**
+ * the following is the mutator method for the profile email content
+ *
+ * @param string $newProfileEmail inserts new profile email value
+ * @throws \InvalidArgumentException if email is empty or insecure
+ * @throws \RangeException if email is too long
+ */
+
+public function setProfileEmail(string $newProfileEmail) : void {
+
+	//the following verifies whether the email content is secure
+	$newProfileEmail = trim($newProfileEmail);
+	$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if(empty($newProfileEmail) === true) {
+		throw(new \InvalidArgumentException("email input is empty or insecure"))
+	}
+	//the following verifies the email content will fit in the database
+	if(strlen($newProfileEmail) > 50) {
+		throw(new \RangeException("this email is too long"));
+	}
+
+	//the following stores the new email content
+	$this->profileEmail = $newProfileEmail;
+}
+
+/**
+ *
+ */
 
 
 } //class closing bracket
