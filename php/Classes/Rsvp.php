@@ -13,9 +13,25 @@ class Rsvp implements \JsonSerializable {
 
 
 	/**
-	 *
-	 */
-
+	 * id for this rsvp Profile Id; this is a foreign key
+	 * @var Uuid $rsvpProfileId
+	 **/
+	private $rsvpProfileId;
+	/**
+	 * id of this rsvp Event ID ; this is a foreign key
+	 * @var Uuid $rsvpEventID
+	 **/
+	private $rsvpEventID;
+	/**
+	 * id of this rsvp Id ; this is a Primary key also a composite of rsvpProfileId and rsvpEventID
+	 * @var Uuid $rsvpId
+	 **/
+	private $rsvpId;
+	/**
+	 * This integer that counts the number of people that RSVP to an event
+	 * @var TINYINT $rsvpEventCounter
+	 **/
+	private $rsvpEventCounter;
 
 
 
