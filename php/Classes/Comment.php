@@ -182,6 +182,13 @@ public function setCommentDate($newCommentDate = null): void {
 	}
 
 	//store the comment date
+	try {
+		$newCommentDate = self::validateDateTime($newCommentDate);
+	} catch(\InvalidArgumentException |\RangeException $exception) {
+		$exceptionType = get_class($exception);
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	}
+	$this->commentDate = $newCommentDate;
 }
 
 
