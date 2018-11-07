@@ -266,7 +266,7 @@ public function setProfileImage($newProfileImage) : void {
 /**
  * the following is the accessor method for the profile activation token
  *
- * @returns the activation token as a string
+ * @returns profile activation token as a string
  */
 
 public function getProfileActivationToken() : string {
@@ -293,7 +293,36 @@ public function setProfileActivationToken($newProfileActivationToken) : void {
 	$this->profileActivationToken = $newProfileActivationToken;
 }
 
+/**
+ * The following is the accessor method for the profile hash
+ *
+ * @return profile hash as a string
+ */
 
+public function getProfileHash() : string {
+	return ($this->profileActivationToken);
+}
+
+/**
+ * the following is the mutator method for the profile hash
+ *
+ * @param string $newProfileHash
+ * @throws \InvalidArgumentException if not string or insecure
+ * @throws \RangeException if the name is too long for our databases
+ * @throws \TypeError if the input is not a string
+ */
+
+public function setProfileHash($newProfileHash) : void {
+	//the following verifies the description is secure
+
+	$newProfileHash = trim($newProfileHash);
+	$newProfileHash = filter_var($newProfileHash, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if (empty($newProfileHash) === true) {
+		throw(new \InvalidArgumentException(""));
+	}
+	//this stores the new profile hash
+	$this->profileHash = $newProfileHash;
+}
 
 
 } //class closing bracket
