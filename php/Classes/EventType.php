@@ -22,7 +22,7 @@ class EventType implements \JsonSerializable {
 	 * @var string
 	 **/
 	private $eventTypeName;
-
+//TODO match parameters to docblocks
 	/**
 	 * constructor EventTypes
 	 *
@@ -112,6 +112,3 @@ public function setEventTypeName(string $newEventTypeName) : void {
 
 
 }
-
-?>
-
