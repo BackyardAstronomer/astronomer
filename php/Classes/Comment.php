@@ -56,13 +56,13 @@ private $commentDate;
  *@param string|Uuid $newCommentId id of this comment or null if new comment
  * @param string|Uuid $newCommentProfileId id of the Profile that made this Comment
  * @param string|Uuid $newCommentContent string containing actual content data
+ * @param string|Uuid $newCommentEventId string id of the event the comment is posted on
  * @param \DateTime|string|null $newCommentDate date and time Comment was sent or null if set ot current date and time
  * @throws \InvalidArgumentException if data types are not valid
  * @throws \RangeException if data values are out of bounds (e.g., strings are too long, negative integers)
  * @throws \TypeError if data types violate type hints
  * @throws \Exception if some other exception occurs
  **/
-//TODO docblock newCommentEventId
 public function __construct($newCommentId, $newCommentEventId, $newCommentProfileId, string $newCommentContent, $newCommentDate = null) {
 	try {
 		$this->setCommentId($newCommentId);
@@ -109,13 +109,72 @@ public function setCommentId($newCommentId): void {
 	}
 	$this->commentId = $uuid;
 }
-//TODO reorganize accessors and mutators foreign key/alphabetical
 /**
  *
  *accessor method for comment profile id
  *
  * @return Uuid value of comment profile id
  */
+
+	/**
+	 * accessor method for comment content
+	 *
+	 * @return string value of comment content
+	 */
+
+	public function getCommentContent(): string {
+		return ($this->commentContent);
+	}
+
+
+	/**
+	 * mutator method for post content
+	 *
+	 * @param string $newCommentContent new value of comment content
+	 * @throws \InvalidArgumentException if $newCommentContent is not a string or is insecure
+	 * @throws \RangeException if $newCommentContent is >255 characters
+	 * @throws \TypeError if $newCommentContent is not a string
+	 **/
+
+
+	public function setCommentContent(string $newCommentContent) : void {
+		//verify that the comment content is secure
+		$newCommentContent = trim($newCommentContent);
+		$newCommentContent = filter_var($newCommentContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newCommentContent) === true) {
+			throw(new \RangeException("Comment content is empty or insecure"));
+		}
+//TODO check for range exception
+		//store the comment content
+		$this->commentContent = $newCommentContent;
+	}
+	/**
+	 *
+	 * accessor method for comment event
+	 *
+	 * @return Uuid of comment event id
+	 */
+
+	public function getCommentEventId() : Uuid {
+		return ($this->commentEventId);
+	}
+
+	/**
+	 * mutator method for comment event id
+	 *
+	 * @param string | Uuid $newCommentEventId new value of comment event id
+	 * @throws \RangeException if $newCommentEventId is not positive
+	 * @throws \TypeError if $newCommentEventId is not an integer
+	 **/
+
+	public function setCommentEventId($newCommentEventId): void {
+		try {
+			$uuid = self::validateUuid($newCommentEventId);
+		} catch(\InvalidArgumentException |\ RangeException |\ Exception |\TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw (new$exceptionType($exception->getMessage(), 0, $exception));
+		}
+	}
 
 
 public function getCommentProfileId(): Uuid {
@@ -139,38 +198,7 @@ public function setCommentProfileId($newCommentProfileId): void {
 	}
 }
 
-/**
- * accessor method for comment content
- *
- * @return string value of comment content
- */
 
-public function getCommentContent(): string {
-	return ($this->commentContent);
-}
-
-
-/**
- * mutator method for post content
- *
- * @param string $newCommentContent new value of comment content
- * @throws \InvalidArgumentException if $newCommentContent is not a string or is insecure
- * @throws \RangeException if $newCommentContent is >255 characters
- * @throws \TypeError if $newCommentContent is not a string
- **/
-
-
-public function setCommentContent(string $newCommentContent) : void {
-	//verify that the comment content is secure
-	$newCommentContent = trim($newCommentContent);
-	$newCommentContent = filter_var($newCommentContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	if(empty($newCommentContent) === true) {
-		throw(new \RangeException("Comment content is empty or insecure"));
-	}
-//TODO check for range exception
-	//store the comment content
-	$this->commentContent = $newCommentContent;
-}
 
 /**
  * accessor method for comment date
@@ -208,33 +236,7 @@ public function setCommentDate($newCommentDate = null): void {
 	$this->commentDate = $newCommentDate;
 }
 
-/**
- *
- * accessor method for comment event
- *
- * @return Uuid of comment event id
- */
 
-public function getCommentEventId() : Uuid {
-	return ($this->commentEventId);
-}
-
-	/**
-	 * mutator method for comment event id
-	 *
-	 * @param string | Uuid $newCommentEventId new value of comment event id
-	 * @throws \RangeException if $newCommentEventId is not positive
-	 * @throws \TypeError if $newCommentEventId is not an integer
-	 **/
-
-	public function setCommentEventId($newCommentEventId): void {
-		try {
-			$uuid = self::validateUuid($newCommentEventId);
-		} catch(\InvalidArgumentException |\ RangeException |\ Exception |\TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw (new$exceptionType($exception->getMessage(), 0, $exception));
-		}
-	}
 
 
 } //this last one closes the class as a whole
