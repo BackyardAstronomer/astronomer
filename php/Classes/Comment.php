@@ -43,10 +43,12 @@ private $commentContent;
 	/**
 	 *
 	 * this is the date the comment was posted
-	 * @var \DateTime $
+	 * @var \DateTime $ $commentDate
 	 */
 
-//TODO add commentDate state variable
+private $commentDate;
+
+
 
 /**
  *constructor of this Comment
@@ -68,9 +70,8 @@ public function __construct($newCommentId, $newCommentEventId, $newCommentProfil
 		$this->setCommentContent($newCommentContent);
 		$this->setCommentDate($newCommentDate);
 		$this->setCommentEventId($newCommentEventId);
-		//TODO fix catch block
 	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-		$exceptionType = get_class($exception);
+		$exception = get_class($exception);
 		throw(new $exception($exception->getMessage(), 0, $exception));
 
 		}
