@@ -63,4 +63,20 @@ class Event {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 */
+
+	/**
+	 * This is the constructor function for the Event class
+	 */
+	public function __construct($newEventId, $newEventEventTypeId, $newEventProfileId,
+$newEventTitle, $newEventContent, $newEventStartDate, $newEventEndDate) {
+		try {
+			$this -> setEventId($newEventId);
+			$this -> setEventEventTypeId($newEventEventTypeId);
+			$this -> setEventProfileId($newEventProfileId);
+			$this -> setEventTitle($newEventTitle);
+			$this -> setEventContent($newEventContent);
+			$this -> setEventStartDate($newEventStartDate);
+			$this -> setEventEndDate($newEventEndDate);
+		}
+	}
 }
