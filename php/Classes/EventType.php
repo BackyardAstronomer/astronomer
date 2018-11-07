@@ -1,8 +1,8 @@
 <?php
 namespace BackyardAstronomer\Astronomer;
 
-require_once("Autoload.php");
-require_once(dirname(__DIR__,2) . "/classes/Autoload.php");
+require_once("autoload.php");
+require_once(dirname(__DIR__,2) . "/classes/autoload.php");
 
 
 use Ramsey\Uuid\Uuid;
@@ -26,8 +26,8 @@ class EventType implements \JsonSerializable {
 	/**
 	 * constructor EventTypes
 	 *
-	 * @param string|Uuid $eventTypeId id of this event
-	 * @param string $eventTypeName string name of event type
+	 * @param string|Uuid $eventTypeId id this is a primary key identifies unique profiles
+	 * @param string $eventTypeName string this is the event type by name:
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints

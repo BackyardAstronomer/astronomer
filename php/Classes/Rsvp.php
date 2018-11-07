@@ -1,8 +1,8 @@
 <?php
 namespace BackyardAstronomer\Astronomer;
 
-require_once("Autoload.php");
-require_once(dirname(__DIR__,2) . "/classes/Autoload.php");
+require_once("autoload.php");
+require_once(dirname(__DIR__,2) . "/classes/autoload.php");
 
 
 use Ramsey\Uuid\Uuid;
@@ -46,7 +46,7 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct($newRsvpId, $newRsvpProfileId, $newRsvpEventID, $newRsvpEventCounter = null) {
+	public function __construct($newRsvpId, $newRsvpProfileId, $newRsvpEventId, $newRsvpEventCounter = null) {
 		try {
 			$this->setRsvpId($newRsvpId);
 			$this->setRsvpProfileId($newRsvpProfileId);
@@ -170,7 +170,7 @@ class Rsvp implements \JsonSerializable {
 		}
 
 		// verify the Rsvp Event Counter content will fit in the database
-		if(strlen($newRsvpEventCounter) > 175) {
+		if(integer($newRsvpEventCounter) > 175) {
 			throw(new \RangeException("rsvp event counter content too large"));
 		}
 
