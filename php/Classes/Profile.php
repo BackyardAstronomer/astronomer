@@ -126,7 +126,7 @@ class Profile {
 	/**
 	 * the following is the accessor method for the profile email
 	 *
-	 * @return email as string value
+	 * @return profileEmail as string value
 	 */
 
 	public function getProfileEmail(): string {
