@@ -9,6 +9,7 @@ use Ramsey\Uuid\Uuid;
 /**
  *
  */
+//TODO add json serializeable
 class Profile {
 	use ValidateUuid;
 	use ValidateDate;
@@ -74,11 +75,12 @@ class Profile {
 	/**
 	 * The following creates the constructor function for this class
 	 */
-
+//TODO make docblocks match parameters
 	public function __construct($newProfileId, string $newProfileEmail, string $newProfileBio, string $newProfileName,
 										 string $newProfileImage, string $newProfileActivationToken, string $newProfileHash) {
 
 		try {
+			//TODO call mutators instead of state variables
 			$this -> profileId($newProfileId);
 			$this -> profileEmail($newProfileEmail);
 			$this -> profileBio($newProfileBio);
@@ -102,7 +104,7 @@ class Profile {
 	public function getProfileId(): Uuid {
 		return ($this->profileId);
 	}
-
+// TODO add return to docblock
 	/**
 	 * mutator method for the profile id
 	 *
@@ -126,7 +128,7 @@ class Profile {
 	/**
 	 * the following is the accessor method for the profile email
 	 *
-	 * @return profileEmail as string value
+	 * @return string $profileEmail as string value
 	 */
 
 	public function getProfileEmail(): string {
@@ -157,11 +159,11 @@ class Profile {
 		//the following stores the new email content
 		$this->profileEmail = $newProfileEmail;
 	}
-
+//TODO make sure docblocks have correct syntax for return (got the bling)
 	/**
 	 *the following is the accessor method for the profile bio
 	 *
-	 * @return profileBio as string value
+	 * @return string $profileBio as string value
 	 */
 
 	public function getProfileBio(): string {
@@ -215,7 +217,7 @@ public function getProfileName() : string {
  */
 
 public function setProfileName(string $newProfileName) : void {
-
+//TODO make sure newProfileName is spelled consistantly
 	//the following verifies the content is secure
 	$newProfileName = trim($newProfileName);
 	$newProfileName = filter_var(FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -259,6 +261,7 @@ public function setProfileImage($newProfileImage) : void {
 		throw(new \InvalidArgumentException("profile image is not valid or insecure"));
 	}
 		//verify the image content will fit in the database
+	//TODO change string length to 255
 		if(strlen($newProfileImage) > 240) { //review this
 		throw(new \RangeException("this image is too big"));
 		}
@@ -284,7 +287,7 @@ public function getProfileActivationToken() : string {
  * @throws \RangeException if the name is too long for our databases
  * @throws \TypeError if the name is not a string
  */
-
+//TODO meet with George to fix activation token and hash
 public function setProfileActivationToken($newProfileActivationToken) : void {
 	//the following verifies the description is secure
 	$newProfileActivationToken = trim($newProfileActivationToken);
