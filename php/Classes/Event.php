@@ -78,5 +78,14 @@ $newEventTitle, $newEventContent, $newEventStartDate, $newEventEndDate) {
 			$this -> setEventStartDate($newEventStartDate);
 			$this -> setEventEndDate($newEventEndDate);
 		}
+		//this will determine what exception type was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception){
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
 	}
+	/**
+	 * This is the accessor method for the event id
+	 * it will @return Uuid value of event id
+	 */
 }
