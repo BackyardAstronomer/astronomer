@@ -1,9 +1,8 @@
 <?php
 
 namespace BackyardAstronomer\Astronomer;
-//TODO fix path
-require_once(dir(__DIR__,) . "/vendor/Autoload.php");
-require_once ("Autoload.php");
+require_once(dir(__DIR__,) . "/vendor/autoload.php");
+require_once ("autoload.php");
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -41,7 +40,13 @@ private $commentEventId;
  */
 private $commentContent;
 
-//TODO add commentDate state varible
+	/**
+	 *
+	 * this is the date the comment was posted
+	 * @var \DateTime $
+	 */
+
+//TODO add commentDate state variable
 
 /**
  *constructor of this Comment
