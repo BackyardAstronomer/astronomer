@@ -106,12 +106,12 @@ class Profile {
 	/**
 	 * mutator method for the profile id
 	 *
-	 * @param Uuid|string $newProfileId inserts new value of profile id
+	 * @param Uuid $newProfileId inserts new value of profile id
 	 * @throws \RangeException if $newProfileId is not positive
 	 * @throws \TypeError if $newProfileId is not a uuid
 	 */
 
-	public function setProfileId($newProfileId): void {
+	public function setProfileId( $newProfileId) : Uuid {
 		try {
 			$uuid = self::validateUuid($newProfileId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
