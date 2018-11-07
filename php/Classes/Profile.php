@@ -3,6 +3,8 @@ namespace BackyardAstronomer\Astronomer;
 require_once("Autoload.php");
 require_once(dir(__DIR_, 2) . "/vendor/autoload.php");
 
+//TODO else if in setters throughout to catch type errors
+
 use Ramsey\Uuid\Uuid;
 /**
  *
@@ -73,18 +75,19 @@ class Profile {
 	 * The following creates the constructor function for this class
 	 */
 
-	public function __construct($newProfileId, $newProfileEmail, $newProfileBio, $newProfileName, $newProfileImage,
-										 $newProfileActivationToken, $newProfileHash = null) {
+	public function __construct($newProfileId, string $newProfileEmail, string $newProfileBio, string $newProfileName,
+										 string $newProfileImage, string $newProfileActivationToken, string $newProfileHash) {
 
 		try {
-			$this->profileId($newProfileId);
-			$this->profileEmail($newProfileEmail);
-			$this->profileBio($newProfileBio);
-			$this->profileName($newProfileName);
-			$this->profileImage($newProfileImage);
-			$this->profileActivationToken($newProfileActivationToken);
-			$this->profileHash($newProfileHash);
-		} //the following determines what exception type was thrown
+			$this -> profileId($newProfileId);
+			$this -> profileEmail($newProfileEmail);
+			$this -> profileBio($newProfileBio);
+			$this -> profileName($newProfileName);
+			$this -> profileImage($newProfileImage);
+			$this -> profileActivationToken($newProfileActivationToken);
+			$this -> profileHash($newProfileHash);
+		}
+		//the following determines what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -158,7 +161,7 @@ class Profile {
 	/**
 	 *the following is the accessor method for the profile bio
 	 *
-	 * @return bio as string value
+	 * @return profileBio as string value
 	 */
 
 	public function getProfileBio(): string {
