@@ -229,5 +229,40 @@ public function setProfileName(string $newProfileName) : void {
 	$this->profileName = $newProfileName;
 }
 
+/**
+ * the following is the accessor method for the profile image variable
+ *
+ * @returns string value for profile image
+ */
+
+public function getProfileImage() : string {
+	return($this->profileImage);
+}
+
+/**
+ * the following is the mutator method for the profile image variable
+ *
+ * @param string $newProfileImage saves a new image for the profile
+ * @throws \InvalidArgumentException if not string or insecure
+ * @throws \RangeException if the name is too long for our database
+ * @throws \TypeError if the name is not actually a string
+ */
+
+public function setProfileImage($newProfileImage) : void {
+	//the following verifies the description content is secure
+	$newProfileImage = trim($newProfileImage);
+	$newProfileImage = filter_var($newProfileImage, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if (empty($newProfileImage) === true) {
+		throw(new \InvalidArgumentException("profile image is not valid or insecure"));
+	}
+		//verify the image content will fit in the database
+		if(strlen($newProfileImage) > 240) { //review this
+		throw(new \RangeException("this image is too big"));
+		}
+		$this->profileImage = $newProfileImage;
+	}
+
+
+
 
 } //class closing bracket
