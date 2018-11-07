@@ -20,15 +20,15 @@ class Event {
 	 */
 	private $eventId;
 	/**
+	 * This is the event type identifier; foreign key;
+	 * @var Uuid $eventEventTypeId
+	 */
+	private $eventEventTypeId;
+	/**
  *This is a foreign key from the profile table; shows who is posting event
 	 * @var Uuid $eventProfileId
 	 */
 	private $eventProfileId;
-	/**
- * This is the event type identifier;
-	 * @var Uuid $eventEventTypeId
-	 */
-	private $eventEventTypeId;
 /**
  * This is the title of the posted event;
  * @var string $eventTitle
@@ -49,5 +49,18 @@ class Event {
 	 * @var \DateTime $eventEndDate
 	 */
 	private $eventEndDate;
-
+	/**
+	 * @param Uuid $newEventId for a new event
+	 * @param Uuid $newEventEventTypeId for determining the event type
+	 * @param Uuid $newEventProfileId the profile that created the event
+	 * @param string $newEventTitle title of the event
+	 * @param string $newEventContent short description of the event
+	 * @param \DateTime $newEventStartDate date of the event
+	 * @param \DateTime $newEventEndDate date the event ends
+	 *
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if strings are too long
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 */
 }
