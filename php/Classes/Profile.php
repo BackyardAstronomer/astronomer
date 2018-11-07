@@ -259,8 +259,39 @@ public function setProfileImage($newProfileImage) : void {
 		if(strlen($newProfileImage) > 240) { //review this
 		throw(new \RangeException("this image is too big"));
 		}
+		//stores the new photo content
 		$this->profileImage = $newProfileImage;
 	}
+
+/**
+ * the following is the accessor method for the profile activation token
+ *
+ * @returns the activation token as a string
+ */
+
+public function getProfileActivationToken() : string {
+	return ($this->profileActivationToken);
+}
+
+/**
+ * the following is the mutator method for the profile activation token
+ *
+ * @param string $newProfileActivationToken
+ * @throws \InvalidArgumentException if not string or insecure
+ * @throws \RangeException if the name is too long for our databases
+ * @throws \TypeError if the name is not a string
+ */
+
+public function setProfileActivationToken($newProfileActivationToken) : void {
+	//the following verifies the description is secure
+	$newProfileActivationToken = trim($newProfileActivationToken);
+	$newProfileActivationToken = filter_var($newProfileActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if (empty($newProfileActivationToken) === true) {
+		throw(new \InvalidArgumentException(""));
+	}
+	//stores the new activation token... review this
+	$this->profileActivationToken = $newProfileActivationToken;
+}
 
 
 
