@@ -1,8 +1,8 @@
 <?php
 
-namespace BackyardAstronomer\astronomer;
+namespace BackyardAstronomer\Astronomer;
+//TODO fix path
 require_once(dir(__DIR__,) . "/vendor/Autoload.php");
-//TODO fix path 
 require_once ("Autoload.php");
 use Ramsey\Uuid\Uuid;
 
@@ -41,7 +41,7 @@ private $commentEventId;
  */
 private $commentContent;
 
-
+//TODO add commentDate state varible
 
 /**
  *constructor of this Comment
@@ -55,14 +55,15 @@ private $commentContent;
  * @throws \TypeError if data types violate type hints
  * @throws \Exception if some other exception occurs
  **/
-
-public function __construct($newCommentId, $newCommentProfileId, string $newCommentContent, $newCommentDate = null, $newCommentEventId) {
+//TODO docblock newCommentEventId
+public function __construct($newCommentId, $newCommentEventId, $newCommentProfileId, string $newCommentContent, $newCommentDate = null) {
 	try {
 		$this->setCommentId($newCommentId);
 		$this->setCommentProfileId($newCommentProfileId);
 		$this->setCommentContent($newCommentContent);
 		$this->setCommentDate($newCommentDate);
 		$this->setCommentEventId($newCommentEventId);
+		//TODO fix catch block
 	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 		$exceptionType = get_class($exception);
 		throw(new $exception($exception->getMessage(), 0, $exception));
@@ -102,7 +103,7 @@ public function setCommentId($newCommentId): void {
 	}
 	$this->commentId = $uuid;
 }
-
+//TODO reorganize accessors and mutators foreign key/alphabetical
 /**
  *
  *accessor method for comment profile id
@@ -160,7 +161,7 @@ public function setCommentContent(string $newCommentContent) : void {
 	if(empty($newCommentContent) === true) {
 		throw(new \RangeException("Comment content is empty or insecure"));
 	}
-
+//TODO check for range exception
 	//store the comment content
 	$this->commentContent = $newCommentContent;
 }
