@@ -170,7 +170,7 @@ class Rsvp implements \JsonSerializable {
 		}
 
 		// verify the Rsvp Event Counter content will fit in the database
-		if(strlen($newRsvpEventCounter) > 225) {
+		if(strlen($newRsvpEventCounter) > 175) {
 			throw(new \RangeException("rsvp event counter content too large"));
 		}
 
