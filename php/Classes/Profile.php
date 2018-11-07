@@ -80,14 +80,14 @@ class Profile {
 										 string $newProfileImage, string $newProfileActivationToken, string $newProfileHash) {
 
 		try {
-			//TODO call mutators instead of state variables
-			$this -> profileId($newProfileId);
-			$this -> profileEmail($newProfileEmail);
-			$this -> profileBio($newProfileBio);
-			$this -> profileName($newProfileName);
-			$this -> profileImage($newProfileImage);
-			$this -> profileActivationToken($newProfileActivationToken);
-			$this -> profileHash($newProfileHash);
+
+			$this -> setProfileId($newProfileId);
+			$this -> setProfileEmail($newProfileEmail);
+			$this -> setProfileBio($newProfileBio);
+			$this -> setProfileName($newProfileName);
+			$this -> setProfileName($newProfileImage);
+			$this -> setProfileActivationToken($newProfileActivationToken);
+			$this -> setProfileHash($newProfileHash);
 		}
 		//the following determines what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
