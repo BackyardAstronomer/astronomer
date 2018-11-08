@@ -98,7 +98,7 @@ class Profile implements \JsonSerializable {
 	/**
 	 * the following is the accessor method for the profile id
 	 *
-	 * it will @return Uuid value of tweet id
+	 * it will @return Uuid value of profile id
 	 */
 	public function getProfileId(): Uuid {
 		return ($this->profileId);
@@ -318,14 +318,25 @@ public function getProfileHash() : string {
  */
 
 public function setProfileHash($newProfileHash) : void {
-	//the following verifies the description is secure
+	//the following enforces that the hash is properly formatted
 
 	$newProfileHash = trim($newProfileHash);
-	$newProfileHash = filter_var($newProfileHash, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	if (empty($newProfileHash) === true) {
-		throw(new \InvalidArgumentException(""));
+	if(empty($newProfileHash) === true) {
+		throw(new \InvalidArgumentException("profile password hash empty or insecure"));
 	}
-	//this stores the new profile hash
+
+	//the following enforces that the hash is really an Argon hash
+	$profileHashInfo = profile_get_info($newProfileHash);
+	if($profileHashInfo["algoName"] !== "argon2i") {
+		throw(new \InvalidArgumentException("profile hash is not a valid hash"));
+	}
+
+	//enforce tht the hash is exactly 97 characters.
+	if(strlen($newProfileHash) !== 97) {
+		throw(new \RangeException("profile hash must be 97 characters"));
+	}
+
+	//the following stores the hash
 	$this->profileHash = $newProfileHash;
 }
 
