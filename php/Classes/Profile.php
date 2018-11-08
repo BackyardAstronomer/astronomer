@@ -75,15 +75,14 @@ class Profile implements \JsonSerializable {
 
 		try {
 
-			$this -> setProfileId($newProfileId);
-			$this -> setProfileEmail($newProfileEmail);
-			$this -> setProfileBio($newProfileBio);
-			$this -> setProfileName($newProfileName);
-			$this -> setProfileName($newProfileImage);
-			$this -> setProfileActivationToken($newProfileActivationToken);
-			$this -> setProfileHash($newProfileHash);
-		}
-		//the following determines what exception type was thrown
+			$this->setProfileId($newProfileId);
+			$this->setProfileEmail($newProfileEmail);
+			$this->setProfileBio($newProfileBio);
+			$this->setProfileName($newProfileName);
+			$this->setProfileImage($newProfileImage);
+			$this->setProfileActivationToken($newProfileActivationToken);
+			$this->setProfileHash($newProfileHash);
+		} //the following determines what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
@@ -108,10 +107,10 @@ class Profile implements \JsonSerializable {
 	 * @throws \TypeError if $newProfileId is not a uuid
 	 */
 
-	public function setProfileId( $newProfileId) : void {
+	public function setProfileId($newProfileId): void {
 		try {
 			$newProfileId = self::validateUuid($newProfileId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception){
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 
 		}
 		//the following converts and stores the new profile id
@@ -143,7 +142,7 @@ class Profile implements \JsonSerializable {
 		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileEmail) === true) {
 			throw(new \InvalidArgumentException("email input is empty or insecure"));
-	}
+		}
 		//the following verifies the email content will fit in the database
 		if(strlen($newProfileEmail) > 50) {
 			throw(new \RangeException("this email is too long"));
@@ -190,16 +189,15 @@ class Profile implements \JsonSerializable {
 		$this->profileBio = $newProfileBio;
 	}
 
-/**
- * the following is the accessor method for the profile name field
- *
- * @return profile name as a string
- */
+	/**
+	 * the following is the accessor method for the profile name field
+	 *
+	 * @return profile name as a string
+	 */
 
-public function getProfileName() : string {
-	return ($this->profileName);
-}
-
+	public function getProfileName(): string {
+		return($this->profileName);
+	}
 /**
  * the following is the mutator method for the profile name field
  *
@@ -211,16 +209,15 @@ public function getProfileName() : string {
 
 public function setProfileName(string $newProfileName) : void {
 	//the following verifies the content is secure
-
 	$newProfileName = trim($newProfileName);
-	$newProfileName = filter_var(FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$newProfileName = filter_var($newProfileName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	if(empty($newProfileName) === true) {
-		throw(new \RangeException("This name is tooooo looong"));
+		throw(new \InvalidArgumentException("This content is empty or insecure"));
 	}
 
 	//the following verifies the tweet content will fit in the database
 	if(strlen($newProfileName) > 50) {
-		throw(new \RangeException("Sorry, this name is too long for our database."));
+		throw(new \RangeException("This name is too long for our database."));
 	}
 
 	//the following stores the name content
@@ -287,7 +284,10 @@ public function setProfileActivationToken($newProfileActivationToken) : void {
 	$newProfileActivationToken = trim($newProfileActivationToken);
 	$newProfileActivationToken = filter_var($newProfileActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	if (empty($newProfileActivationToken) === true) {
-		throw(new \InvalidArgumentException(""));
+		throw(new \InvalidArgumentException("This content is insecure or empty."));
+	}
+	if(ctype_xdigit ($newProfileActivationToken) !== true){
+		throw(new \InvalidArgumentException("This content is not hexadecimal."));
 	}
 	//stores the new activation token... review this
 	$this->profileActivationToken = $newProfileActivationToken;
@@ -321,7 +321,8 @@ public function setProfileHash($newProfileHash) : void {
 	}
 
 	//the following enforces that the hash is really an Argon hash
-	$profileHashInfo = profile_get_info($newProfileHash);
+	$profileHashInfo = password_get_info($newProfileHash);
+	var_dump($profileHashInfo);
 	if($profileHashInfo["algoName"] !== "argon2i") {
 		throw(new \InvalidArgumentException("profile hash is not a valid hash"));
 	}
@@ -334,6 +335,53 @@ public function setProfileHash($newProfileHash) : void {
 	//the following stores the hash
 	$this->profileHash = $newProfileHash;
 }
+
+
+
+
+
+//
+//PDO STARTS HERE
+//
+
+
+/**
+ * inserts this Profile into mySQL
+ *
+ * @param \PDO $pdo PDO connection object
+ * @throws \PDOException when mySQL related errors occur
+ * @throws \TypeError if $pdo is not a PDO connection object
+ **/
+public function insert(\PDO $pdo) : void {
+
+	// create query template
+	$query = "INSERT INTO profile(profileId, profileEmail, profileBio, profileName, profileImage, profileActivationToken, profileHash) 
+VALUES(:profileId, :profileEmail, :profileBio, :profileName, :profileImage, :profileActivationToken, :profileHash)";
+	$statement = $pdo->prepare($query);
+
+	// bind the member variables to the place holders in the template
+	$parameters = ["profileId" => $this ->profileId->getBytes(), "profileEmail" => $this->profileEmail, "profileBio" => $this->profileBio, "profileName" => $this->profileName, "profileImage" => $this->profileImage, "profileActivationToken" => $this->profileActivationToken, "profileHash" => $this->profileHash];
+	$statement->execute($parameters);
+}
+
+	/**
+	 * updates this Profile in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo) : void {
+
+		// create query template
+		$query = "UPDATE profile SET profileId = :profileId, profileEmail = :profileEmail, profileName = :profileName, profileImage = :profileImage, profileActivationToken = :profileActivationToken, profileHash = :profileHash WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+
+	$parameters = ["profileId" => $this ->profileId->getBytes(), "profileEmail" => $this->profileEmail, "profileBio" => $this->profileBio, "profileName" => $this->profileName, "profileImage" => $this->profileImage, "profileActivationToken" => $this->profileActivationToken, "profileHash" => $this->profileHash];
+		$statement->execute($parameters);
+	}
+
+
 
 
 } //class closing bracket
