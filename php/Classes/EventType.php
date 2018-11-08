@@ -105,7 +105,7 @@ public function setEventTypeName(string $newEventTypeName) : void {
 	// store the Event Type Name content
 	$this->eventTypeName = $newEventTypeName;
 }
-************************************************************************************************************
+
 	/**
 	 * inserts EventType into mySQL
 	 *
@@ -169,10 +169,10 @@ public function setEventTypeName(string $newEventTypeName) : void {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getEventTypeByEventTypeId(\PDO $pdo, $EventTypeId) : ?EventType {
+	public static function getEventTypeByEventTypeId(\PDO $pdo, $eventTypeId) : ?eventType {
 		// sanitize the eventTypeId before searching
 		try {
-			$eventTypeId = self::validateUuid($EventTypeId);
+			$eventTypeId = self::validateUuid($eventTypeId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
@@ -197,7 +197,7 @@ public function setEventTypeName(string $newEventTypeName) : void {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return($EventType);
+		return($eventType);
 
 	}
 
@@ -206,15 +206,15 @@ public function setEventTypeName(string $newEventTypeName) : void {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $eventTypeName eventType content to search for
-	 * @return \SplFixedArray SplFixedArray of EventType found
+	 * @return \SplFixedArray SplFixedArray of EventTypes found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getEventTypeByEventTypeName(\PDO $pdo, string $tweetContent) : \SplFixedArray {
+	public static function getEventTypeByEventTypeName(\PDO $pdo, string $eventTypeName) : \SplFixedArray {
 		// sanitize the description before searching
 		$eventTypeName = trim($eventTypeName);
 		$eventTypeName = filter_var($eventTypeName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty(eventTypeName) === true) {
+		if(empty($eventTypeName) === true) {
 			throw(new \PDOException("tweet content is invalid"));
 		}
 
@@ -226,24 +226,24 @@ public function setEventTypeName(string $newEventTypeName) : void {
 		$statement = $pdo->prepare($query);
 
 		// bind the EventTypeName to the place holder in the template
-		$EventTypeName = "%$EventTypeName%";
-		$parameters = ["EventTypeName" => $EventTypeName];
+		$eventTypeName = "%eventTypeName%";
+		$parameters = ["eventTypeName" => $eventTypeName];
 		$statement->execute($parameters);
 
-		// build an array of tweets
-		$EventType = new \SplFixedArray($statement->rowCount());
+		// build an array of $eventTypes
+		$eventTypes = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$eventType = new eventType($row["eventTypeId"], $row["eventTypeName"]);
-				$eventType[$eventType->key()] = $eventType;
-				$eventType->next();
+				$eventTypes[$eventTypes->key()] = $eventType;
+				$eventTypes->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($eventType);
+		return($eventTypes);
 	}
 
 	/**
@@ -261,19 +261,19 @@ public function setEventTypeName(string $newEventTypeName) : void {
 		$statement->execute();
 
 		// build an array of eventType
-		$eventType = new \SplFixedArray($statement->rowCount());
+		$eventTypes = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$eventType = new eventType($row["eventTypeId"], $row["eventTypeName"]);
-				$eventTypeName[$eventTypeName->key()] = $eventTypeName;
-				$eventTypeName->next();
+				$eventTypes[$eventType->key()] = $eventType;
+				$eventTypes->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($eventTypeName);
+		return ($eventTypes);
 	}
 
 
@@ -289,10 +289,6 @@ public function setEventTypeName(string $newEventTypeName) : void {
 
 
 	}
-
-
-
-
 
 
 
