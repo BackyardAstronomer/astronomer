@@ -160,6 +160,47 @@ public function setEventTypeName(string $newEventTypeName) : void {
 		$statement->execute($parameters);
 	}
 
+	/**
+	 * gets the EventType by eventTypeId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $eventTypeId event Type Id to search for
+	 * @return EventType|null EventType found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when a variable are not the correct data type
+	 **/
+	public static function getEventTypeByEventTypeId(\PDO $pdo, $EventTypeId) : ?EventType {
+		// sanitize the eventTypeId before searching
+		try {
+			$eventTypeId = self::validateUuid($EventTypeId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+
+		// create query template
+		$query = "SELECT eventTypeId, eventTypeName FROM eventType WHERE eventTypeId = :eventTypeId";
+		$statement = $pdo->prepare($query);
+
+		// bind the eventTypeId to the place holder in the template
+		$parameters = ["eventTypeId" => $eventTypeId->getBytes()];
+		$statement->execute($parameters);
+
+		// grab the eventType from mySQL
+		try {
+			$eventType = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$eventType = new eventType($row["eventTypeId"], $row["eventTypeName"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($EventType);
+
+	}
+
 
 
 
