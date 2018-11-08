@@ -22,7 +22,7 @@ class EventType implements \JsonSerializable {
 	 * @var string
 	 **/
 	private $eventTypeName;
-//TODO match parameters to docblocks
+
 	/**
 	 * constructor EventTypes
 	 *
@@ -105,6 +105,62 @@ public function setEventTypeName(string $newEventTypeName) : void {
 	// store the Event Type Name content
 	$this->eventTypeName = $newEventTypeName;
 }
+************************************************************************************************************
+	/**
+	 * inserts EventType into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo) : void {
+
+		// create query template
+		$query = "INSERT INTO EventType(eventTypeId, eventTypeName) VALUES(:eventTypeId, :eventTypeName)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$parameters = ["eventTypeId" => $this->eventTypeId->getBytes(), "eventTypeName" => $this->eventTypeName,];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * deletes this EventType from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) : void {
+
+		// create query template
+		$query = "DELETE FROM EventType WHERE eventTypeId = :eventTypeId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["eventTypeId" => $this->eventTypeId->getBytes()];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * updates EventType in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo) : void {
+
+		// create query template
+		$query = "UPDATE EventType SET eventTypeId = :eventTypeId, eventTypeName = :eventTypeName";
+		$statement = $pdo->prepare($query);
+
+
+		$parameters = ["eventTypeId" => $this->eventTypeId->getBytes(), "eventTypeName" => $this->eventTypeName,];
+		$statement->execute($parameters);
+	}
+
+
 
 
 

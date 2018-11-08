@@ -28,7 +28,7 @@ class Rsvp implements \JsonSerializable {
 	private $rsvpEventId;
 	/**
 	 * This integer that counts the number of people that RSVP to an event
-	 * @var TINYINT $rsvpEventCounter
+	 * @var int $rsvpEventCounter
 	 **/
 	private $rsvpEventCounter;
 
@@ -169,7 +169,7 @@ class Rsvp implements \JsonSerializable {
 		}
 
 		// verify the Rsvp Event Counter content will fit in the database
-		if(integer($newRsvpEventCounter) > 175) {
+		if(int ($newRsvpEventCounter) > 175) {
 			throw(new \RangeException("rsvp event counter content too large"));
 		}
 
