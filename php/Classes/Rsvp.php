@@ -25,8 +25,7 @@ class Rsvp implements \JsonSerializable {
 	 * id of this rsvp Event ID ; this is a foreign key
 	 * @var Uuid $rsvpEventID
 	 **/
-	private $rsvpEventID;
-
+	private $rsvpEventId;
 	/**
 	 * This integer that counts the number of people that RSVP to an event
 	 * @var TINYINT $rsvpEventCounter
@@ -36,21 +35,21 @@ class Rsvp implements \JsonSerializable {
 	/**
 	 * constructor EventTypes
 	 *
-	 * @param string|Uuid $rsvpId id of this event. composite of rsvpProfileId and rsvpEventID
-	 * @param string|Uuid $rsvpProfileId id of rsvp to profile Id
-	 * @param string|Uuid $rsvpEventID id of rsvp to event Id
-	 * @param integer $rsvpEventCounter this counts the number of people RSVP to an event
+	 * @param string|Uuid $newRsvpId id of this event. composite of rsvpProfileId and rsvpEventId
+	 * @param string|Uuid $newRsvpProfileId id of rsvp to profile Id
+	 * @param string|Uuid $newRsvpEventId id of rsvp to event Id
+	 * @param integer $newRsvpEventCounter this counts the number of people RSVP to an event
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct($newRsvpId, $newRsvpProfileId, $newRsvpEventId, $newRsvpEventCounter = null) {
+	public function __construct($newRsvpId, $newRsvpProfileId, $newRsvpEventId, int $newRsvpEventCounter = null) {
 		try {
 			$this->setRsvpId($newRsvpId);
 			$this->setRsvpProfileId($newRsvpProfileId);
-			$this->setRsvpEventID($newRsvpEventID);
+			$this->setRsvpEventId($newRsvpEventId);
 			$this->setRsvpEventCounter($newRsvpEventCounter);
 		}
 			//determine what exception type was thrown
@@ -76,7 +75,7 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \RangeException if $newRsvpId is not positive
 	 * @throws \TypeError if $newRsvpId is not a uuid or string
 	 **/
-	public function setRsvpId( $newRsvpId) : void {
+	public function setRsvpId($newRsvpId) : void {
 		try {
 			$uuid = self::validateUuid($newRsvpId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -104,7 +103,7 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \RangeException if $newRsvpProfileId is not positive
 	 * @throws \TypeError if $newRsvpProfileId is not a uuid or string
 	 **/
-	public function setRsvpProfileId( $newRsvpProfileId) : void {
+	public function setRsvpProfileId($newRsvpProfileId) : void {
 		try {
 			$uuid = self::validateUuid($newRsvpProfileId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -117,12 +116,12 @@ class Rsvp implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for rsvp Event ID
+	 * accessor method for rsvp Event Id
 	 *
-	 * @return Uuid value of rsvpEventID
+	 * @return Uuid value of rsvpEventId
 	 **/
-	public function getRsvpEventID() : Uuid {
-		return($this->rsvpEventID);
+	public function getRsvpEventId() : Uuid {
+		return($this->rsvpEventId);
 	}
 
 	/**
@@ -132,16 +131,16 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \RangeException if $newRsvpEventID is not positive
 	 * @throws \TypeError if $newRsvpEventID is not a uuid or string
 	 **/
-	public function setRsvpEventID( $newRsvpEventID) : void {
+	public function setRsvpEventId( $newRsvpEventId) : void {
 		try {
-			$uuid = self::validateUuid($newRsvpEventID);
+			$uuid = self::validateUuid($newRsvpEventId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 
-		// convert and store the rsvp Event ID
-		$this->rsvpEventID = $uuid;
+		// convert and store the rsvp Event Id
+		$this->rsvpEventId = $uuid;
 	}
 
 	/**
@@ -149,7 +148,7 @@ class Rsvp implements \JsonSerializable {
 	 *
 	 * @return integer value of rsvp Event Counter content
 	 **/
-	public function getRsvpEventCounter() : integer {
+	public function getRsvpEventCounter() : int {
 		return ($this->rsvpEventCounter);
 	}
 
@@ -161,7 +160,7 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \RangeException if $newRsvpEventCounter is > 225 characters
 	 * @throws \TypeError if $newRsvpEventCounter is not a tinyint
 	 **/
-	public function setRsvpEventCounter(integer $newRsvpEventCounter) : void {
+	public function setRsvpEventCounter(int $newRsvpEventCounter) : void {
 		// verify the Rsvp Event Counter content is secure
 		$newRsvpEventCounter = trim($newRsvpEventCounter);
 		$newRsvpEventCounter = filter_var($newRsvpEventCounter, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);

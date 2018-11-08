@@ -26,8 +26,8 @@ class EventType implements \JsonSerializable {
 	/**
 	 * constructor EventTypes
 	 *
-	 * @param string|Uuid $eventTypeId id this is a primary key identifies unique profiles
-	 * @param string $eventTypeName string this is the event type by name:
+	 * @param string|Uuid $newEventTypeId id this is a primary key identifies unique profiles
+	 * @param string $newEventTypeName string this is the event type by name:
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
@@ -69,7 +69,7 @@ class EventType implements \JsonSerializable {
 		}
 
 		// convert and store the Event Type Id
-		$this->EventTypeId = $uuid;
+		$this->eventTypeId = $uuid;
 	}
 
 	/**
@@ -99,7 +99,7 @@ public function setEventTypeName(string $newEventTypeName) : void {
 
 	// verify the Event Type Name content will fit in the database
 	if(strlen($newEventTypeName) > 32) {
-		throw(new \RangeException("tweet content too large"));
+		throw(new \RangeException("Event name content too large"));
 	}
 
 	// store the Event Type Name content
