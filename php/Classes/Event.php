@@ -88,4 +88,27 @@ $newEventTitle, $newEventContent, $newEventStartDate, $newEventEndDate) {
 	 * This is the accessor method for the event id
 	 * it will @return Uuid value of event id
 	 */
+	public function getEventId(): Uuid {
+		return ($this->eventId);
+	}
+
+	/**
+	 * this is the mutator method for eventId
+	 *
+	 * @param Uuid $newEventId new eventId value
+	 * @throws \RangeException if $newEventId is not positive
+	 * @throws \TypeError if $newEventId is not a Uuid
+	 *
+	 */
+	public function setEventId($newEventId) : void {
+		try {
+			$uuid = self::validateUuid($newEventId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception){
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+
+		//converting and storing eventId
+		$this->eventId = $uuid;
+	}
 }
