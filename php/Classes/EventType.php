@@ -246,6 +246,49 @@ public function setEventTypeName(string $newEventTypeName) : void {
 		return($eventType);
 	}
 
+	/**
+	 * gets all eventType
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of eventType found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllEventType(\PDO $pdo) : \SPLFixedArray {
+		// create query template
+		$query = "SELECT eventTypeId, eventTypeName FROM eventType";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of eventType
+		$eventType = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$eventType = new eventType($row["eventTypeId"], $row["eventTypeName"]);
+				$eventTypeName[$eventTypeName->key()] = $eventTypeName;
+				$eventTypeName->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($eventTypeName);
+	}
+
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() : array {
+		$fields = get_object_vars($this);
+
+		$fields["eventTypeId"] = $this->eventTypeId->toString();
+
+
+	}
 
 
 
