@@ -111,4 +111,34 @@ $newEventTitle, $newEventContent, $newEventStartDate, $newEventEndDate) {
 		//converting and storing eventId
 		$this->eventId = $uuid;
 	}
+
+	/**
+	 * this is the accessor method for the eventEventTypeId
+	 *
+	 * @return Uuid value of eventEventTypeId
+	 */
+
+	public function getEventEventTypeId() : Uuid {
+		return ($this->eventEventTypeId);
+	}
+	/**
+	 * this is the mutator method for eventEventTypeId
+	 *
+	 * @param Uuid $newEventEventTypeId new value for eventEventTypeId
+	 * @throws \RangeException if $newEventEventTypeId is not positive
+	 * @throws \ TypeError if $newEventEventTypeId is not a Uuid
+	 */
+
+	public function setEventEventTypeId($newEventEventTypeId) : void {
+		try {
+			$uuid = self::validateUuid($newEventEventTypeId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		// converting and storing eventEventTypeId
+		$this->eventEventTypeId= $uuid;
+	}
+
+
 }
