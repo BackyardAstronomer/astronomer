@@ -201,6 +201,51 @@ public function setEventTypeName(string $newEventTypeName) : void {
 
 	}
 
+	/**
+	 * gets the eventType by eventTypeName
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $eventTypeName eventType content to search for
+	 * @return \SplFixedArray SplFixedArray of EventType found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getEventTypeByEventTypeName(\PDO $pdo, string $tweetContent) : \SplFixedArray {
+		// sanitize the description before searching
+		$eventTypeName = trim($eventTypeName);
+		$eventTypeName = filter_var($eventTypeName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty(eventTypeName) === true) {
+			throw(new \PDOException("tweet content is invalid"));
+		}
+
+		// escape any mySQL wild cards
+		$eventTypeName = str_replace("_", "\\_", str_replace("%", "\\%", $eventTypeName));
+
+		// create query template
+		$query = "SELECT eventTypeId, eventTypeName FROM eventType WHERE eventTypeName LIKE :eventTypeName";
+		$statement = $pdo->prepare($query);
+
+		// bind the EventTypeName to the place holder in the template
+		$EventTypeName = "%$EventTypeName%";
+		$parameters = ["EventTypeName" => $EventTypeName];
+		$statement->execute($parameters);
+
+		// build an array of tweets
+		$EventType = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$eventType = new eventType($row["eventTypeId"], $row["eventTypeName"]);
+				$eventType[$eventType->key()] = $eventType;
+				$eventType->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($eventType);
+	}
+
 
 
 
