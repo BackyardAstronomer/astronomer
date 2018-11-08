@@ -381,6 +381,24 @@ VALUES(:profileId, :profileEmail, :profileBio, :profileName, :profileImage, :pro
 		$statement->execute($parameters);
 	}
 
+	/**
+	 * deletes this Profile from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) : void {
+
+		// create query template
+		$query = "DELETE FROM profile WHERE profileId = :profileId, profileEmail = :profileEmail, profileName = :profileName, profileImage = :profileImage, profileActivationToken = :profileActivationToken, profileHash = :profileHash WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["profileId" => $this ->profileId->getBytes(), "profileEmail" => $this->profileEmail, "profileBio" => $this->profileBio, "profileName" => $this->profileName, "profileImage" => $this->profileImage, "profileActivationToken" => $this->profileActivationToken, "profileHash" => $this->profileHash];
+		$statement->execute($parameters);
+	}
+
 
 
 
