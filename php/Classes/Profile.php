@@ -399,7 +399,45 @@ VALUES(:profileId, :profileEmail, :profileBio, :profileName, :profileImage, :pro
 		$statement->execute($parameters);
 	}
 
+	/**
+	 * gets the Profile by profile name
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $profileName profile name to search for
+	 * @return Profile|null Profile found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when a variable are not the correct data type
+	 **/
+	public static function getProfileByProfileName(\PDO $pdo, $profileName) : ?Profile {
+		// sanitize the profileName before searching
+		try {
+			$profileName = self::validateUuid($profileName);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
 
+		// create query template
+		$query = "SELECT profileId, profileEmail, profileBio, profileName, profileImage, profileActivationToken FROM profile WHERE profileName = :profileName";
+		$statement = $pdo->prepare($query);
+
+		// bind the tweet id to the place holder in the template
+		$parameters = ["profileName" => $profileName->getBytes()];
+		$statement->execute($parameters);
+
+		// grab the tweet from mySQL
+		try {
+			$profileName = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$profileName = new Profile($row["profileId"], $row["profileEmail"], $row["profileBio"], $row["profileName"], $row["profileImage"], $row["profileActivationToken"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($profileName);
+	}
 
 
 } //class closing bracket
