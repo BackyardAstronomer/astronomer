@@ -140,5 +140,33 @@ $newEventTitle, $newEventContent, $newEventStartDate, $newEventEndDate) {
 		$this->eventEventTypeId= $uuid;
 	}
 
+	/**
+	 * this is the accessor method for the eventProfileId
+	 *
+	 * @return Uuid value of eventProfileId
+	 */
+
+	public function getEventProfileId(): Uuid {
+		return $this->eventProfileId;
+	}
+
+	/**
+	 * this is the mutator method for the eventProfileId
+	 *
+	 * @param Uuid $newEventProfileId new value for the event profile id
+	 * @throws \RangeException if $newEventProfileId is not positive
+	 * @throws \TypeError if $newEventProfileId is not a Uuid
+	 */
+
+	public function setEventProfileId($newEventProfileId) : void {
+		try{
+			$uuid = self::validateUuid($newEventProfileId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		//conversion and storage of event Profile Id
+		$this->eventProfileId = $uuid;
+	}
 
 }
