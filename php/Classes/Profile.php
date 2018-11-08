@@ -3,7 +3,6 @@ namespace BackyardAstronomer\Astronomer;
 require_once("Autoload.php");
 require_once(dir(__DIR_, 2) . "/vendor/autoload.php");
 
-//TODO else if in setters throughout to catch type errors
 
 use Ramsey\Uuid\Uuid;
 /**
@@ -71,10 +70,6 @@ class Profile implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 */
 
-	/**
-	 * The following creates the constructor function for this class
-	 */
-//TODO make docblocks match parameters
 	public function __construct($newProfileId, string $newProfileEmail, string $newProfileBio, string $newProfileName,
 										 string $newProfileImage, string $newProfileActivationToken, string $newProfileHash) {
 
@@ -103,7 +98,7 @@ class Profile implements \JsonSerializable {
 	public function getProfileId(): Uuid {
 		return ($this->profileId);
 	}
-// TODO add return to docblock
+
 	/**
 	 * mutator method for the profile id
 	 *
@@ -216,8 +211,8 @@ public function getProfileName() : string {
  */
 
 public function setProfileName(string $newProfileName) : void {
-//TODO make sure newProfileName is spelled consistantly
 	//the following verifies the content is secure
+
 	$newProfileName = trim($newProfileName);
 	$newProfileName = filter_var(FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	if(empty($newProfileName) === true) {
@@ -286,9 +281,10 @@ public function getProfileActivationToken() : string {
  * @throws \RangeException if the name is too long for our databases
  * @throws \TypeError if the name is not a string
  */
-//TODO meet with George to fix activation token and hash
+
 public function setProfileActivationToken($newProfileActivationToken) : void {
 	//the following verifies the description is secure
+
 	$newProfileActivationToken = trim($newProfileActivationToken);
 	$newProfileActivationToken = filter_var($newProfileActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	if (empty($newProfileActivationToken) === true) {
