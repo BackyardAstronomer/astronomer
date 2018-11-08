@@ -254,8 +254,8 @@ public function setProfileImage($newProfileImage) : void {
 		throw(new \InvalidArgumentException("profile image is not valid or insecure"));
 	}
 		//verify the image content will fit in the database
-	//TODO change string length to 255
-		if(strlen($newProfileImage) > 240) { //review this
+
+		if(strlen($newProfileImage) > 255) { //review this
 		throw(new \RangeException("this image is too big"));
 		}
 		//stores the new photo content
