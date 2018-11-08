@@ -95,28 +95,27 @@ class Profile implements \JsonSerializable {
 	 *
 	 * it will @return Uuid value of profile id
 	 */
+
 	public function getProfileId(): Uuid {
 		return ($this->profileId);
 	}
 
 	/**
-	 * mutator method for the profile id
+	 * the following is the mutator method for the profile id
 	 *
 	 * @param Uuid $newProfileId inserts new value of profile id
 	 * @throws \RangeException if $newProfileId is not positive
 	 * @throws \TypeError if $newProfileId is not a uuid
 	 */
 
-	public function setProfileId( $newProfileId) : Uuid {
+	public function setProfileId( $newProfileId) : void {
 		try {
-			$uuid = self::validateUuid($newProfileId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
+			$newProfileId = self::validateUuid($newProfileId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception){
 
+		}
 		//the following converts and stores the new profile id
-		$this->profileId = $uuid;
+		$this->profileId = $newProfileId;
 	}
 
 	/**
@@ -153,9 +152,9 @@ class Profile implements \JsonSerializable {
 		//the following stores the new email content
 		$this->profileEmail = $newProfileEmail;
 	}
-//TODO make sure docblocks have correct syntax for return (got the bling)
+
 	/**
-	 *the following is the accessor method for the profile bio
+	 *the following is the accessor method for the $profileBio
 	 *
 	 * @return string $profileBio as string value
 	 */
