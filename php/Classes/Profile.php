@@ -7,10 +7,9 @@ require_once(dir(__DIR_, 2) . "/vendor/autoload.php");
 
 use Ramsey\Uuid\Uuid;
 /**
- *
+ *The following establishes the Profile class for the astronomer sql tables.
  */
-//TODO add json serializeable
-class Profile {
+class Profile implements \JsonSerializable {
 	use ValidateUuid;
 	use ValidateDate;
 
