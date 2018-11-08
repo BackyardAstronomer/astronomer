@@ -209,4 +209,36 @@ $newEventTitle, $newEventContent, $newEventStartDate, $newEventEndDate) {
 		//convert and store Event Title
 		$this->eventTitle = $newEventTitle;
 	}
+
+	/**
+	 * this is the accessor method for the Event Content
+	 * @return string value of event content
+	 */
+
+	public function getEventContent(): string {
+		return $this->eventContent;
+	}
+	/**
+	 * this is the mutator method for eventContent
+	 *
+	 * @param string $newEventContent
+	 * @throws \InvalidArgumentException if $newEventContent is not a string or insecure
+	 * @throws \RangeException if $newEventContent is > 255 characters
+	 * @throws \TypeError if $newEventContent is not a string
+	 */
+
+	public function setEventContent (string $newEventContent) : void {
+		//verify event content is secure
+		$newEventContent = trim($newEventContent);
+		$newEventContent = filter_var($newEventContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newEventContent)=== true) {
+			throw(new \InvalidArgumentException("Event content is empty or insecure"));
+		}
+		//verify event content fits into the database
+		if(strlen($newEventContent) > 255) {
+			throw(new \RangeException("Event content is too long"));
+		}
+		//convert and store Event Content
+		$this->eventContent = $newEventContent;
+	}
 }
