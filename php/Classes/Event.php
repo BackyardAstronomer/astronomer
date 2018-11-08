@@ -169,4 +169,44 @@ $newEventTitle, $newEventContent, $newEventStartDate, $newEventEndDate) {
 		$this->eventProfileId = $uuid;
 	}
 
+	/**
+	 * this is the accessor method for eventTitle
+	 *
+	 * @return string value of eventTitle
+	 */
+
+	public function getEventTitle(): string {
+		return $this->eventTitle;
+	}
+
+	/**
+	 * this is the mutator method for event title
+	 *
+	 * @param string $newEventTitle new name of event
+	 * @throws \InvalidArgumentException if $newEventTitle is not a string or insecure
+	 * @throws \RangeException if $newEventTitle is greater than 32 characters
+	 * @throws \TypeError if $newEventTitle is not a string
+	 */
+
+	public function setEventTitle(string $newEventTitle) : void {
+		//verify event title is secure
+		$newEventTitle = trim($newEventTitle);
+		$newEventTitle = filter_var($newEventTitle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newEventTitle)=== true) {
+			throw (new \InvalidArgumentException("Event title content is empty or insecure"));
+		}
+		//verify event title will fit in the database
+		if(strlen($newEventTitle) > 32) {
+			throw(new \RangeException("Event title is too long"));
+		}
+		//verify event title is a string
+		/**
+		 * @documentation http://php.net/manual/en/function.is-string.php
+		 */
+		if(is_string($newEventTitle)=== false) {
+			throw(new \TypeError("Event title is not a string"));
+		}
+		//convert and store Event Title
+		$this->eventTitle = $newEventTitle;
+	}
 }
