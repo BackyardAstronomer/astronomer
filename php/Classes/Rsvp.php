@@ -45,7 +45,7 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct($newRsvpId, $newRsvpProfileId, $newRsvpEventId, int $newRsvpEventCounter = null) {
+	public function __construct($newRsvpId, $newRsvpProfileId, $newRsvpEventId, int $newRsvpEventCounter) {
 		try {
 			$this->setRsvpId($newRsvpId);
 			$this->setRsvpProfileId($newRsvpProfileId);
@@ -161,14 +161,13 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \TypeError if $newRsvpEventCounter is not a tinyint
 	 **/
 	public function setRsvpEventCounter(int $newRsvpEventCounter) : void {
-		// verify the Rsvp Event Counter content is secure
-		$newRsvpEventCounter = trim($newRsvpEventCounter);
-		$newRsvpEventCounter = filter_var($newRsvpEventCounter, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-
 
 		// verify the Rsvp Event Counter content will fit in the database
 		if(int ($newRsvpEventCounter) > 175) {
 			throw(new \RangeException("rsvp event counter content too large"));
+		}
+		if($newRsvpEventCounter <=0){
+			throw(new \RangeException("rsvp event counter is not positive"));
 		}
 
 		// store the rsvpEventCounter content
@@ -255,7 +254,7 @@ class Rsvp implements \JsonSerializable {
 		$parameters = ["rsvpId" => $rsvpId->getBytes()];
 		$statement->execute($parameters);
 
-		// grab the tweet from mySQL
+		// grab the rsvp from mySQL
 		try {
 			$rsvp = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -347,6 +346,8 @@ class Rsvp implements \JsonSerializable {
 		}
 		return($rsvps);
 	}
+
+
 
 }
 
