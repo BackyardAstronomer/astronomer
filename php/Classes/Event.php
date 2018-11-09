@@ -1,7 +1,7 @@
 <?php
 namespace BackyardAstronomer\Astronomer;
 require_once("Autoload.php");
-require_once(dir(__DIR__,2) . "/vendor/autoload.php");
+require_once(dirname(__DIR__,2) . "../vendor/autoload.php");
 
 use Ramsey\Uuid\Uuid;
 /**
@@ -9,7 +9,9 @@ use Ramsey\Uuid\Uuid;
  * User: jjain
  * Date: 11/6/2018
  * Time: 3:34 PM
- */
+ * @author Jack Jain <jjain1998@gmail.com>
+ * @version 1.0.0
+ **/
 class Event {
 	use ValidateUuid;
 	use ValidateDate;
@@ -68,7 +70,7 @@ class Event {
 	 * This is the constructor function for the Event class
 	 */
 	public function __construct($newEventId, $newEventEventTypeId, $newEventProfileId,
-$newEventTitle, $newEventContent, $newEventStartDate, $newEventEndDate) {
+string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newEventEndDate = null) {
 		try {
 			$this -> setEventId($newEventId);
 			$this -> setEventEventTypeId($newEventEventTypeId);
