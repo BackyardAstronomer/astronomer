@@ -11,11 +11,7 @@ class Rsvp implements \JsonSerializable {
 	use ValidateUuid;
 	use ValidateDate;
 
-	/**
-	 * id of this rsvp Id ; this is a Primary key also a composite of rsvpProfileId and rsvpEventID
-	 * @var Uuid $rsvpId
-	 **/
-	private $rsvpId;
+
 	/**
 	 * id for this rsvp Profile Id; this is a foreign key
 	 * @var Uuid $rsvpProfileId
@@ -35,7 +31,6 @@ class Rsvp implements \JsonSerializable {
 	/**
 	 * constructor EventTypes
 	 *
-	 * @param string|Uuid $newRsvpId id of this event. composite of rsvpProfileId and rsvpEventId
 	 * @param string|Uuid $newRsvpProfileId id of rsvp to profile Id
 	 * @param string|Uuid $newRsvpEventId id of rsvp to event Id
 	 * @param integer $newRsvpEventCounter this counts the number of people RSVP to an event
@@ -45,9 +40,8 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
-	public function __construct($newRsvpId, $newRsvpProfileId, $newRsvpEventId, int $newRsvpEventCounter) {
+	public function __construct($newRsvpProfileId, $newRsvpEventId, int $newRsvpEventCounter) {
 		try {
-			$this->setRsvpId($newRsvpId);
 			$this->setRsvpProfileId($newRsvpProfileId);
 			$this->setRsvpEventId($newRsvpEventId);
 			$this->setRsvpEventCounter($newRsvpEventCounter);
@@ -59,33 +53,6 @@ class Rsvp implements \JsonSerializable {
 		}
 }
 
-	/**
-	 * accessor method for rsvp id
-	 *
-	 * @return Uuid value of rsvp id
-	 **/
-	public function getRsvpId() : Uuid {
-		return($this->rsvpId);
-	}
-
-	/**
-	 * mutator method for rsvp id
-	 *
-	 * @param Uuid|string $newRsvpId new value of Rsvp Id
-	 * @throws \RangeException if $newRsvpId is not positive
-	 * @throws \TypeError if $newRsvpId is not a uuid or string
-	 **/
-	public function setRsvpId($newRsvpId) : void {
-		try {
-			$uuid = self::validateUuid($newRsvpId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exceptionType = get_class($exception);
-			throw(new $exceptionType($exception->getMessage(), 0, $exception));
-		}
-
-		// convert and store the rsvp Id
-		$this->rsvpId = $uuid;
-	}
 
 	/**
 	 * accessor method for rsvp profile Id
@@ -181,11 +148,11 @@ class Rsvp implements \JsonSerializable {
 	public function insert(\PDO $pdo) : void {
 
 		// create query template
-		$query = "INSERT INTO rsvp (rsvpId, rsvpProfileId, rsvpEventId, rsvpEventCounter  ) VALUES(:rsvpId, :rsvpProfileId, :rsvpEventId, :rsvpEventCounter )";
+		$query = "INSERT INTO rsvp (rsvpProfileId, rsvpEventId, rsvpEventCounter  ) VALUES(:rsvpProfileId, :rsvpEventId, :rsvpEventCounter )";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["rsvpId" => $this->rsvpId->getBytes(), "rsvpProfileId" => $this->rsvpProfileId->getBytes(), "rsvpProfileId" => $this->rsvpProfileId->getBytes(), "rsvpEventCounter" => $this->rsvpEventCounter];
+		$parameters = ["rsvpProfileId" => $this->rsvpProfileId->getBytes(), "rsvpProfileId" => $this->rsvpProfileId->getBytes(), "rsvpEventCounter" => $this->rsvpEventCounter];
 		$statement->execute($parameters);
 	}
 
@@ -199,31 +166,14 @@ class Rsvp implements \JsonSerializable {
 	public function delete(\PDO $pdo) : void {
 
 		// create query template
-		$query = "DELETE FROM rsvp WHERE rsvpId = :rsvpId";
+		$query = "DELETE FROM rsvp WHERE rsvpEventId = :rsvpEventId  and rsvpProfileId = :rsvpProfileId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holder in the template
-		$parameters = ["rsvpId" => $this->rsvpId->getBytes()];
+		$parameters = ["rsvpEventId" => $this->rsvpEventId->getBytes(), "rsvpProfileId" => $this->rsvpProfileId->getBytes()];
 		$statement->execute($parameters);
 	}
 
-	/**
-	 * updates Rsvp in mySQL
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError if $pdo is not a PDO connection object
-	 **/
-	public function update(\PDO $pdo) : void {
-
-		// create query template
-		$query = "UPDATE rsvp SET rsvpProfileId = :rsvpProfileId, rsvpEventId = :rsvpEventId, rsvpEventCounter = :rsvpEventCounter where rsvpId = :rsvpId";
-		$statement = $pdo->prepare($query);
-
-
-		$parameters = ["rsvpId" => $this->rsvpId->getBytes(), "rsvpProfileId" => $this->rsvpProfileId->getBytes(), "rsvpEventId" => $this->rsvpEventId->getBytes(), "rsvpEventCounter" => $this->rsvpEventCounter];
-		$statement->execute($parameters);
-	}
 
 	/**
 	 * gets the Rsvp by rsvpId
@@ -234,20 +184,22 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getRsvpByRsvpId(\PDO $pdo, $rsvpId) : ?Rsvp {
+	public static function getRsvpByRsvpId(\PDO $pdo, $rsvpEventId, $rsvpProfileId) : ?Rsvp {
 		// sanitize the rsvpId before searching
 		try {
-			$rsvpId = self::validateUuid($rsvpId);
+			$rsvpEventId = self::validateUuid($rsvpEventId);
+			$rsvpProfileId = self::validateUuid($rsvpProfileId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 
 		// create query template
-		$query = "SELECT rsvpId, rsvpProfileId, rsvpEventId, rsvpEventCounter FROM rsvp WHERE rsvpId = :rsvpId";
+		$query = "SELECT rsvpProfileId, rsvpEventId, rsvpEventCounter FROM rsvp WHERE rsvpEventId = :rsvpEventId and WHERE rsvpProfileId = :rsvpProfileId ";
 		$statement = $pdo->prepare($query);
 
-		// bind the tweet id to the place holder in the template
-		$parameters = ["rsvpId" => $rsvpId->getBytes()];
+		// bind the rsvpEventId and rsvpProfileId to the place holder in the template
+		$parameters = ["rsvpEventId" => $rsvpEventId->getBytes()];
+		$parameters = ["rsvpProfileId" => $rsvpProfileId->getBytes()];
 		$statement->execute($parameters);
 
 		// grab the rsvp from mySQL
@@ -256,7 +208,7 @@ class Rsvp implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$rsvp = new rsvp($row["rsvpId"], $row["rsvpProfileId"], $row["rsvpEventId"], $row["rsvpEventCounter"]);
+				$rsvp = new rsvp($row["rsvpProfileId"], $row["rsvpEventId"], $row["rsvpEventCounter"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
