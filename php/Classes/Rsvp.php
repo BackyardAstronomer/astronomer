@@ -164,9 +164,7 @@ class Rsvp implements \JsonSerializable {
 		// verify the Rsvp Event Counter content is secure
 		$newRsvpEventCounter = trim($newRsvpEventCounter);
 		$newRsvpEventCounter = filter_var($newRsvpEventCounter, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newRsvpEventCounter) === true) {
-			throw(new \InvalidArgumentException(""));
-		}
+
 
 		// verify the Rsvp Event Counter content will fit in the database
 		if(int ($newRsvpEventCounter) > 175) {
