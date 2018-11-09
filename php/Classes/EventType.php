@@ -254,7 +254,7 @@ public function setEventTypeName(string $newEventTypeName) : void {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getAllEventType(\PDO $pdo) : \SPLFixedArray {
+	public static function getAllEventTypes(\PDO $pdo) : \SPLFixedArray {
 		// create query template
 		$query = "SELECT eventTypeId, eventTypeName FROM eventType";
 		$statement = $pdo->prepare($query);

@@ -355,8 +355,7 @@ public function setProfileHash($newProfileHash) : void {
 public function insert(\PDO $pdo) : void {
 
 	// create query template
-	$query = "INSERT INTO profile(profileId, profileEmail, profileBio, profileName, profileImage, profileActivationToken, profileHash) 
-VALUES(:profileId, :profileEmail, :profileBio, :profileName, :profileImage, :profileActivationToken, :profileHash)";
+	$query = "INSERT INTO profile(profileId, profileEmail, profileBio, profileName, profileImage, profileActivationToken, profileHash) VALUES(:profileId, :profileEmail, :profileBio, :profileName, :profileImage, :profileActivationToken, :profileHash)";
 	$statement = $pdo->prepare($query);
 
 	// bind the member variables to the place holders in the template
@@ -408,7 +407,7 @@ VALUES(:profileId, :profileEmail, :profileBio, :profileName, :profileImage, :pro
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getProfileByProfileName(\PDO $pdo, $profileName) : ?Profile {
+	public static function getProfileByProfileName(\PDO $pdo, $profileName) : \SplFixedArray {
 		// sanitize the profileName before searching
 		try {
 			$profileName = self::validateUuid($profileName);
@@ -439,5 +438,6 @@ VALUES(:profileId, :profileEmail, :profileBio, :profileName, :profileImage, :pro
 		return($profileName);
 	}
 
+	//TODO get profile by profile id by profile email and profile activation token all return objects
 
 } //class closing bracket
