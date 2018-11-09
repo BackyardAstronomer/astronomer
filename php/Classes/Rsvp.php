@@ -311,6 +311,44 @@ class Rsvp implements \JsonSerializable {
 		return($rsvps);
 	}
 
+	/**
+	 * gets the Rsvp by rsvpEventId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $rsvpEventId event id to search by
+	 * @return \SplFixedArray SplFixedArray of rsvps found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getRsvpByRsvpEventId(\PDO $pdo, $rsvpEventId) : \SplFixedArray {
+
+		try {
+			$rsvpEventId = self::validateUuid($rsvpEventId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+
+		// create query template
+		$query = "SELECT rsvpId, rsvpProfileId, rsvpEventId, rsvpEventCounter FROM rsvp WHERE rsvpEventId = :rsvpEventId";
+		$statement = $pdo->prepare($query);
+		// bind the rsvp event id to the place holder in the template
+		$parameters = ["rsvpEventId" => $rsvpEventId->getBytes()];
+		$statement->execute($parameters);
+		// build an array of rsvp
+		$rsvps = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$rsvp = new Tweet($row["rsvpId"], $row["rsvpProfileId"], $row["rsvpEventId"], $row["rsvpEventCounter"]);
+				$rsvps[$rsvps->key()] = $rsvp;
+				$rsvps->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($rsvps);
+	}
 
 }
 
