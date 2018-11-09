@@ -161,11 +161,7 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \TypeError if $newRsvpEventCounter is not a tinyint
 	 **/
 	public function setRsvpEventCounter(int $newRsvpEventCounter) : void {
-
-		// verify the Rsvp Event Counter content will fit in the database
-		if(int ($newRsvpEventCounter) > 175) {
-			throw(new \RangeException("rsvp event counter content too large"));
-		}
+		//check to make sure not getting a negative number
 		if($newRsvpEventCounter <=0){
 			throw(new \RangeException("rsvp event counter is not positive"));
 		}
