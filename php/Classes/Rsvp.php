@@ -177,7 +177,7 @@ class Rsvp implements \JsonSerializable {
 		$this->rsvpEventCounter = $newRsvpEventCounter;
 	}
 
-**************************************************************************************************************
+
 	/**
 	 * inserts Rsvp into mySQL
 	 *
