@@ -70,14 +70,13 @@ PRIMARY KEY (commentId) --this is the primary key of our comment
 --The following creates the RSVP table
 
 CREATE TABLE rsvp (
-rsvpId BINARY(16) NOT NULL,--This is a composite of rsvpProfileId and rsvpEventId
 rsvpProfileId BINARY(16) NOT NULL,--creates a unique 32 digit id that associates rsvp to profileID
 rsvpEventID BINARY(16) NOT NULL,--creates a unique 32 digit id that associates rsvp to eventID
 rsvpEventCounter TINYINT(175),--This integer that counts the number of people that RSVP
 INDEX(rsvpProfileId), --this makes it easier to retrieve the comment
 INDEX(rsvpEventId), --this makes it easier to retrieve the comment
 --the following establishes the primary key for this composite table
-PRIMARY KEY (rsvpId) REFERENCES (rsvpProfileId, rsvpEventId),
+PRIMARY KEY (rsvpProfileId, rsvpEventId),
 --the following establishes
 FOREIGN KEY (rsvpProfileId) REFERENCES profile(profileId),
 FOREIGN KEY (rsvpEventId) REFERENCES event(eventId),
