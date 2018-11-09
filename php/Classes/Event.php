@@ -66,9 +66,6 @@ class Event {
 	 * @throws \Exception if some other exception occurs
 	 */
 
-	/**
-	 * This is the constructor function for the Event class
-	 */
 	public function __construct($newEventId, $newEventEventTypeId, $newEventProfileId,
 string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newEventEndDate = null) {
 		try {
