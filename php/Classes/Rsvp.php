@@ -235,7 +235,7 @@ class Rsvp implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT rsvpId, rsvpProfileId, rsvpEventId, rsvpEventCounter FROM rsvp WHERE rsvpProfileId = :rsvpProfileId";
+		$query = "SELECT rsvpProfileId, rsvpEventId, rsvpEventCounter FROM rsvp WHERE rsvpProfileId = :rsvpProfileId";
 		$statement = $pdo->prepare($query);
 		// bind the rsvp profile id to the place holder in the template
 		$parameters = ["rsvpProfileId" => $rsvpProfileId->getBytes()];
@@ -245,7 +245,7 @@ class Rsvp implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$rsvp = new Rsvp($row["rsvpId"], $row["rsvpProfileId"], $row["rsvpEventId"], $row["rsvpEventCounter"]);
+				$rsvp = new Rsvp($row["rsvpProfileId"], $row["rsvpEventId"], $row["rsvpEventCounter"]);
 				$rsvps[$rsvps->key()] = $rsvp;
 				$rsvps->next();
 			} catch(\Exception $exception) {
@@ -274,7 +274,7 @@ class Rsvp implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "SELECT rsvpId, rsvpProfileId, rsvpEventId, rsvpEventCounter FROM rsvp WHERE rsvpEventId = :rsvpEventId";
+		$query = "SELECT rsvpProfileId, rsvpEventId, rsvpEventCounter FROM rsvp WHERE rsvpEventId = :rsvpEventId";
 		$statement = $pdo->prepare($query);
 		// bind the rsvp event id to the place holder in the template
 		$parameters = ["rsvpEventId" => $rsvpEventId->getBytes()];
@@ -284,7 +284,7 @@ class Rsvp implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$rsvp = new Tweet($row["rsvpId"], $row["rsvpProfileId"], $row["rsvpEventId"], $row["rsvpEventCounter"]);
+				$rsvp = new Rsvp($row["rsvpProfileId"], $row["rsvpEventId"], $row["rsvpEventCounter"]);
 				$rsvps[$rsvps->key()] = $rsvp;
 				$rsvps->next();
 			} catch(\Exception $exception) {
