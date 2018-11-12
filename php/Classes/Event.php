@@ -301,4 +301,27 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 		}
 		$this->eventEndDate = $newEventEndDate;
 	}
+
+	/**
+	 *PDO Statements
+	 */
+
+	/**
+	 *inserts this Event into the database
+	 *
+	 *@param \PDO $pdo PDO connection object
+	 *@throws \PDOException when MySQL related errors occur
+	 *@throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function insert(\PDO $pdo) : void {
+
+		//query template
+		$query = "INSERT INTO event(eventId, eventEventTypeId, eventProfileId, eventTitle, eventContent, eventStartDate, eventEndDate) VALUES (:eventId, :eventEventTypeId, :eventProfileId, :eventTitle, :eventContent, :eventStartDate, :eventEndDate)";
+		$statement = $pdo->prepare($query);
+		$formattedStartDate = $this->eventStartDate->format("Y-m-d H:i:s.u");
+		$formattedEndDate = $this->eventEndDate->format("Y-m-d H:i:s.u");
+		$parameters = ["eventId" => $this ->eventId->getBytes(), "eventEventTypeId" => $this->eventEventTypeId->getBytes(), "eventProfileId" => $this->eventProfileId->getBytes(), "eventTitle" => $this->eventTitle, "eventContent" => $this->eventContent,"eventStartDate" => $formattedStartDate, "eventEndDate" => $formattedEndDate];
+		$statement->execute($parameters);
+	}
+
 }
