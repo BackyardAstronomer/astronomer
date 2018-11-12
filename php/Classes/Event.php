@@ -239,4 +239,66 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 		//convert and store Event Content
 		$this->eventContent = $newEventContent;
 	}
+	/**
+	 * this is the accessor method for eventStartDate
+	 *
+	 * @return \DateTime value of start date
+	 **/
+
+	public function getEventStartDate(): \DateTime {
+		return ($this->eventStartDate);
+	}
+
+	/**
+	 * this is the mutator method for event start date
+	 * @param \DateTime|string|null $newEventStartDate
+	 * @throws \InvalidArgumentException if $newEventStartDate is not a valid object or string
+	 * @throws \RangeException if $newEventStartDate is a date that does not exist
+	 **/
+	public function setEventStartDate($newEventStartDate = null) : void {
+		// if date is null, use current date and time
+		if($newEventStartDate === null) {
+			$this->eventStartDate = new \DateTime();
+			return;
+		}
+		//store the start date using ValidateDate trait
+		try {
+			$newEventStartDate = self::validateDateTime($newEventStartDate);
+		} catch(\InvalidArgumentException | \RangeException $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		$this->eventStartDate = $newEventStartDate;
+	}
+	/**
+	 * this is the accessor method for eventStartDate
+	 *
+	 * @return \DateTime value of start date
+	 **/
+
+	public function getEventEndDate(): \DateTime {
+		return ($this->eventEndDate);
+	}
+
+	/**
+	 * this is the mutator method for event start date
+	 * @param \DateTime|string|null $newEventEndDate
+	 * @throws \InvalidArgumentException if $newEventEndDate is not a valid object or string
+	 * @throws \RangeException if $newEventEndDate is a date that does not exist
+	 **/
+	public function setEventEndDate($newEventEndDate = null) : void {
+		// if date is null, use current date and time
+		if($newEventEndDate === null) {
+			$this->eventEndDate = new \DateTime();
+			return;
+		}
+		//store the start date using ValidateDate trait
+		try {
+			$newEventEndDate = self::validateDateTime($newEventEndDate);
+		} catch(\InvalidArgumentException | \RangeException $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		$this->eventEndDate = $newEventEndDate;
+	}
 }
