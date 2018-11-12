@@ -1,7 +1,7 @@
 <?php
 
 namespace BackyardAstronomer\Astronomer;
-require_once(dir(__DIR__,) . "/vendor/autoload.php");
+require_once(dir(__DIR__, 2) . "/vendor/autoload.php");
 require_once ("autoload.php");
 use Ramsey\Uuid\Uuid;
 
@@ -109,12 +109,6 @@ public function setCommentId($newCommentId): void {
 	}
 	$this->commentId = $uuid;
 }
-/**
- *
- *accessor method for comment profile id
- *
- * @return Uuid value of comment profile id
- */
 
 	/**
 	 * accessor method for comment content
@@ -145,6 +139,7 @@ public function setCommentId($newCommentId): void {
 			throw(new \RangeException("Comment content is empty or insecure"));
 		}
 //TODO check for range exception
+
 		//store the comment content
 		$this->commentContent = $newCommentContent;
 	}
@@ -165,6 +160,7 @@ public function setCommentId($newCommentId): void {
 	 * @param string | Uuid $newCommentEventId new value of comment event id
 	 * @throws \RangeException if $newCommentEventId is not positive
 	 * @throws \TypeError if $newCommentEventId is not an integer
+	 * @throws \InvalidArgumentException if event is insecure
 	 **/
 
 	public function setCommentEventId($newCommentEventId): void {
@@ -174,8 +170,16 @@ public function setCommentId($newCommentId): void {
 			$exceptionType = get_class($exception);
 			throw (new$exceptionType($exception->getMessage(), 0, $exception));
 		}
+		//the following stores the new comment event id
+		$this->commentEventId = $newCommentEventId;
 	}
 
+	/**
+	 *
+	 *accessor method for comment profile id
+	 *
+	 * @return Uuid value of comment profile id
+	 */1
 
 public function getCommentProfileId(): Uuid {
 	return ($this->commentProfileId);
@@ -196,6 +200,7 @@ public function setCommentProfileId($newCommentProfileId): void {
 		$exceptionType = get_class($exception);
 		throw (new$exceptionType($exception->getMessage(), 0, $exception));
 	}
+	$this->commentProfileId = $newCommentProfileId;
 }
 
 
@@ -238,5 +243,22 @@ public function setCommentDate($newCommentDate = null): void {
 
 
 
+
+	/**
+	 * inserts this comment into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo) : void {
+
+		// create query template
+		$query = "INSERT INTO comment(commentId, commentEventId, commentContent, commentDate, commentProfileId) VALUES(:commentId, :commentEventId, :commentContent, :commentDate, :commentProfileId)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$parameters = ["commentId" => $this ->commentId->getBytes(), "commentEventId" => $this->commentEventId, "commentContent" => $this->commentContent, "commentDate" => $this->commentDate, "commentProfileId" => $this->commentProfileId];
+		$statement->execute($parameters);
 
 } //this last one closes the class as a whole
