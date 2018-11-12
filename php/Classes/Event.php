@@ -251,7 +251,7 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 
 	/**
 	 * this is the mutator method for event start date
-	 * @param \DateTime|string|null $newEventStartDate
+	 * @param \DateTime|string|null $newTweetDate tweet date as a DateTime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $newEventStartDate is not a valid object or string
 	 * @throws \RangeException if $newEventStartDate is a date that does not exist
 	 **/
@@ -282,7 +282,7 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 
 	/**
 	 * this is the mutator method for event start date
-	 * @param \DateTime|string|null $newEventEndDate
+	 * @param \DateTime|string|null $newTweetDate tweet date as a DateTime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $newEventEndDate is not a valid object or string
 	 * @throws \RangeException if $newEventEndDate is a date that does not exist
 	 **/
