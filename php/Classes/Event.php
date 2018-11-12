@@ -65,7 +65,6 @@ class Event {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 */
-
 	public function __construct($newEventId, $newEventEventTypeId, $newEventProfileId,
 string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newEventEndDate = null) {
 		try {
