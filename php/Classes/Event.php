@@ -324,4 +324,24 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 		$statement->execute($parameters);
 	}
 
+	/**
+	 *updates event in the database
+	 *
+	 *@param \PDO $pdo PDO connection object
+	 *@throws \PDOException when MySQL related errors occur
+	 *@throws \TypeError if $pdo is not a PDO statement
+	 */
+	public function update(\PDO $pdo) : void {
+
+		// create query template
+		$query = "UPDATE event SET eventId = :eventId, eventEventTypeId = :eventEventTypeId, eventProfileId = :eventProfileId, eventTitle = :eventTitle, eventContent = :eventContent, eventStartDate = :eventStartDate, eventEndDate = :eventEndDate WHERE eventId = :eventId";
+		$statement = $pdo-> prepare($query);
+		$formattedStartDate = $this->eventStartDate->format("Y-m-d H:i:s.u");
+		$formattedEndDate = $this->eventEndDate->format("Y-m-d H:i:s.u");
+
+		$parameters = ["eventId" => $this -> eventId->getBytes(), "eventEventTypeId" => $this->eventEventTypeId->getBytes(), "eventProfileId" => $this->eventProfileId->getBytes(), "eventTitle" => $this->eventTitle, "eventContent" => $this->eventContent, "eventStartDate" => $formattedStartDate, "eventEndDate" => $formattedEndDate];
+		$statement->execute($parameters);
+	}
+
+
 }
