@@ -346,6 +346,21 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 		$parameters = ["eventId" => $this -> eventId->getBytes(), "eventEventTypeId" => $this->eventEventTypeId->getBytes(), "eventProfileId" => $this->eventProfileId->getBytes(), "eventTitle" => $this->eventTitle, "eventContent" => $this->eventContent, "eventStartDate" => $formattedStartDate, "eventEndDate" => $formattedEndDate];
 		$statement->execute($parameters);
 	}
+	/**
+	 * this will delete the event from MySQL
+	 *
+	 *@param \PDO $pdo PDO connection object
+	 *@throws \PDOException when MySQL related errors occur
+	 *@throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function delete(\PDO $pdo) : void {
 
+		// creating query template
+		$query = "DELETE FROM event WHERE eventId = :eventId";
+		$statement = $pdo->prepare($query);
 
+		//binding member variables
+		$parameters = ["eventId" => $this->eventId->getBytes()];
+		$statement->execute($parameters);
+	}
 }
