@@ -251,9 +251,11 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 
 	/**
 	 * this is the mutator method for event start date
-	 * @param \DateTime|string|null $newTweetDate tweet date as a DateTime object or string (or null to load the current time)
+	 * @param \DateTime $newEventStartDate tweet date as a DateTime object or string (or null to load the current time)
 	 * @throws \InvalidArgumentException if $newEventStartDate is not a valid object or string
 	 * @throws \RangeException if $newEventStartDate is a date that does not exist
+	 * @throws \TypeError if $newEventStartDate is not a date
+	 * @throws \Exception for MySQL related errors
 	 **/
 	public function setEventStartDate($newEventStartDate = null) : void {
 		// if date is null, use current date and time
@@ -282,9 +284,11 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 
 	/**
 	 * this is the mutator method for event start date
-	 * @param \DateTime|string|null $newTweetDate tweet date as a DateTime object or string (or null to load the current time)
+	 * @param \DateTime $newEventEndDate must be a date
 	 * @throws \InvalidArgumentException if $newEventEndDate is not a valid object or string
 	 * @throws \RangeException if $newEventEndDate is a date that does not exist
+	 * @throws \TypeError if $newEventEndDate is not a date
+	 * @throws \Exception for MySQL related errors
 	 **/
 	public function setEventEndDate($newEventEndDate = null) : void {
 		// if date is null, use current date and time
