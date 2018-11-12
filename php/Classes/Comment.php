@@ -261,4 +261,22 @@ public function setCommentDate($newCommentDate = null): void {
 		$parameters = ["commentId" => $this ->commentId->getBytes(), "commentEventId" => $this->commentEventId, "commentContent" => $this->commentContent, "commentDate" => $this->commentDate, "commentProfileId" => $this->commentProfileId];
 		$statement->execute($parameters);
 
+
+		/**
+		 * updates this comment in mySQL
+		 *
+		 * @param \PDO $pdo PDO connection object
+		 * @throws \PDOException when mySQL related errors occur
+		 * @throws \TypeError if $pdo is not a PDO connection object
+		 **/
+		public function update(\PDO $pdo) : void {
+
+			// create query template
+			$query = "UPDATE comment SET commentId = :commentId, commentEventId = :commentEventId, commentContent = :commentContent, commentDate = :commentDate, commentProfileId = :commentProfileId WHERE commentId = :commentId";
+			$statement = $pdo->prepare($query);
+
+			$parameters = ["commentId" => $this ->commentId->getBytes(), "commentEventId" => $this->commentEventId, "commentContent" => $this->commentContent, "commentDate" => $this->commentDate, "commentProfileId" => $this->commentProfileId];
+			$statement->execute($parameters);
+
+
 } //this last one closes the class as a whole
