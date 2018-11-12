@@ -259,7 +259,7 @@ public function setCommentDate($newCommentDate = null): void {
 
 		// bind the member variables to the place holders in the template
 		$parameters = ["commentId" => $this ->commentId->getBytes(), "commentEventId" => $this->commentEventId, "commentContent" => $this->commentContent, "commentDate" => $this->commentDate, "commentProfileId" => $this->commentProfileId];
-		$statement->execute($parameters);
+		$statement->execute($parameters);}
 
 
 		/**
@@ -277,6 +277,7 @@ public function setCommentDate($newCommentDate = null): void {
 
 			$parameters = ["commentId" => $this ->commentId->getBytes(), "commentEventId" => $this->commentEventId, "commentContent" => $this->commentContent, "commentDate" => $this->commentDate, "commentProfileId" => $this->commentProfileId];
 			$statement->execute($parameters);
+
 
 
 } //this last one closes the class as a whole
