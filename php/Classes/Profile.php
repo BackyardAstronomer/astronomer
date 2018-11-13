@@ -495,9 +495,78 @@ public static function getProfileByProfileEmail(\PDO $pdo, string $profileEmail)
 		throw(new \PDOException("profile email is invalid"));
 	}
 
+	//escape any mySQL wild cards
+	$profileEmail = str_replace("_", "\\_", str_replace( "%", "\\%", $profileEmail));
+
+	//create query template
+	$query = "SELECT profileName, profileId, profileBio, profileImage, profileActivationToken FROM profile WHERE profileEmail LIKE :profileEmail";
+	$statement = $pdo->prepare($query);
+
+	//bind the profile email content to the place holder in the template
+	$profileEmail = "%profileEmail%";
+	$parameters = ["profileEmail" => $profileEmail];
+	$statement->execute($parameters);
+
+	//build an array of profiles
+	$profiles = new \SplFixedArray($statement->rowCount());
+	$statement->setFetchMode(\PDO::FETCH_ASSOC);
+	while(($row = $statement->fetch()) !== false) {
+		try {
+			$profile = new Profile($row["profileId"], $row["profileName"], $row["profileImage"], $row["profileActivationToken"], $row["profileBio"]);
+			$profile[$profile->key()] = $profile;
+			$profiles->next();
+		} catch(\Exception $exception) {
+			//if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+	}
+	return($profiles);
+}
+
+/**
+ * gets the profile by profile activation token
+ *
+ * @param \PDO $pdo connection object
+ * @param string $profileActivationToken to search for
+ * @return \SplFixedArray of profiles found
+ * @throws \PDOException when mySQL related errors occur
+ * @throws \TypeError when variables aren't the correct data type
+ */
+public static function getProfileByProfileActivationToken(\PDO $pdo, string $profileActivationToken) : \SplFixedArray {
+	//sanitize the description before searching
+	$profileActivationToken = trim($profileActivationToken);
+	$profileActivationToken = filter_var($profileActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if(empty($profileActivationToken) === true) {
+		throw(new \PDOException("profile activation token number is invalid"));
+	}
+
+	//escape any mySQL wild cards
+	$profileActivationToken = str_replace("_", "\\_", str_replace("%", "\\%", $profileActivationToken));
+
+	//create query template
+	$query = "SELECT profileName, profileId, profileBio, profileImage, profileEmail FROM profile WHERE profileActivationToken LIKE :profileActivationToken";
+	$statement = $pdo->prepare($query);
+
+	//bind the profile content to the place holder in the template
+	$profileActivationToken = "%profileActivationToken%";
+	$parameters = ["profileActivationToken" => $profileActivationToken];
+	$statement->execute($parameters);
+
+	//builds an array of profiles
+	$profiles = new \SplFixedArray($statement->rowCount());
+	$statement->setFetchMode(\PDO::FETCH_ASSOC);
+	while(($row = $statement->fetch()) !== false) {
+		try {
+			$profile = new Profile($row["profileId"], $row["profileName"], $row["profileBio"], $row["profileEmail"], $row["profileImage"]);
+			$profiles->next();
+		} catch(\Exception $exception) {
+			//if the row couldn't be converted, rethow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+	}
+	return($profiles);
 }
 
 
-	//TODO get profile by profile email and profile activation token all return objects
 
 } //class closing bracket
