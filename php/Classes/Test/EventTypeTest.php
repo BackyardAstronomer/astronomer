@@ -46,7 +46,7 @@ public function testInsertValidEventType() : void {
 	//grab the data from mySQl and enforce the fields match out expectations
 	$pdoEventType = EventType::getEventTypeByEventTypeId($this->getPDO(), $eventType->getEventTypeId());
 	$this->assertEquals($pdoEventType->getEventTypeId(), $eventTypeId);
-	$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount($eventType));
+	$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("eventType"));
 	$this->assertEquals($pdoEventType->getEventTypeId());
 	$this->assertEquals($pdoEventType->getEventTypeName(),$this->VALID_EVENTTYPENAME2);
 
@@ -55,6 +55,26 @@ public function testInsertValidEventType() : void {
 /**
  * test creating a eventType and then Deleting it
  */
+public function testDeleteValidEventType() : void {
+	//count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("eventType");
+
+	//create a new EventType and insert into mySql
+	$eventTypeId = f567fe08-d90f-4c41-ad4f-52483f89aae0();
+	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
+	$eventType->insert($this->getPDO());
+
+	//delete the EventType from mySQL
+	 $this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("eventType"));
+	 $eventType->delete($this->getPDO());
+
+	 //grab the date from mySQL and make sure the EventType has be deleted
+	$pdoEventType = EventType::getEventTypeByEventTypeId($this->getPDO(), $eventType->getEventTypeId());
+	$this->assertNull($pdoEventType);
+	$this->assertEquals($numRows, $this->getConnection()->getRowCount("eventType"));
+}
+
+
 
 }
 
