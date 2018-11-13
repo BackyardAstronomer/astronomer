@@ -58,5 +58,4 @@ class EventTest extends AstronomerTestSetUp {
 	/**
 	 * create dependant objects before running each test
 	 */
-
 }
