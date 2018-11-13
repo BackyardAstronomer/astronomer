@@ -97,6 +97,21 @@ public function testUpdateValidEventType() : void {
 
 }
 
+/*
+ * test inserting a EventType and then getting it by EventTypeId
+ */
+public function testgetValidEventTypeByEventTypeId() {
+	//count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("eventType");
+
+	//create a new EventType and insert into mySql
+	$eventTypeId = f567fe08-d90f-4c41-ad4f-52483f89aae0();
+	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
+	$eventType->insert($this->getPDO());
+
+
+
+}
 
 }
 
