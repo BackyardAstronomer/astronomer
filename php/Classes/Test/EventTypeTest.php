@@ -13,7 +13,7 @@ require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
  * are tested for both invalid and valid inputs.
  *
  * @see eventType
- * @author Dylan McDonald <dmcdonald21@cnm.edu>
+ * @author Dayn Augustson <daugustson@cnm.edu>
  **/
 class EventTypeTest extends TestCase {
 
@@ -28,5 +28,19 @@ class EventTypeTest extends TestCase {
 	 * @var string $VALID_EVENTTYPENAME2
 	 **/
 	protected $VALID_EVENTTYPENAME2 = "PHPUnit test still passing";
+
+}
+
+/**
+ * test inserting a valid EventType and verify that it actual mySql data matches
+ **/
+public function testInsertValidEventType() : void {
+	//count the number of rows and save them for later
+	$numRows = $this->getConnection()->getRowCount("eventType");
+
+	//create a new EventType and insert into mySql
+	$eventTypeId = f567fe08-d90f-4c41-ad4f-52483f89aae0();
+	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
+	$eventType->insert($this->getPDO());
 
 }
