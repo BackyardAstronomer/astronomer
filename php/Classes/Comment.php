@@ -339,4 +339,60 @@ public function setCommentDate($newCommentDate = null): void {
 	}
 
 
+	public static function getCommentByCommentProfileId(\PDO $pdo, string  $commentProfileId) : \SPLFixedArray {
+		try {
+			$commentProfileId = self::validateUuid($commentProfileId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		// create query template
+		$query = "SELECT commentId, commentProfileId, commentEventId, tweetContent, commentDate FROM comment WHERE commentProfileId = :commentProfileId";
+		$statement = $pdo->prepare($query);
+		// bind the comment profile id to the place holder in the template
+		$parameters = ["commentProfileId" => $commentProfileId->getBytes()];
+		$statement->execute($parameters);
+		// build an array of comments
+		$tweets = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$tweet = new comment($row["commentId"], $row["commentProfileId"], $row["commentEventId"], $row["commentContent"], $row["commentDate"]);
+				$comment[$comment->key()] = $comment;
+				$comment->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($comment);
+	}
+
+	public static function getCommentByCommentEventId(\PDO $pdo, string  $commentEventId) : \SPLFixedArray {
+		try {
+			$commentEventId = self::validateUuid($commentEventId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		// create query template
+		$query = "SELECT commentId, commentProfileId, commentEventId, tweetContent, commentDate FROM comment WHERE commentProfileId = :commentProfileId";
+		$statement = $pdo->prepare($query);
+		// bind the comment event id to the place holder in the template
+		$parameters = ["commentEventId" => $commentEventId->getBytes()];
+		$statement->execute($parameters);
+		// build an array of comments
+		$tweets = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$tweet = new comment($row["commentId"], $row["commentProfileId"], $row["commentEventId"], $row["commentContent"], $row["commentDate"]);
+				$comment[$comment->key()] = $comment;
+				$comment->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($comment);
+	}
+
 } //this last one closes the class as a whole
