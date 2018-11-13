@@ -95,30 +95,6 @@ public function testUpdateValidEventType() : void {
 
 }
 
-/*
- * test inserting a EventType and then getting it by EventTypeId
- */
-public function testgetValidEventTypeByEventTypeId() {
-	//count the number of rows and save it for later
-	$numRows = $this->getConnection()->getRowCount("eventType");
-
-	//create a new EventType and insert into mySql
-	$eventTypeId = f567fe08-d90f-4c41-ad4f-52483f89aae0();
-	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
-	$eventType->insert($this->getPDO());
-
-	// getting data from mySQL and enforce the fields match our expectations
-	$results = EventType::getEventTypeByEventTypeId($this->getPDO(), $eventType->getEventTypeId());
-	$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("eventType"));
-	$this->assertEquals(1, $results);
-	$this->assertContainsOnlyInstancesOf("BackyardAstronomer\Astronomer\php\classes\EventType", $results);
-
-	//grab the result from the array and validate it
-	$pdoEventType = $results[0];
-	$this->assertEquals($pdoEventType->getEventTypeId(), $eventTypeId);
-	$this->assertEquals($pdoEventType->getEventTypeName(), $this->VALID_EVENTTYPENAME);
-}
-
 //test grab all eventType
 public function testGetAllValidEventType() : void {
 	//count the number of rows and save it for later
