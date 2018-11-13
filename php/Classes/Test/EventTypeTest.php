@@ -17,4 +17,16 @@ require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
  **/
 class EventTypeTest extends TestCase {
 
+	/**
+	 * content of the EventType
+	 * @var string $VALID_EVENTTYPENAME
+	 **/
+	protected $VALID_EVENTTYPENAME = "PHPUnit test passing";
+
+	/**
+	 * content of the updated EventType
+	 * @var string $VALID_EVENTTYPENAME2
+	 **/
+	protected $VALID_EVENTTYPENAME2 = "PHPUnit test still passing";
+
 }
