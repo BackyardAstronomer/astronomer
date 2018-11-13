@@ -447,7 +447,7 @@ public function insert(\PDO $pdo) : void {
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError when variables are not the correct data type
  */
-public static function getProfileByProfileId(\PDO $pdo, $profileId) : \SplFixedArray {
+public static function getProfileByProfileId(\PDO $pdo, $profileId) : Profile {
 	try {
 		$profileId = self::validateUuid($profileId);
 	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -487,41 +487,38 @@ public static function getProfileByProfileId(\PDO $pdo, $profileId) : \SplFixedA
  * @throws \TypeError when variables are not correct data type
 	 */
 
-public static function getProfileByProfileEmail(\PDO $pdo, string $profileEmail) : \SplFixedArray {
-//sanitize the email before searching
-	$profileEmail = trim($profileEmail);
-	$profileEmail = filter_var($profileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	if(empty($profileEmail) === true){
-		throw(new \PDOException("profile email is invalid"));
-	}
+public static function getProfileByProfileEmail(\PDO $pdo, $profileEmail) : Profile {
+try {
+	$profileEmail = self::validateUuid($profileEmail);
+} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+	throw(new \PDOException($exception->getMessage(), 0, $exception));
+}
 
-	//escape any mySQL wild cards
-	$profileEmail = str_replace("_", "\\_", str_replace( "%", "\\%", $profileEmail));
+//creates query template
+	$query = "SELECT profileName, profileId, profileBio, profileImage, profileActivationToken FROM profile WHERE profileEmail = :profileEmail";
+$statement = $pdo->prepare($query);
 
-	//create query template
-	$query = "SELECT profileName, profileId, profileBio, profileImage, profileActivationToken FROM profile WHERE profileEmail LIKE :profileEmail";
-	$statement = $pdo->prepare($query);
-
-	//bind the profile email content to the place holder in the template
-	$profileEmail = "%profileEmail%";
-	$parameters = ["profileEmail" => $profileEmail];
+//bind the profile email to the place holder in the template
+	$parameters = ["profileEmail" => $profileEmail->getBytes()];
 	$statement->execute($parameters);
 
-	//build an array of profiles
-	$profiles = new \SplFixedArray($statement->rowCount());
-	$statement->setFetchMode(\PDO::FETCH_ASSOC);
-	while(($row = $statement->fetch()) !== false) {
-		try {
-			$profile = new Profile($row["profileId"], $row["profileName"], $row["profileImage"], $row["profileActivationToken"], $row["profileBio"]);
-			$profile[$profile->key()] = $profile;
-			$profiles->next();
-		} catch(\Exception $exception) {
-			//if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
+	//grab the profile from mySQL
+	try {
+		$profileEmail = null;
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		$row = $statement->fetch();
+		if($row !== false) {
+			$profileEmail = new Profile($row["profileName"], $row["profileId"], $row["profileBio"], $row["profileImage"], $row["profileActivationToken"]);
 		}
+	} catch(\Exception $exception) {
+		//if the row couldn't be converted, rethrow it
+		throw(new \PDOException($exception->getMessage(), 0, $exception));
 	}
-	return($profiles);
+	return($profileEmail);
 }
+
+
+
 
 /**
  * gets the profile by profile activation token
