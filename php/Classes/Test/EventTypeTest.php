@@ -43,4 +43,10 @@ public function testInsertValidEventType() : void {
 	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
 	$eventType->insert($this->getPDO());
 
+	//grab the data from mySQl and enforce the fields match out expectations
+	$pdoEventType = EventType::getEventTypeByEventTypeId($this->getPDO(), $eventType->getEventTypeId());
+	$this->assertEquals($pdoEventType->getEventTypeId(), $eventTypeId);
+	$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount($eventType));
+
+
 }
