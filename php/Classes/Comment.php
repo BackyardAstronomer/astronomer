@@ -17,28 +17,28 @@ use Ramsey\Uuid\Uuid;
 class Comment {
 	/**
 	 * this is the primary key of the comment
-	 * @var Uuid $commentId;
+	 * @var Uuid $commentId ;
 	 */
-private $commentId;
+	private $commentId;
 
 	/**
 	 * this is the foreign key of the profile the comment is posted on
 	 * @var Uuid $commentProfileId
 	 */
 
-private $commentProfileId;
+	private $commentProfileId;
 	/**
 	 *
 	 * this is the foreign key of the event the comment is posted on
 	 * @var Uuid $commentEventId
 	 */
-private $commentEventId;
+	private $commentEventId;
 
 	/**
- * this is the actual content of the comment
- * @var Uuid $commentContentId
- */
-private $commentContent;
+	 * this is the actual content of the comment
+	 * @var Uuid $commentContentId
+	 */
+	private $commentContent;
 
 	/**
 	 *
@@ -46,43 +46,42 @@ private $commentContent;
 	 * @var \DateTime $ $commentDate
 	 */
 
-private $commentDate;
+	private $commentDate;
 
 
-
-/**
- *constructor of this Comment
- *
- *@param string|Uuid $newCommentId id of this comment or null if new comment
- * @param string|Uuid $newCommentProfileId id of the Profile that made this Comment
- * @param string|Uuid $newCommentContent string containing actual content data
- * @param string|Uuid $newCommentEventId string id of the event the comment is posted on
- * @param \DateTime|string|null $newCommentDate date and time Comment was sent or null if set ot current date and time
- * @throws \InvalidArgumentException if data types are not valid
- * @throws \RangeException if data values are out of bounds (e.g., strings are too long, negative integers)
- * @throws \TypeError if data types violate type hints
- * @throws \Exception if some other exception occurs
- **/
-public function __construct($newCommentId, $newCommentEventId, $newCommentProfileId, string $newCommentContent, $newCommentDate = null) {
-	try {
-		$this->setCommentId($newCommentId);
-		$this->setCommentProfileId($newCommentProfileId);
-		$this->setCommentContent($newCommentContent);
-		$this->setCommentDate($newCommentDate);
-		$this->setCommentEventId($newCommentEventId);
-	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-		$exception = get_class($exception);
-		throw(new $exception($exception->getMessage(), 0, $exception));
+	/**
+	 *constructor of this Comment
+	 *
+	 * @param string|Uuid $newCommentId id of this comment or null if new comment
+	 * @param string|Uuid $newCommentProfileId id of the Profile that made this Comment
+	 * @param string|Uuid $newCommentContent string containing actual content data
+	 * @param string|Uuid $newCommentEventId string id of the event the comment is posted on
+	 * @param \DateTime|string|null $newCommentDate date and time Comment was sent or null if set ot current date and time
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., strings are too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 **/
+	public function __construct($newCommentId, $newCommentEventId, $newCommentProfileId, string $newCommentContent, $newCommentDate = null) {
+		try {
+			$this->setCommentId($newCommentId);
+			$this->setCommentProfileId($newCommentProfileId);
+			$this->setCommentContent($newCommentContent);
+			$this->setCommentDate($newCommentDate);
+			$this->setCommentEventId($newCommentEventId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exception = get_class($exception);
+			throw(new $exception($exception->getMessage(), 0, $exception));
 
 		}
 	}
 
-/**
- *
- * accessor method for comment id
- *
- * @return Uuid value of comment id
- */
+	/**
+	 *
+	 * accessor method for comment id
+	 *
+	 * @return Uuid value of comment id
+	 */
 
 
 	public function getCommentId(): Uuid {
@@ -92,23 +91,22 @@ public function __construct($newCommentId, $newCommentEventId, $newCommentProfil
 //this outside of class
 //$comment->CommentId()
 
-/**
- *
- * mutator method for comment id
- *
- * @param Uuid|string $newCommentId new value of comment id
- * @throws \RangeException if new comment is not positive
- * @throws \TypeError if @newCommentId is not uuid or string
- */
+	/**
+	 *
+	 * mutator method for comment id
+	 *
+	 * @param Uuid|string $newCommentId new value of comment id
+	 * @throws \RangeException if new comment is not positive
+	 * @throws \TypeError if @newCommentId is not uuid or string
+	 */
 
-public function setCommentId($newCommentId): void {
-	try {
-		$uuid = self::validateUuid($newCommentId);
+	public function setCommentId($newCommentId): void {
+		try {
+			$uuid = self::validateUuid($newCommentId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		}
+		$this->commentId = $uuid;
 	}
-	catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-	}
-	$this->commentId = $uuid;
-}
 
 	/**
 	 * accessor method for comment content
@@ -131,7 +129,7 @@ public function setCommentId($newCommentId): void {
 	 **/
 
 
-	public function setCommentContent(string $newCommentContent) : void {
+	public function setCommentContent(string $newCommentContent): void {
 		//verify that the comment content is secure
 		$newCommentContent = trim($newCommentContent);
 		$newCommentContent = filter_var($newCommentContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -143,6 +141,7 @@ public function setCommentId($newCommentId): void {
 		//store the comment content
 		$this->commentContent = $newCommentContent;
 	}
+
 	/**
 	 *
 	 * accessor method for comment event
@@ -150,7 +149,7 @@ public function setCommentId($newCommentId): void {
 	 * @return Uuid of comment event id
 	 */
 
-	public function getCommentEventId() : Uuid {
+	public function getCommentEventId(): Uuid {
 		return ($this->commentEventId);
 	}
 
@@ -179,7 +178,7 @@ public function setCommentId($newCommentId): void {
 	 *accessor method for comment profile id
 	 *
 	 * @return Uuid value of comment profile id
-	 */1
+	 */
 
 public function getCommentProfileId(): Uuid {
 	return ($this->commentProfileId);
@@ -276,8 +275,25 @@ public function setCommentDate($newCommentDate = null): void {
 			$statement = $pdo->prepare($query);
 
 			$parameters = ["commentId" => $this ->commentId->getBytes(), "commentEventId" => $this->commentEventId, "commentContent" => $this->commentContent, "commentDate" => $this->commentDate, "commentProfileId" => $this->commentProfileId];
-			$statement->execute($parameters);
+			$statement->execute($parameters);  }
 
+	/**
+	 * deletes this comment from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) : void {
+
+		// create query template
+		$query = "DELETE FROM comment WHERE commentId = :commentId, commentEventId = :commentEventId, commentContent = :commentContent, commentDate = :commentDate, commentProfileId = :commentProfileId WHERE commentId = :commentId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["commentId" => $this ->commentId->getBytes(), "commentEventId" => $this->commentEventId, "commentContent" => $this->commentContent, "commentDate" => $this->commentDate, "commentProfileId" => $this->commentProfileId];
+		$statement->execute($parameters);
+	}
 
 
 } //this last one closes the class as a whole
