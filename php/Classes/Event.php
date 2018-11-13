@@ -402,4 +402,45 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 		}
 		return($event);
 	}
+
+	/**
+	 * gets Event by eventEventTypeId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string|Uuid $eventEventTypeId event type to search for
+	 * @return Event|null Event found or null if not
+	 * @throws \PDOException when MySql related errors occur
+	 * @throws \TypeError when a variable is not the correct data type
+	 */
+
+	public static function getEventByEventEventTypeId(\PDO $pdo, string $eventEventTypeId) : \SplFixedArray {
+
+		try{
+			$eventEventTypeId = self::validateUuid($eventEventTypeId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+
+		//query template
+		$query = "SELECT eventId, eventEventTypeId, eventProfileId, eventTitle, eventContent, eventStartDate, eventEndDate FROM event WHERE eventEventTypeId = :eventEventTypeId";
+		$statement = $pdo->prepare($query);
+
+		//bind event event typeId to placeholder in template
+		$parameters =["eventEventTypeId" => $eventEventTypeId->getBytes()];
+		$statement->execute($parameters);
+		//bind array of events
+		$events = new \SPLFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try{
+				$event = new Event($row["eventId"], $row["eventEventTypeId"], $row["eventProfileId"], $row["eventTitle"], $row["eventContent"], $row["eventStartDate"], $row["eventEndDate"]);
+				$events[$events->key()] = $event;
+				$events->next();
+			}catch(\Exception $exception) {
+				//if the row cannot be converted, rethrow
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($events);
+	}
 }
