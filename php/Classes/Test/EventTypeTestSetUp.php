@@ -11,8 +11,8 @@ use PHPUnit\DbUnit\Operation\{Composite, Factory, Operation};
 // grab the encrypted properties file
 require_once("/etc/apache2/capstone-mysql/cohort22/astronomers");
 
-require_once("autoload.php");
-require_once(dirname(__DIR__,1) . "/classes/autoload.php");
+require_once("Autoload.php");
+require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
 
 /**
  * Abstract class containing universal and project specific mySQL parameters
@@ -28,7 +28,7 @@ require_once(dirname(__DIR__,1) . "/classes/autoload.php");
  *
  * *NOTE*: Tables must be added in the order they were created in step (2).
  *
- * @author Dylan McDonald <dmcdonald21@cnm.edu>
+ * @author DaynAugustson <daugustson@cnm.edu>
  **/
 abstract class EventTypeTestSetUp extends TestCase {
 	use TestCaseTrait;
