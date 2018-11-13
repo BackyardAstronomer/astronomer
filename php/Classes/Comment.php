@@ -302,18 +302,18 @@ public function setCommentDate($newCommentDate = null): void {
 	 * gets the comment by comment Id
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param string $commentId comment id to search for
+	 * @param string $comment comment id to search for
 	 * @return Comment\null comment found or null if not found
 	 * @throws \PDOException when mySQL related error occur
 	 * @throws \TypeError when a variable is not the correct data type
 	 *
 	 */
 
-	public static function getCommentByCommentId(\PDO $pdo, $commentId) : \SplFixedArray {
+	public static function getCommentByCommentId(\PDO $pdo, $comment) : ?Comment {
 		//sanitize the commentId before searching
 
 	try{
-		$commentId = self::validateUuid($commentId);
+		$comment = self::validateUuid($comment);
 } catch(\InvalidArgumentException |\RangeException |\Exception |\TypeError $exception) {
 		throw(new \PDOException($exception->getMessage(), 0, $exception));
 }
@@ -324,19 +324,21 @@ public function setCommentDate($newCommentDate = null): void {
 
 	//grab the comment from mySQL
 	try {
-		$commentId = null;
+		$comment = null;
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		$row = $statement->fetch();
 		if($row !== false) {
-			$commentId = new Comment($row["commentId"], $row["commentEventId"], $row["commentProfileId"], $row["commentContent"], $row["commentDate"]);
+			$comment = new Comment($row["commentId"], $row["commentEventId"], $row["commentProfileId"], $row["commentContent"], $row["commentDate"]);
 		}
 	} catch(\Exception $exception) {
 		//if the row couldn't be converted, rethrow it
 		throw(new \PDOException($exception->getMessage(), 0, $exception));
 
 	}
-	return($commentId);
+	return($comment);
 	}
+
+
 
 
 	public static function getCommentByCommentProfileId(\PDO $pdo, string  $commentProfileId) : \SPLFixedArray {
@@ -345,21 +347,25 @@ public function setCommentDate($newCommentDate = null): void {
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
+
 		// create query template
-		$query = "SELECT commentId, commentProfileId, commentEventId, tweetContent, commentDate FROM comment WHERE commentProfileId = :commentProfileId";
+		$query = "SELECT commentId, commentProfileId, commentEventId, commentContent, commentDate FROM comment WHERE commentProfileId = :commentProfileId";
 		$statement = $pdo->prepare($query);
+
 		// bind the comment profile id to the place holder in the template
 		$parameters = ["commentProfileId" => $commentProfileId->getBytes()];
 		$statement->execute($parameters);
+
 		// build an array of comments
-		$tweets = new \SplFixedArray($statement->rowCount());
+		$comment = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$tweet = new comment($row["commentId"], $row["commentProfileId"], $row["commentEventId"], $row["commentContent"], $row["commentDate"]);
+				$comment = new comment($row["commentId"], $row["commentProfileId"], $row["commentEventId"], $row["commentContent"], $row["commentDate"]);
 				$comment[$comment->key()] = $comment;
 				$comment->next();
 			} catch(\Exception $exception) {
+
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
@@ -367,29 +373,37 @@ public function setCommentDate($newCommentDate = null): void {
 		return($comment);
 	}
 
+
+
 	public static function getCommentByCommentEventId(\PDO $pdo, string  $commentEventId) : \SPLFixedArray {
 		try {
+
 			$commentEventId = self::validateUuid($commentEventId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
+
+
 		// create query template
-		$query = "SELECT commentId, commentProfileId, commentEventId, tweetContent, commentDate FROM comment WHERE commentProfileId = :commentProfileId";
+		$query = "SELECT commentId, commentProfileId, commentEventId, commentContent, commentDate FROM comment WHERE 							  commentProfileId = :commentProfileId";
 		$statement = $pdo->prepare($query);
+
 		// bind the comment event id to the place holder in the template
 		$parameters = ["commentEventId" => $commentEventId->getBytes()];
 		$statement->execute($parameters);
+
 		// build an array of comments
-		$tweets = new \SplFixedArray($statement->rowCount());
+		$comments = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$tweet = new comment($row["commentId"], $row["commentProfileId"], $row["commentEventId"], $row["commentContent"], $row["commentDate"]);
+				$comment = new comment($row["commentId"], $row["commentProfileId"], $row["commentEventId"], $row["commentContent"], 				$row["commentDate"]);
 				$comment[$comment->key()] = $comment;
 				$comment->next();
 			} catch(\Exception $exception) {
+
 				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			  throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
 		return($comment);
