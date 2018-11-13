@@ -74,6 +74,28 @@ public function testDeleteValidEventType() : void {
 	$this->assertEquals($numRows, $this->getConnection()->getRowCount("eventType"));
 }
 
+//test inserting a EventType, editing it, and then up then updating it
+public function testUpdateValidEventType() : void {
+	//count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("eventType");
+
+	//create a new EventType and insert into mySql
+	$eventTypeId = f567fe08-d90f-4c41-ad4f-52483f89aae0();
+	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
+	$eventType->insert($this->getPDO());
+
+	//edit the EventType and update in in mySQL
+	$eventType->setEventTypeName($this->VALID_EVENTTYPENAME2);
+	$eventType->update($this->getPDO());
+
+	//grab the data from mySQl and enforce the fields match out expectations
+	$pdoEventType = EventType::getEventTypeByEventTypeId($this->getPDO(), $eventType->getEventTypeId());
+	$this->assertEquals($pdoEventType->getEventTypeId(), $eventTypeId);
+	$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("eventType"));
+	$this->assertEquals($pdoEventType->getEventTypeId());
+	$this->assertEquals($pdoEventType->getEventTypeName(),$this->VALID_EVENTTYPENAME2);
+
+}
 
 
 }
