@@ -363,4 +363,43 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 		$parameters = ["eventId" => $this->eventId->getBytes()];
 		$statement->execute($parameters);
 	}
+
+	/**
+	 * gets the Event by eventId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string|Uuid $eventId event id to search for
+	 * @return Event|null Event found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when a variable are not the correct data type
+	 **/
+
+	public static function getEventByEventId(\PDO $pdo, $eventId) : ?Event {
+		//sanitize eventId before searching
+		try{
+			$eventId = self::validateUuid($eventId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		//creating query template
+		$query = "SELECT eventId, eventEventTypeId, eventProfileId, eventTitle, eventContent, eventStartDate, eventEndDate FROM event WHERE eventId = :eventId";
+		$statement = $pdo->prepare($query);
+		// bind the event id to the placeholders in the template
+		$parameters = ["eventId" => $eventId->getBytes()];
+		$statement->execute($parameters);
+
+		//grab event from database
+		try{
+			$event = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row === true) {
+				$event = new Event($row["eventId"], $row["eventEventTypeId"], $row["eventProfileId"], $row["eventTitle"], $row["eventContent"], $row["eventStartDate"], $row["eventEndDate"]);
+			}
+		} catch(\Exception $exception){
+			//if the row could not be converted rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($event);
+	}
 }
