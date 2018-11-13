@@ -529,39 +529,34 @@ $statement = $pdo->prepare($query);
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError when variables aren't the correct data type
  */
-public static function getProfileByProfileActivationToken(\PDO $pdo, string $profileActivationToken) : \SplFixedArray {
-	//sanitize the description before searching
-	$profileActivationToken = trim($profileActivationToken);
-	$profileActivationToken = filter_var($profileActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	if(empty($profileActivationToken) === true) {
-		throw(new \PDOException("profile activation token number is invalid"));
+public static function getProfileByProfileActivationToken(\PDO $pdo, string $profileActivationToken) : Profile {
+	try {
+	$profileActivationToken = self:: validateUuid($profileActivationToken);
+	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		throw(new \PDOException($exception->getMessage(), 0, $exception));
 	}
 
-	//escape any mySQL wild cards
-	$profileActivationToken = str_replace("_", "\\_", str_replace("%", "\\%", $profileActivationToken));
-
-	//create query template
-	$query = "SELECT profileName, profileId, profileBio, profileImage, profileEmail FROM profile WHERE profileActivationToken LIKE :profileActivationToken";
+	//creates query template
+	$query = "SELECT profileName, profileEmail, profileBio, profileImage, profileId FROM profile WHERE	profileActivationToken = :profileActivationToken";
 	$statement = $pdo->prepare($query);
 
-	//bind the profile content to the place holder in the template
-	$profileActivationToken = "%profileActivationToken%";
-	$parameters = ["profileActivationToken" => $profileActivationToken];
+	//bind the profile activation token to the place holder in the template
+	$parameters = ["profileActivationToken" => $profileActivationToken->getBytes()];
 	$statement->execute($parameters);
 
-	//builds an array of profiles
-	$profiles = new \SplFixedArray($statement->rowCount());
-	$statement->setFetchMode(\PDO::FETCH_ASSOC);
-	while(($row = $statement->fetch()) !== false) {
-		try {
-			$profile = new Profile($row["profileId"], $row["profileName"], $row["profileBio"], $row["profileEmail"], $row["profileImage"]);
-			$profiles->next();
-		} catch(\Exception $exception) {
-			//if the row couldn't be converted, rethow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
+	//grab the profile from mySQL
+	try {
+		$profileActivationToken = null;
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		$row = $statement->fetch();
+		if($row !== false) {
+			$profileActivationToken = new Profile($row["profileName"], $row["profileEmail"], $row["profileBio"], $row["profileImage"], $row["profileId"]);
 		}
+	} catch(\Exception $exception) {
+		//if the row could not be converted, rethrow that
+		throw(new \PDOException($exception->getMessage(), 0, $exception));
 	}
-	return($profiles);
+	return($profileActivationToken);
 }
 
 
