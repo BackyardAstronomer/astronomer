@@ -68,7 +68,7 @@ public function testDeleteValidEventType() : void {
 	 $this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("eventType"));
 	 $eventType->delete($this->getPDO());
 
-	 //grab the date from mySQL and make sure the EventType has be deleted
+	 //grab the data from mySQL and make sure the EventType has be deleted
 	$pdoEventType = EventType::getEventTypeByEventTypeId($this->getPDO(), $eventType->getEventTypeId());
 	$this->assertNull($pdoEventType);
 	$this->assertEquals($numRows, $this->getConnection()->getRowCount("eventType"));
