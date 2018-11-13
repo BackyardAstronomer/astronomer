@@ -30,7 +30,7 @@ require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
  *
  * @author DaynAugustson <daugustson@cnm.edu>
  **/
-abstract class EventTypeTestSetUp extends TestCase {
+abstract class AstrononmerTestSetUp extends TestCase {
 	use TestCaseTrait;
 
 	/**
