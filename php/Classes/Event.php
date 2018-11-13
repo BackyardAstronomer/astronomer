@@ -408,7 +408,7 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string|Uuid $eventEventTypeId event type to search for
-	 * @return Event|null Event found or null if not
+	 * @return \SPLFixedArray SplFixedArray of events found
 	 * @throws \PDOException when MySql related errors occur
 	 * @throws \TypeError when a variable is not the correct data type
 	 */
