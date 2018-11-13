@@ -29,9 +29,7 @@ class EventTypeTest extends TestCase {
 	 **/
 	protected $VALID_EVENTTYPENAME2 = "PHPUnit test still passing";
 
-
-
-/**
+	/**
  * test inserting a valid EventType and verify that it actual mySql data matches
  **/
 public function testInsertValidEventType() : void {
@@ -144,8 +142,6 @@ public function testGetAllValidEventType() : void {
 	$this->assertEquals($pdoEventType->getEventTypeName(), $this->VALID_EVENTTYPENAME);
 
 }
-
-
 
 }
 
