@@ -26,45 +26,45 @@ class ProfileTest extends AstronomerTestSetUp {
 	protected $profile = null;
 
 	/**
-	 * valid profile hash to create the profile object to own the test
-	 * @var $VALID_HASH
+	 * Valid profile id to use as profileId
 	 */
-	protected $VALID_PROFILE_HASH;
+	protected $profileId = "PHPUnit test still passing";
 
 	/**
 	 * content of the Profile email
-	 * @var string $VALID_PROFILE_EMAIL
+	 * @var string $profileEmail
 	 **/
-	protected $VALID_PROFILE_EMAIL = "PHPUnit test passing";
+	protected $profileEmail = "PHPUnit test passing";
 
 	/**
 	 * content of the updated Profile Bio
-	 * @var string $VALID_PROFILE_BIO
+	 * @var string $profileBio
 	 **/
-	protected $VALID_PROFILE_BIO = "PHPUnit test still passing";
-
-	/**
-	 * Valid profile id to use as profileId
-	 */
-	protected $VALID_PROFILE_ID = "PHPUnit test still passing";
+	protected $profileBio = "PHPUnit test still passing";
 
 	/**
 	 * content of the profile name; this starts as null and is assigned later
-	 * @var string $VALID_PROFILE_NAME
+	 * @var string $profileName
 	 **/
-	protected $VALID_PROFILE_NAME = null;
+	protected $profileName = null;
 
 	/**
 	 * content of the profile image; this starts as null and is assigned later
-	 * @var string $VALID_PROFILE_IMAGE
+	 * @var string $profileImage
 	 */
-	protected $VALID_PROFILE_IMAGE = null;
+	protected $profileImage= null;
 
 	/**
 	 * content of the profile activation token
-	 * @var string $VALID_PROFILE_ACTIVATION_TOKEN
+	 * @var string $profileActivationToken
 	 */
-	protected $VALID_PROFILE_ACTIVATION_TOKEN = null;
+	protected $profileActivationToken= null;
+
+	/**
+	 * valid profile hash to create the profile object to own the test
+	 * @var $profileHash
+	 */
+	protected $profileHash;
 
 	/**
 	 * create dependent objects before running each test
@@ -73,48 +73,33 @@ class ProfileTest extends AstronomerTestSetUp {
 		// run the default setUp() method first
 		parent::setUp();
 		$password = "abc123";
-		$this->VALID_PROFILE_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
+		$this->profileHash = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
 
 
-		// create and insert a Profile to own the test Tweet
-		$this->profile = new Profile(generateUuidV4(), null,"@handle", "https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "test@phpunit.de",$this->VALID_PROFILE_HASH, "+12125551212");
+		// create and insert a Profile to own the test Profile
+		$this->profile = new Profile(generateUuidV4(), "test@phpunit.de", "I need my space." , "Amanda James", null, "XRRYKvPgvcTYpFNraO7tTNc5syy5gflq",$this->profileHash);
 		$this->profile->insert($this->getPDO());
-
-		// calculate the date (just use the time the unit test was setup...)
-		$this->VALID_TWEETDATE = new \DateTime();
-
-		//format the sunrise date to use for testing
-		$this->VALID_SUNRISEDATE = new \DateTime();
-		$this->VALID_SUNRISEDATE->sub(new \DateInterval("P10D"));
-
-		//format the sunset date to use for testing
-		$this->VALID_SUNSETDATE = new\DateTime();
-		$this->VALID_SUNSETDATE->add(new \DateInterval("P10D"));
-
-
 
 	}
 
 	/**
-	 * test inserting a valid Tweet and verify that the actual mySQL data matches
+	 * test inserting a valid Profile and verify that the actual mySQL data matches
 	 **/
-	public function testInsertValidTweet() : void {
+	public function testInsertValidProfile() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
+		$numRows = $this->getConnection()->getRowCount("profile");
 
-		// create a new Tweet and insert to into mySQL
-		$tweetId = generateUuidV4();
-		$tweet = new Tweet($tweetId, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->insert($this->getPDO());
+		// create a new Profile and insert to into mySQL
+		$profileId = generateUuidV4();
+		$profile = new Profile($profileId, $this->profile->getProfileId(), $this->profileId);
+		$profile->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoTweet = Tweet::getTweetByTweetId($this->getPDO(), $tweet->getTweetId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
-		$this->assertEquals($pdoTweet->getTweetId(), $tweetId);
-		$this->assertEquals($pdoTweet->getTweetProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoTweet->getTweetContent(), $this->VALID_TWEETCONTENT);
-		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoTweet->getTweetDate()->getTimestamp(), $this->VALID_TWEETDATE->getTimestamp());
+		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProfile->getProfileContent(), $this->profileId);
 	}
 
 	/**
