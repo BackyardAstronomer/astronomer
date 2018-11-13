@@ -37,7 +37,7 @@ public function testInsertValidEventType() : void {
 	$numRows = $this->getConnection()->getRowCount("eventType");
 
 	//create a new EventType and insert into mySql
-	$eventTypeId = f567fe08-d90f-4c41-ad4f-52483f89aae0();
+	$eventTypeId =generateUuidV4();
 	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
 	$eventType->insert($this->getPDO());
 
@@ -58,7 +58,7 @@ public function testDeleteValidEventType() : void {
 	$numRows = $this->getConnection()->getRowCount("eventType");
 
 	//create a new EventType and insert into mySql
-	$eventTypeId = f567fe08-d90f-4c41-ad4f-52483f89aae0();
+	$eventTypeId = generateUuidV4();
 	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
 	$eventType->insert($this->getPDO());
 
@@ -78,7 +78,7 @@ public function testUpdateValidEventType() : void {
 	$numRows = $this->getConnection()->getRowCount("eventType");
 
 	//create a new EventType and insert into mySql
-	$eventTypeId = f567fe08-d90f-4c41-ad4f-52483f89aae0();
+	$eventTypeId =generateUuidV4();
 	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
 	$eventType->insert($this->getPDO());
 
@@ -101,7 +101,7 @@ public function testGetAllValidEventType() : void {
 	$numRows = $this->getConnection()->getRowCount("eventType");
 
 	//create a new EventType and insert into mySql
-	$eventTypeId = f567fe08-d90f-4c41-ad4f-52483f89aae0();
+	$eventTypeId = generateUuidV4();
 	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
 	$eventType->insert($this->getPDO());
 
