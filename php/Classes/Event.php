@@ -429,7 +429,7 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 		$parameters =["eventEventTypeId" => $eventEventTypeId->getBytes()];
 		$statement->execute($parameters);
 		//bind array of events
-		$events = new \SPLFixedArray($statement->rowCount());
+		$events = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try{
@@ -438,6 +438,47 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 				$events->next();
 			}catch(\Exception $exception) {
 				//if the row cannot be converted, rethrow
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($events);
+	}
+
+	/**
+	 * gets Event by eventProfileId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string|Uuid $eventProfileId event type to search for
+	 * @return \SPLFixedArray SplFixedArray of events found
+	 * @throws \PDOException when MySql related errors occur
+	 * @throws \TypeError when a variable is not the correct data type
+	 */
+
+	public static function getEventByEventProfileId(\PDO $pdo, string $eventProfileId) : \SplFixedArray {
+
+		try{
+			$eventProfileId = self::validateUuid($eventProfileId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+
+		//query template
+		$query = "SELECT eventId, eventEventTypeId, eventProfileId, eventTitle, eventContent, eventStartDate, eventEndDate FROM event WHERE eventProfileId = :eventProfileId";
+		$statement = $pdo-> prepare($query);
+
+		//bind eventProfileId to placeholder in template
+		$parameters = ["eventProfileId" => $eventProfileId->getBytes()];
+		$statement->execute($parameters);
+
+		//bind array of events
+		$events = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) === true){
+			try{
+				$event = new Event($row["eventId"], $row["eventEventTypeId"], $row["eventProfileId"], $row["eventTitle"], $row["eventContent"], $row["eventStartDate"], $row["eventEndDate"]);
+				$events[$events->key()] = $event;
+				$events->next();
+			}catch(\Exception $exception) {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
