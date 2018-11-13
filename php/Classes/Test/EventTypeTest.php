@@ -117,7 +117,6 @@ public function testgetValidEventTypeByEventTypeId() {
 
 	//grab the result from the array and validate it
 	$pdoEventType = $results[0];
-
 	$this->assertEquals($pdoEventType->getEventTypeId(), $eventTypeId);
 	$this->assertEquals($pdoEventType->getEventTypeName(), $this->VALID_EVENTTYPENAME);
 }
@@ -131,7 +130,21 @@ public function testGetAllValidEventType() : void {
 	$eventTypeId = f567fe08-d90f-4c41-ad4f-52483f89aae0();
 	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
 	$eventType->insert($this->getPDO());
+
+	//grab the data from mySQL and make sure the field match
+	// getting data from mySQL and enforce the fields match our expectations
+	$results = EventType::getAllEventType($this->getPDO(),);
+	$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("eventType"));
+	$this->assertEquals(1, $results);
+	$this->assertContainsOnlyInstancesOf("BackyardAstronomer\Astronomer\php\classes\EventType", $results);
+
+	//grab results for the array and validate
+	$pdoEventType = $results[0];
+	$this->assertEquals($pdoEventType->getEventTypeId(), $eventTypeId);
+	$this->assertEquals($pdoEventType->getEventTypeName(), $this->VALID_EVENTTYPENAME);
+
 }
+
 
 
 }
