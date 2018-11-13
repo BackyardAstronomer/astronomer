@@ -1,7 +1,7 @@
 <?php
 namespace BackyardAstronomer\Astronomer;
-
-use BackyardAstronomer\Astronomer{eventType};
+//todo need to look over the path below
+use BackyardAstronomer\Astronomer\{EventType};
 
 require_once("autoload.php");
 require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
@@ -29,7 +29,7 @@ class EventTypeTest extends TestCase {
 	 **/
 	protected $VALID_EVENTTYPENAME2 = "PHPUnit test still passing";
 
-}
+
 
 /**
  * test inserting a valid EventType and verify that it actual mySql data matches
@@ -47,6 +47,14 @@ public function testInsertValidEventType() : void {
 	$pdoEventType = EventType::getEventTypeByEventTypeId($this->getPDO(), $eventType->getEventTypeId());
 	$this->assertEquals($pdoEventType->getEventTypeId(), $eventTypeId);
 	$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount($eventType));
-
+	$this->assertEquals($pdoEventType->getEventTypeId());
+	$this->assertEquals($pdoEventType->getEventTypeName(),$this->VALID_EVENTTYPENAME2);
 
 }
+
+/**
+ * test creating a eventType and then Deleting it
+ */
+
+}
+
