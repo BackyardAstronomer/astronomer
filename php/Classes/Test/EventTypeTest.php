@@ -1,7 +1,7 @@
 <?php
 namespace BackyardAstronomer\Astronomer;
 //todo need to look over the path below
-use BackyardAstronomer\Astronomer\{EventType};
+use BackyardAstronomer\Astronomer\php\classes\EventType;
 
 require_once("autoload.php");
 require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
@@ -108,6 +108,18 @@ public function testgetValidEventTypeByEventTypeId() {
 	$eventTypeId = f567fe08-d90f-4c41-ad4f-52483f89aae0();
 	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
 	$eventType->insert($this->getPDO());
+
+	// getting data from mySQL and enforce the fields match our expectations
+	$results = EventType::getEventTypeByEventTypeId($this->getPDO(), $eventType->getEventTypeId());
+	$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("eventType"));
+	$this->assertEquals(1, $results);
+	$this->assertContainsOnlyInstancesOf("BackyardAstronomer\Astronomer\php\classes\EventType", $results);
+
+	//grab the result from the array and validate it
+	$pdoEventType = $results[0];
+
+	$this->assertEquals($pdoEventType->getEventTypeId(), $eventTypeId);
+	$this->assertEquals()
 
 
 
