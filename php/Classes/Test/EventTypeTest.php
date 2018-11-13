@@ -131,7 +131,7 @@ public function testGetAllValidEventType() : void {
 
 	//grab the data from mySQL and make sure the field match
 	// getting data from mySQL and enforce the fields match our expectations
-	$results = EventType::getAllEventType($this->getPDO(),);
+	$results = EventType::getAllEventType($this->getPDO());
 	$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("eventType"));
 	$this->assertEquals(1, $results);
 	$this->assertContainsOnlyInstancesOf("BackyardAstronomer\Astronomer\php\classes\EventType", $results);
