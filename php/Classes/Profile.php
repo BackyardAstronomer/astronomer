@@ -442,12 +442,12 @@ public function insert(\PDO $pdo) : void {
  * gets the profile by profileId
  *
  * @param \PDO $pdo PDO connection object
- * @param Uuid| $articleAuthorId author id to search by
- * @return \SplFixedArray SplFixedArray of Articles found
+ * @param Uuid| $profileByProfileId to search by
+ * @return \SplFixedArray of profiles found
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError when variables are not the correct data type
  */
-public static function getProfileByProfileId(\PDO $pdo, $aprofileId) : \SplFixedArray {
+public static function getProfileByProfileId(\PDO $pdo, $profileId) : \SplFixedArray {
 	try {
 		$profileId = self::validateUuid($profileId);
 	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -460,6 +460,7 @@ public static function getProfileByProfileId(\PDO $pdo, $aprofileId) : \SplFixed
 
 	//bind the profile id to the place holder in the template
 	$paramaters = ["profileId" => $profileId->getBytes()];
+	$statement->execute($paramaters);
 
 	//grab the profile from mySQL
 	try {
@@ -476,6 +477,27 @@ public static function getProfileByProfileId(\PDO $pdo, $aprofileId) : \SplFixed
 	return($profileId);
 }
 
-	//TODO get profile by profile id by profile email and profile activation token all return objects
+/**
+ * gets the profile by profile email
+ *
+ * @param \PDO $pdo connection object
+ * @param Uuid\ $profileEmail to search by
+ * @return \SplFixedArray of profiles found
+ * @throws \PDOException when mySQL related errors occur
+ * @throws \TypeError when variables are not correct data type
+	 */
+
+public static function getProfileByProfileEmail(\PDO $pdo, string $profileEmail) : \SplFixedArray {
+//sanitize the email before searching
+	$profileEmail = trim($profileEmail);
+	$profileEmail = filter_var($profileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if(empty($profileEmail) === true){
+		throw(new \PDOException("profile email is invalid"));
+	}
+
+}
+
+
+	//TODO get profile by profile email and profile activation token all return objects
 
 } //class closing bracket
