@@ -442,8 +442,8 @@ public function insert(\PDO $pdo) : void {
  * gets the profile by profileId
  *
  * @param \PDO $pdo PDO connection object
- * @param Uuid| $profileByProfileId to search by
- * @return \SplFixedArray of profiles found
+ * @param \PDO $profileByProfileId
+ * @return profile found
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError when variables are not the correct data type
  */
@@ -482,7 +482,7 @@ public static function getProfileByProfileId(\PDO $pdo, $profileId) : Profile {
  *
  * @param \PDO $pdo connection object
  * @param Uuid\ $profileEmail to search by
- * @return \SplFixedArray of profiles found
+ * @return profile found
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError when variables are not correct data type
 	 */
@@ -525,7 +525,7 @@ $statement = $pdo->prepare($query);
  *
  * @param \PDO $pdo connection object
  * @param string $profileActivationToken to search for
- * @return \SplFixedArray of profiles found
+ * @return profile found
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError when variables aren't the correct data type
  */
@@ -558,7 +558,6 @@ public static function getProfileByProfileActivationToken(\PDO $pdo, string $pro
 	}
 	return($profileActivationToken);
 }
-
 
 
 } //class closing bracket
