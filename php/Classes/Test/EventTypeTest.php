@@ -119,11 +119,20 @@ public function testgetValidEventTypeByEventTypeId() {
 	$pdoEventType = $results[0];
 
 	$this->assertEquals($pdoEventType->getEventTypeId(), $eventTypeId);
-	$this->assertEquals()
-
-
-
+	$this->assertEquals($pdoEventType->getEventTypeName(), $this->VALID_EVENTTYPENAME);
 }
+
+//test grab all eventType
+public function testGetAllValidEventType() : void {
+	//count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("eventType");
+
+	//create a new EventType and insert into mySql
+	$eventTypeId = f567fe08-d90f-4c41-ad4f-52483f89aae0();
+	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
+	$eventType->insert($this->getPDO());
+}
+
 
 }
 
