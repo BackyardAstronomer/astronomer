@@ -275,7 +275,8 @@ public function setCommentDate($newCommentDate = null): void {
 			$statement = $pdo->prepare($query);
 
 			$parameters = ["commentId" => $this ->commentId->getBytes(), "commentEventId" => $this->commentEventId, "commentContent" => $this->commentContent, "commentDate" => $this->commentDate, "commentProfileId" => $this->commentProfileId];
-			$statement->execute($parameters);  }
+			$statement->execute($parameters);
+		}
 
 	/**
 	 * deletes this comment from mySQL
@@ -293,6 +294,48 @@ public function setCommentDate($newCommentDate = null): void {
 		// bind the member variables to the place holder in the template
 		$parameters = ["commentId" => $this ->commentId->getBytes(), "commentEventId" => $this->commentEventId, "commentContent" => $this->commentContent, "commentDate" => $this->commentDate, "commentProfileId" => $this->commentProfileId];
 		$statement->execute($parameters);
+	}
+
+
+
+	/**
+	 * gets the comment by comment Id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $commentId comment id to search for
+	 * @return Comment\null comment found or null if not found
+	 * @throws \PDOException when mySQL related error occur
+	 * @throws \TypeError when a variable is not the correct data type
+	 *
+	 */
+
+	public static function getCommentByCommentId(\PDO $pdo, $commentId) : \SplFixedArray {
+		//sanitize the commentId before searching
+
+	try{
+		$commentId = self::validateUuid($commentId);
+} catch(\InvalidArgumentException |\RangeException |\Exception |\TypeError $exception) {
+		throw(new \PDOException($exception->getMessage(), 0, $exception));
+}
+
+// create query template
+		$query = "SELECT commentId, commentEventId, commentProfileId, commentContent, commentDate from comment WHERE commentId = :commentId";
+	$statement = $pdo->prepare($query);
+
+	//grab the comment from mySQL
+	try {
+		$commentId = null;
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		$row = $statement->fetch();
+		if($row !== false) {
+			$commentId = new Comment($row["commentId"], $row["commentEventId"], $row["commentProfileId"], $row["commentContent"], $row["commentDate"]);
+		}
+	} catch(\Exception $exception) {
+		//if the row couldn't be converted, rethrow it
+		throw(new \PDOException($exception->getMessage(), 0, $exception));
+
+	}
+	return($commentId);
 	}
 
 
