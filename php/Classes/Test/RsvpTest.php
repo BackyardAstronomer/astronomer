@@ -30,6 +30,12 @@ class TsvpTest extends TestCase {
 	protected $VALID_PROFILE_HASH;
 
 	/**
+	 *  eventType that created the Rsvp
+	 * @var $VALID_HASH
+	 */
+	protected $eventType = null;
+
+	/**
 	 * Event that created the Rsvp; this is for foreign key relations
 	 * @var Profile profile
 	 **/
@@ -61,8 +67,12 @@ class TsvpTest extends TestCase {
 		$this->profile = new Profile(generateUuidV4(), Null, "I am Groot", "test@phpunit.de",$this->VALID_PROFILE_HASH ,"https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "Dilbert");
 		$this->profile->insert($this->getPDO());
 
+		// create and insert EventType to test Rsvp
+		$this->eventType = new EventType(generateUuidV4(), "blind star watch");
+		$this->eventType->insert($this->getPdo);
+
 		// create and insert a Event to test Rsvp
-		$this->event = new Event(generateUuidV4(), generateUuidV4(), generateUuidV4(), "blind star watch party","May the braille be with you","05/04/77", "05/25/77");
+		$this->event = new Event(generateUuidV4(), generateUuidV4(), generateUuidV4(), "blind star watch party","May the braille be with you","\DateTime()", "\DateTime()");
 
 	}
 
@@ -78,13 +88,14 @@ class TsvpTest extends TestCase {
 		$rsvp->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoRsvp = Rsvp::getRsvpbyRsvpId($this->getPDO(), $rsvp->getRsvpbyRsvpId());
+		$pdoRsvp = Rsvp::getRsvpByRvpEventIdRsvpProfileId($this->getPDO(), $rsvp->getRsvpByRvpEventIdRsvpProfileId());
 		$this->asserEquals($numRows = 1, $this->getConnectoion()->getRowCount("rsvp"));
 		$this->assertEquals($pdoRsvp->getRsvpProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoRsvp->getRsvpEventId(), $this->event->getEventId());
 		$this->assertEquals($pdoRsvp->getRsvpEventCounter(), $this->VALID_RSVPEVENTCOUNTER);
-
 	}
+
+
 
 
 

@@ -176,7 +176,7 @@ class Rsvp implements \JsonSerializable {
 
 
 	/**
-	 * gets the Rsvp by rsvpId
+	 * gets the Rsvp by resvpEventId and RsvpProfileId
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $rsvpId tweet id to search for
@@ -184,7 +184,7 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getRsvpByRsvpId(\PDO $pdo, $rsvpEventId, $rsvpProfileId) : ?Rsvp {
+	public static function getRsvpByRvpEventIdRsvpProfileId(\PDO $pdo, $rsvpEventId, $rsvpProfileId) : ?Rsvp {
 		// sanitize the rsvpId before searching
 		try {
 			$rsvpEventId = self::validateUuid($rsvpEventId);
