@@ -58,4 +58,21 @@ class EventTest extends AstronomerTestSetUp {
 	/**
 	 * create dependant objects before running each test
 	 */
+	public final function setUp() : void {
+		// run the default setUp() method first
+		parent::setUp();
+		$password = "abc123";
+		$this->VALID_PROFILE_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
+
+		//create and insert a profile to own the event
+		$this->profile = new Profile(generateUuidV4(), 'thisisanemail@test.com', "this is a bio blah blah blah blah", "Test Astronomer", null, null, $this->VALID_PROFILE_HASH);
+		$this->profile->insert($this->getPDO());
+
+		//calculate the start date (date unit test was set up...)
+		$this->VALID_EVENT_START_DATE = new \DateTime();
+		//calculate the end date
+		$this->VALID_EVENT_END_DATE = new \DateTime();
+	}
+
+
 }
