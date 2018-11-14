@@ -5,6 +5,10 @@ use  BackyardAstronomer\Astronomer\Profile;
 
 require_once("AstronomerTestSetUp.php");
 
+// grab the uuid generator
+require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
+
+
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
 
@@ -53,7 +57,7 @@ class ProfileTest extends AstronomerTestSetUp {
 	 * valid profile hash to create the profile object to own the test
 	 * @var $profileHash
 	 */
-	protected $VALID_PROFILE_HASH;
+	protected $VALID_PROFILE_HASH = null;
 
 	/**
 	 * create dependent objects before running each test
@@ -80,6 +84,7 @@ class ProfileTest extends AstronomerTestSetUp {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		var_dump($pdoProfile);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
 		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_PROFILE_ACTIVATION_TOKEN);
@@ -99,11 +104,11 @@ class ProfileTest extends AstronomerTestSetUp {
 
 		// create a new Profile and insert to into mySQL
 		$profileId = generateUuidV4();
-		$profile = new Profile($profileId, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_BIO_CONTENT, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_NAME);
+		$profile = new Profile($profileId, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_BIO_CONTENT, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_IMAGE, $this->VALID_PROFILE_NAME);
 		$profile->insert($this->getPDO());
 
 		// edit the Profile and update it in mySQL
-		$profile->setProfileContent($profileId, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_BIO_CONTENT, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_NAME);
+		$profile->setProfileBio($this->VALID_PROFILE_BIO_CONTENT);
 		$profile->update($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -120,7 +125,7 @@ class ProfileTest extends AstronomerTestSetUp {
 
 
 	/**
-	 * test creating a Tweet and then deleting it
+	 * test creating a Profile and then deleting it
 	 **/
 	public function testDeleteValidProfile() : void {
 		// count the number of rows and save it for later
