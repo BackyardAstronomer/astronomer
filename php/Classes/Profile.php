@@ -75,12 +75,13 @@ class Profile implements \JsonSerializable {
 		try {
 
 			$this->setProfileId($newProfileId);
-			$this->setProfileEmail($newProfileEmail);
-			$this->setProfileBio($newProfileBio);
-			$this->setProfileName($newProfileName);
-			$this->setProfileImage($newProfileImage);
 			$this->setProfileActivationToken($newProfileActivationToken);
+			$this->setProfileBio($newProfileBio);
+			$this->setProfileEmail($newProfileEmail);
 			$this->setProfileHash($newProfileHash);
+			$this->setProfileImage($newProfileImage);
+			$this->setProfileName($newProfileName);
+
 		} //the following determines what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
@@ -135,7 +136,6 @@ class Profile implements \JsonSerializable {
 	 */
 
 	public function setProfileEmail(string $newProfileEmail): void {
-
 		//the following verifies whether the email content is secure
 		$newProfileEmail = trim($newProfileEmail);
 		$newProfileEmail = filter_var($newProfileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -354,7 +354,7 @@ public function setProfileHash($newProfileHash) : void {
 public function insert(\PDO $pdo) : void {
 
 	// create query template
-	$query = "INSERT INTO profile(profileId, profileEmail, profileBio, profileName, profileImage, profileActivationToken, profileHash) VALUES(:profileId, :profileEmail, :profileBio, :profileName, :profileImage, :profileActivationToken, :profileHash)";
+	$query = "INSERT INTO profile(profileId, profileActivationToken, profileBio, profileEmail, profileHash, profileImage, profileName) VALUES(:profileId, :profileActivationToken, :profileBio, :profileEmail, :profileHash, :profileImage, :profileName)";
 	$statement = $pdo->prepare($query);
 
 	// bind the member variables to the place holders in the template
@@ -408,14 +408,9 @@ public function insert(\PDO $pdo) : void {
 	 **/
 	public static function getProfileByProfileName(\PDO $pdo, $profileName) : \SplFixedArray {
 		// sanitize the profileName before searching
-		try {
-			$profileName = self::validateUuid($profileName);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
-		}
 
 		// create query template
-		$query = "SELECT profileId, profileEmail, profileBio, profileName, profileImage, profileActivationToken FROM profile WHERE profileName = :profileName";
+		$query = "SELECT profileActivationToken, profileId, profileEmail, profileBio, profileName, profileImage FROM profile WHERE profileName = :profileName";
 		$statement = $pdo->prepare($query);
 
 		// bind the profile name to the place holder in the template
@@ -480,18 +475,13 @@ public static function getProfileByProfileId(\PDO $pdo, $profileId) : Profile {
  * gets the profile by profile email
  *
  * @param \PDO $pdo connection object
- * @param Uuid\ $profileEmail to search by
+ * @param  $profileEmail
  * @return profile found
  * @throws \PDOException when mySQL related errors occur
  * @throws \TypeError when variables are not correct data type
 	 */
 
 public static function getProfileByProfileEmail(\PDO $pdo, $profileEmail) : Profile {
-try {
-	$profileEmail = self::validateUuid($profileEmail);
-} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-	throw(new \PDOException($exception->getMessage(), 0, $exception));
-}
 
 //creates query template
 	$query = "SELECT profileName, profileId, profileBio, profileImage, profileActivationToken FROM profile WHERE profileEmail = :profileEmail";
@@ -527,11 +517,6 @@ $statement = $pdo->prepare($query);
  * @throws \TypeError when variables aren't the correct data type
  */
 public static function getProfileByProfileActivationToken(\PDO $pdo, string $profileActivationToken) : Profile {
-	try {
-	$profileActivationToken = self:: validateUuid($profileActivationToken);
-	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-		throw(new \PDOException($exception->getMessage(), 0, $exception));
-	}
 
 	//creates query template
 	$query = "SELECT profileName, profileEmail, profileBio, profileImage, profileId FROM profile WHERE	profileActivationToken = :profileActivationToken";
@@ -547,7 +532,7 @@ public static function getProfileByProfileActivationToken(\PDO $pdo, string $pro
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		$row = $statement->fetch();
 		if($row !== false) {
-			$profileActivationToken = new Profile($row["profileName"], $row["profileEmail"], $row["profileBio"], $row["profileImage"], $row["profileId"]);
+			$profileActivationToken = new Profile($row["profileBio"], $row["profileEmail"], $row["profileImage"], $row["profileName"], $row["profileId"]);
 		}
 	} catch(\Exception $exception) {
 		//if the row could not be converted, rethrow that
