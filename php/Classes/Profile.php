@@ -1,7 +1,7 @@
 <?php
 namespace BackyardAstronomer\Astronomer;
 require_once("autoload.php");
-require_once(dir(__DIR_, 2) . "/vendor/autoload.php");
+require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 
 
 use Ramsey\Uuid\Uuid;
@@ -540,4 +540,14 @@ public static function getProfileByProfileActivationToken(\PDO $pdo, string $pro
 	}
 	return($profileActivationToken);
 }
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() : array {
+		$fields = get_object_vars($this);
+
+		return($fields);
+	}
 } //class closing bracket

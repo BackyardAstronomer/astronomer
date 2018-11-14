@@ -1,13 +1,12 @@
 <?php
 namespace BackyardAstronomer\Astronomer;
 
-use BackyardAstronomer\Astronomer\{Profile};
+use  BackyardAstronomer\Astronomer\Profile;
+
+require_once("AstronomerTestSetUp.php");
 
 // grab the class under scrutiny
-require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
-
-// grab the uuid generator
-require_once(dirname(__DIR__, 2) . "../Classes/ValidateUuid.php");
+require_once(dirname(__DIR__) . "/autoload.php");
 
 /**
  * Full PHPUnit test for the Profile class

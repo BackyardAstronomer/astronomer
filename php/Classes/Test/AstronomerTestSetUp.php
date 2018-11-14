@@ -9,8 +9,7 @@ use PHPUnit\DbUnit\Database\Connection;
 use PHPUnit\DbUnit\Operation\{Composite, Factory, Operation};
 
 // grab the encrypted properties file
-require_once("/etc/apache2/capstone-mysql/cohort22/astronomers");
-require_once("autoload.php");
+require_once("/etc/apache2/capstone-mysql/Secrets.php");
 require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
 
 /**
@@ -88,9 +87,9 @@ abstract class AstronomerTestSetUp extends TestCase {
 			// connect to mySQL and provide the interface to PHPUnit
 
 
-			$secrets =  new Secrets("/etc/apache2/capstone-mysql/ddctwitter.ini");
+			$secrets =  new \Secrets("/etc/apache2/capstone-mysql/cohort22/astronomers");
 			$pdo = $secrets->getPdoObject();
-			$this->connection = $this->createDefaultDBConnection($pdo, $secrets->getDatabase());
+			$this->connection = $this->createDefaultDBConnection($pdo, $secrets->getDatabaseName());
 		}
 		return($this->connection);
 	}
