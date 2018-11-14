@@ -518,8 +518,6 @@ $statement = $pdo->prepare($query);
 }
 
 
-
-
 /**
  * gets the profile by profile activation token
  *
@@ -558,6 +556,4 @@ public static function getProfileByProfileActivationToken(\PDO $pdo, string $pro
 	}
 	return($profileActivationToken);
 }
-
-
 } //class closing bracket

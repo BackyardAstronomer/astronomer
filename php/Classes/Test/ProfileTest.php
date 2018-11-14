@@ -28,43 +28,43 @@ class ProfileTest extends AstronomerTestSetUp {
 	/**
 	 * Valid profile id to use as profileId
 	 */
-	protected $profileId = "PHPUnit test still passing";
+	protected $VALID_PROFILE_ID;
 
 	/**
 	 * content of the Profile email
 	 * @var string $profileEmail
 	 **/
-	protected $profileEmail = "PHPUnit test passing";
+	protected $VALID_PROFILE_EMAIL = "PHPUnit test passing";
 
 	/**
 	 * content of the updated Profile Bio
 	 * @var string $profileBio
 	 **/
-	protected $profileBio = "PHPUnit test still passing";
+	protected $VALID_PROFILE_BIO_CONTENT = "PHPUnit test still passing";
 
 	/**
 	 * content of the profile name; this starts as null and is assigned later
 	 * @var string $profileName
 	 **/
-	protected $profileName = null;
+	protected $VALID_PROFILE_NAME = null;
 
 	/**
 	 * content of the profile image; this starts as null and is assigned later
 	 * @var string $profileImage
 	 */
-	protected $profileImage= null;
+	protected $VALID_PROFILE_IMAGE = null;
 
 	/**
 	 * content of the profile activation token
 	 * @var string $profileActivationToken
 	 */
-	protected $profileActivationToken= null;
+	protected $VALID_PROFILE_ACTIVATION_TOKEN = null;
 
 	/**
 	 * valid profile hash to create the profile object to own the test
 	 * @var $profileHash
 	 */
-	protected $profileHash;
+	protected $VALID_PROFILE_HASH;
 
 	/**
 	 * create dependent objects before running each test
@@ -73,11 +73,11 @@ class ProfileTest extends AstronomerTestSetUp {
 		// run the default setUp() method first
 		parent::setUp();
 		$password = "abc123";
-		$this->profileHash = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
+		$this->VALID_PROFILE_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
 
 
 		// create and insert a Profile to own the test Profile
-		$this->profile = new Profile(generateUuidV4(), "test@phpunit.de", "I need my space." , "Amanda James", null, "XRRYKvPgvcTYpFNraO7tTNc5syy5gflq",$this->profileHash);
+		$this->profile = new Profile(generateUuidV4(), "test@phpunit.de", "I need my space." , "Amanda James", null, "XRRYKvPgvcTYpFNraO7tTNc5syy5gflq", $this->VALID_PROFILE_HASH);
 		$this->profile->insert($this->getPDO());
 
 	}
@@ -91,7 +91,7 @@ class ProfileTest extends AstronomerTestSetUp {
 
 		// create a new Profile and insert to into mySQL
 		$profileId = generateUuidV4();
-		$profile = new Profile($profileId, $this->profile->getProfileId(), $this->profileId);
+		$profile = new profile($profileId, $this->profile->getProfileId(), $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_HASH);
 		$profile->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -99,139 +99,161 @@ class ProfileTest extends AstronomerTestSetUp {
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
 		$this->assertEquals($pdoProfile->getProfileProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoProfile->getProfileContent(), $this->profileId);
+		$this->assertEquals($pdoProfile->getProfileContent(), $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_HASH);
 	}
 
 	/**
-	 * test inserting a Tweet, editing it, and then updating it
+	 * test inserting a Profile, editing it, and then updating it
 	 **/
-	public function testUpdateValidTweet() : void {
+	public function testUpdateValidProfile() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
+		$numRows = $this->getConnection()->getRowCount("profile");
 
-		// create a new Tweet and insert to into mySQL
-		$tweetId = generateUuidV4();
-		$tweet = new Tweet($tweetId, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->insert($this->getPDO());
+		// create a new Profile and insert to into mySQL
+		$profileId = generateUuidV4();
+		$profile = new Profile($profileId, $this->profile->getProfileId(), $this->VALID_PROFILE_ID);
+		$profile->insert($this->getPDO());
 
-		// edit the Tweet and update it in mySQL
-		$tweet->setTweetContent($this->VALID_TWEETCONTENT2);
-		$tweet->update($this->getPDO());
+		// edit the Profile and update it in mySQL
+		$profile->setProfileContent($this->VALID_PROFILE_ID);
+		$profile->update($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoTweet = Tweet::getTweetByTweetId($this->getPDO(), $tweet->getTweetId());
-		$this->assertEquals($pdoTweet->getTweetId(), $tweetId);
+		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
-		$this->assertEquals($pdoTweet->getTweetProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoTweet->getTweetContent(), $this->VALID_TWEETCONTENT2);
-		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoTweet->getTweetDate()->getTimestamp(), $this->VALID_TWEETDATE->getTimestamp());
+		$this->assertEquals($pdoProfile->getProfileProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProfile->getProfileContent(), $this->VALID_PROFILE_ID);
 	}
 
 
 	/**
 	 * test creating a Tweet and then deleting it
 	 **/
-	public function testDeleteValidTweet() : void {
+	public function testDeleteValidProfile() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
+		$numRows = $this->getConnection()->getRowCount("profile");
 
-		// create a new Tweet and insert to into mySQL
-		$tweetId = generateUuidV4();
-		$tweet = new Tweet($tweetId, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->insert($this->getPDO());
+		// create a new Profile and insert to into mySQL
+		$profileId = generateUuidV4();
+		$profile = new Profile($profileId, $this->profile->getProfileId(), $this->VALID_PROFILE_ID, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_HASH);
+		$profile->insert($this->getPDO());
 
-		// delete the Tweet from mySQL
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
-		$tweet->delete($this->getPDO());
+		// delete the Profile from mySQL
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$profile->delete($this->getPDO());
 
-		// grab the data from mySQL and enforce the Tweet does not exist
-		$pdoTweet = Tweet::getTweetByTweetId($this->getPDO(), $tweet->getTweetId());
-		$this->assertNull($pdoTweet);
-		$this->assertEquals($numRows, $this->getConnection()->getRowCount("tweet"));
+		// grab the data from mySQL and enforce the Profile does not exist
+		$pdoTweet = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertNull($pdoProfile);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profile"));
 	}
 
 	/**
-	 * test inserting a Tweet and regrabbing it from mySQL
+	 * test inserting a Profile and regrabbing it from mySQL
 	 **/
-	public function testGetValidTweetByTweetProfileId() {
+	public function testGetValidProfileByProfileProfileId() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
+		$numRows = $this->getConnection()->getRowCount("profile");
 
-		// create a new Tweet and insert to into mySQL
-		$tweetId = generateUuidV4();
-		$tweet = new Tweet($tweetId, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->insert($this->getPDO());
+		// create a new Profile and insert to into mySQL
+		$profileId = generateUuidV4();
+		$profile = new Tweet($profileId, $this->profile->getProfileId(), $this->VALID_PROFILE_ID);
+		$profile->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Tweet::getTweetByTweetProfileId($this->getPDO(), $tweet->getTweetProfileId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
+		$results = Profile::getProfileByProfileProfileId($this->getPDO(), $profile->getProfileProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Tweet", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Astronomer\\Profile", $results);
 
 		// grab the result from the array and validate it
-		$pdoTweet = $results[0];
+		$pdoProfile = $results[0];
 
-		$this->assertEquals($pdoTweet->getTweetId(), $tweetId);
-		$this->assertEquals($pdoTweet->getTweetProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoTweet->getTweetContent(), $this->VALID_TWEETCONTENT);
-		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoTweet->getTweetDate()->getTimestamp(), $this->VALID_TWEETDATE->getTimestamp());
+		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProfile->getProfileContent(), $this->VALID_PROFILE_ID);
 	}
 
 	/**
-	 * test grabbing a Tweet by tweet content
+	 * test grabbing a Profile by profile name
 	 **/
-	public function testGetValidTweetByTweetContent() : void {
+	public function testGetValidProfileByProfileName() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
+		$numRows = $this->getConnection()->getRowCount("profile");
 
 		// create a new Tweet and insert to into mySQL
-		$tweetId = generateUuidV4();
-		$tweet = new Tweet($tweetId, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->insert($this->getPDO());
+		$profileId = generateUuidV4();
+		$profile = new Profile($profileId, $this->profile->getProfileId(), $this->VALID_PROFILE_NAME);
+		$profile->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Tweet::getTweetByTweetContent($this->getPDO(), $tweet->getTweetContent());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
+		$results = Profile::getProfileByProfileName($this->getPDO(), $profile->getProfileName());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertCount(1, $results);
 
 		// enforce no other objects are bleeding into the test
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Tweet", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Astronomer\\Profile", $results);
 
 		// grab the result from the array and validate it
-		$pdoTweet = $results[0];
-		$this->assertEquals($pdoTweet->getTweetId(), $tweetId);
-		$this->assertEquals($pdoTweet->getTweetProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoTweet->getTweetContent(), $this->VALID_TWEETCONTENT);
-		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoTweet->getTweetDate()->getTimestamp(), $this->VALID_TWEETDATE->getTimestamp());
+		$pdoProfile = $results[0];
+		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProfile->getProfileName(), $this->VALID_PROFILE_NAME);
+	}
+/**
+ * test grabbing the Profile by profile email
+ */
+	public function testGetValidProfileByProfileEmail() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+
+		// create a new Tweet and insert to into mySQL
+		$profileId = generateUuidV4();
+		$profile = new Profile($profileId, $this->profile->getProfileId(), $this->VALID_PROFILE_EMAIL);
+		$profile->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Profile::getProfileByProfileEmail($this->getPDO(), $profile->getProfileEmail());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertCount(1, $results);
+
+		// enforce no other objects are bleeding into the test
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Astronomer\\Profile", $results);
+
+		// grab the result from the array and validate it
+		$pdoProfile = $results[0];
+		$this->assertEquals($pdoProfile->getProfileEmail(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_PROFILE_EMAIL);
 	}
 
 	/**
-	 * test grabbing all Tweets
-	 **/
-	public function testGetAllValidTweets() : void {
+	 * test grabbing the Profile by the profile activation token
+	 * this will be used by the user to find and activate their profile from an email
+	 */
+	public function testGetValidProfileByProfileActivationToken() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
+		$numRows = $this->getConnection()->getRowCount("profile");
 
 		// create a new Tweet and insert to into mySQL
-		$tweetId = generateUuidV4();
-		$tweet = new Tweet($tweetId, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->insert($this->getPDO());
+		$profileId = generateUuidV4();
+		$profile = new Profile($profileId, $this->profile->getProfileId(), $this->VALID_PROFILE_ACTIVATION_TOKEN);
+		$profile->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Tweet::getAllTweets($this->getPDO());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
+		$results = Profile::getProfileByProfileActivationToken($this->getPDO(), $profile->getProfileActivationToken());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Tweet", $results);
+
+		// enforce no other objects are bleeding into the test
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Astronomer\\Profile", $results);
 
 		// grab the result from the array and validate it
-		$pdoTweet = $results[0];
-		$this->assertEquals($pdoTweet->getTweetId(), $tweetId);
-		$this->assertEquals($pdoTweet->getTweetProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoTweet->getTweetContent(), $this->VALID_TWEETCONTENT);
-		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoTweet->getTweetDate()->getTimestamp(), $this->VALID_TWEETDATE->getTimestamp());
+		$pdoProfile = $results[0];
+		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
+		$this->assertEquals($pdoProfile->getProfileProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_PROFILE_ACTIVATION_TOKEN);
 	}
+
 }
