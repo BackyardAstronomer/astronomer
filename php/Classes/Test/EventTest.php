@@ -159,4 +159,14 @@ class EventTest extends AstronomerTestSetUp {
 		$this->assertNull($pdoEvent);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("event"));
 	}
+
+	/**
+	 * test grabbing an Event that doesn't exist
+	 */
+	public function testGetInvalidEventByEventId() : void {
+		// grab a profile id that exceeds the maximum allowable profile id
+		$event = Event::getEventByEventId($this->getPDO(), generateUuidV4());
+		$this->assertNull($event);
+	}
+
 }
