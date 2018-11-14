@@ -197,4 +197,12 @@ class EventTest extends AstronomerTestSetUp {
 		$this->assertEquals($pdoEvent->getEventStartDate()->getTimestamp(), $this->VALID_EVENT_START_DATE->getTimestamp());
 		$this->assertEquals($pdoEvent->getEventEndDate()->getTimestamp(), $this->VALID_EVENT_END_DATE->getTimestamp());
 	}
+	/**
+	 * test grabbing an Event that does not exist
+	 */
+	public function testGetInvalidEventByEventProfileId() : void {
+		//grab a profile id that exceeds the maximum allowable profile id
+		$event = Event::getEventByEventProfileId($this->getPDO(), generateUuidV4());
+		$this->assertCount(0, $event);
+	}
 }
