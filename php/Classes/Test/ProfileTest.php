@@ -55,9 +55,9 @@ class ProfileTest extends AstronomerTestSetUp {
 
 	/**
 	 * valid profile hash to create the profile object to own the test
-	 * @var $profileHash
+	 * @var string $profileHash
 	 */
-	protected $VALID_PROFILE_HASH = null;
+	protected $VALID_PROFILE_HASH;
 
 	/**
 	 * create dependent objects before running each test
@@ -84,7 +84,6 @@ class ProfileTest extends AstronomerTestSetUp {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
-		var_dump($pdoProfile);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
 		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_PROFILE_ACTIVATION_TOKEN);
@@ -133,29 +132,31 @@ class ProfileTest extends AstronomerTestSetUp {
 
 		// create a new Profile and insert to into mySQL
 		$profileId = generateUuidV4();
-		$profile = new Profile($profileId, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_BIO_CONTENT, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_NAME);
+		$profile = new Profile($profileId, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_BIO_CONTENT, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_IMAGE, $this->VALID_PROFILE_NAME);
 		$profile->insert($this->getPDO());
 
 		// delete the Profile from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$profile->delete($this->getPDO());
 
-		// grab the data from mySQL and enforce the Profile does not exist
-		//$pdoTweet = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
-		//$this->assertNull($pdoProfile);
-		//$this->assertEquals($numRows, $this->getConnection()->getRowCount("profile"));
-
-		// grab the data from mySQL and enforce the fields match our expectations
+		//test that this profile was deleted by grabbing profile id
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
-		$this->assertEquals($pdoProfile->getProfileId(), $profileId);
-		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_PROFILE_ACTIVATION_TOKEN);
-		$this->assertEquals($pdoProfile->getProfileBio(), $this->VALID_PROFILE_BIO_CONTENT);
-		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_PROFILE_EMAIL);
-		$this->assertEquals($pdoProfile->getProfileHash(), $this->VALID_PROFILE_HASH);
-		$this->assertEquals($pdoProfile->getProfileImage(), $this->VALID_PROFILE_IMAGE);
-		$this->assertEquals($pdoProfile->getProfileName(), $this->VALID_PROFILE_NAME);
+		$this->assertNull($pdoProfile);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("profile"));
 	}
+
+	/**
+	 * test grabbing a profile that doesn't exist
+	 */
+
+	public function testGetInvalidProfileByProfileId() : void {
+		//grab profile id that exceeds the maximum allowable profile id
+		$profileId = generateUuidV4();
+		$profile = Profile::getProfileByProfileId($this->getPDO(), $profileId);
+		$this->assertNull($profile);
+	}
+
+
 
 	/**
 	 * test grabbing a Profile by profile name
@@ -166,7 +167,7 @@ class ProfileTest extends AstronomerTestSetUp {
 
 		// create a new Tweet and insert to into mySQL
 		$profileId = generateUuidV4();
-		$profile = new Profile($profileId, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_BIO_CONTENT, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_NAME);
+		$profile = new Profile($profileId, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_BIO_CONTENT, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_IMAGE, $this->VALID_PROFILE_NAME);
 		$profile->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -175,7 +176,7 @@ class ProfileTest extends AstronomerTestSetUp {
 		$this->assertCount(1, $results);
 
 		// enforce no other objects are bleeding into the test
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\Astronomer\\Profile", $results);
+		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\Profile", $results);
 
 		// grab the result from the array and validate it
 		$pdoProfile = $results[0];
@@ -197,7 +198,7 @@ class ProfileTest extends AstronomerTestSetUp {
 
 		// create a new Tweet and insert to into mySQL
 		$profileId = generateUuidV4();
-		$profile = new Profile($profileId, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_BIO_CONTENT, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_NAME);
+		$profile = new Profile($profileId, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_BIO_CONTENT, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_IMAGE, $this->VALID_PROFILE_NAME);
 		$profile->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -226,7 +227,7 @@ class ProfileTest extends AstronomerTestSetUp {
 
 		// create a new Tweet and insert to into mySQL
 		$profileId = generateUuidV4();
-		$profile = new profile($profileId, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_BIO_CONTENT, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_IMAGE, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_NAME);
+		$profile = new profile($profileId, $this->VALID_PROFILE_ACTIVATION_TOKEN, $this->VALID_PROFILE_BIO_CONTENT, $this->VALID_PROFILE_EMAIL, $this->VALID_PROFILE_HASH, $this->VALID_PROFILE_IMAGE, $this->VALID_PROFILE_NAME);
 		$profile->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations

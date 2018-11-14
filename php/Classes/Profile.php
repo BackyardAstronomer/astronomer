@@ -6,6 +6,8 @@ require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 
 use phpDocumentor\Reflection\Types\Array_;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+
 //use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -299,11 +301,11 @@ public function setProfileActivationToken($newProfileActivationToken) : void {
 /**
  * The following is the accessor method for the profile hash
  *
- * @return profile hash as a string
+ * @return string value of hash
  */
 
 public function getProfileHash() : string {
-	return ($this->profileActivationToken);
+	return ($this->profileHash);
 }
 
 /**
@@ -325,7 +327,6 @@ public function setProfileHash($newProfileHash) : void {
 
 	//the following enforces that the hash is really an Argon hash
 	$profileHashInfo = password_get_info($newProfileHash);
-	var_dump($profileHashInfo);
 	if($profileHashInfo["algoName"] !== "argon2i") {
 		throw(new \InvalidArgumentException("profile hash is not a valid hash"));
 	}
@@ -393,11 +394,11 @@ public function insert(\PDO $pdo) : void {
 	public function delete(\PDO $pdo) : void {
 
 		// create query template
-		$query = "DELETE FROM profile WHERE profileActivationToken = :profileActivationToken, profileBio =:profileBio, profileEmail = :profileEmail, profileHash = :profileHash, profileId = :profileId, profileImage = :profileImage, profileName = :profileName  WHERE profileId = :profileId";
+		$query = "DELETE FROM profile WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holder in the template
-		$parameters = ["profileId" => $this ->profileId->getBytes(), "profileEmail" => $this->profileEmail, "profileBio" => $this->profileBio, "profileName" => $this->profileName, "profileImage" => $this->profileImage, "profileActivationToken" => $this->profileActivationToken, "profileHash" => $this->profileHash];
+		$parameters = ["profileId" => $this ->profileId->getBytes()];
 		$statement->execute($parameters);
 	}
 
@@ -426,7 +427,7 @@ public function insert(\PDO $pdo) : void {
 		$statement->setFetchMode( \PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$profileName = new Profile($row["profileActivationToken"], $row["profileBio"], $row["profileEmail"], $row["profileHash"], $row["profileId"], $row["profileImage"], $row["profileName"]);
+				$profileName = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileBio"], $row["profileEmail"], $row["profileHash"], $row["profileImage"], $row["profileName"]);
 				$profiles[$profiles->key()] = $profileName;
 				$profiles->next();
 			} catch (\Exception $exception) {
@@ -504,7 +505,7 @@ $statement = $pdo->prepare($query);
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		$row = $statement->fetch();
 		if($row !== false) {
-			$profileEmail = new Profile($row["profileActivationToken"], $row["profileBio"], $row["profileEmail"], $row["profileHash"], $row["profileId"], $row["profileImage"], $row["profileName"]);
+			$profileEmail = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileBio"], $row["profileEmail"], $row["profileHash"], $row["profileImage"], $row["profileName"]);
 		}
 	} catch(\Exception $exception) {
 		//if the row couldn't be converted, rethrow it
@@ -539,7 +540,7 @@ public static function getProfileByProfileActivationToken(\PDO $pdo, string $pro
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		$row = $statement->fetch();
 		if($row !== false) {
-			$profileActivationToken = new Profile($row["profileActivationToken"], $row["profileBio"], $row["profileEmail"], $row["profileName"], $row["profileName"], $row["profileId"], $row["profileImage"]);
+			$profileActivationToken = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileBio"], $row["profileEmail"], $row["profileHash"], $row["profileImage"], $row["profileName"]);
 		}
 	} catch(\Exception $exception) {
 		//if the row could not be converted, rethrow that
