@@ -36,6 +36,18 @@ class TsvpTest extends TestCase {
 	protected $event = null;
 
 	/**
+	 * event count for RSVP
+	 * @var Profile profile
+	 **/
+	protected $VALID_RSVPEVENTCOUNTER = "1";
+
+	/**
+	 * event count for RSVP2
+	 * @var Profile profile
+	 **/
+	protected $VALID_RSVPEVENTCOUNTER2 = "2";
+
+	/**
 	 * create dependent objects before running each test
 	 **/
 	public final function setUp()  : void {
@@ -57,12 +69,12 @@ class TsvpTest extends TestCase {
 	/**
 	 * test inserting a valid Rsvp and verify that the actual mySQL data matches
 	 **/
-	public function testInsertValidResvp() : void {
+	public function testInsertValidRsvp() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("rsvp");
 
 		// create a new Rsvp and insert into mySQL
-		$rsvp = new Rsvp($this->profile->getProfileId(), $this->event->getEventId());
+		$rsvp = new Rsvp($this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_RSVPEVENTCOUNTER);
 		$rsvp->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -70,6 +82,7 @@ class TsvpTest extends TestCase {
 		$this->asserEquals($numRows = 1, $this->getConnectoion()->getRowCount("rsvp"));
 		$this->assertEquals($pdoRsvp->getRsvpProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoRsvp->getRsvpEventId(), $this->event->getEventId());
+		$this->assertEquals($pdoRsvp->getRsvpEventCounter(), $this->VALID_RSVPEVENTCOUNTER);
 
 	}
 
