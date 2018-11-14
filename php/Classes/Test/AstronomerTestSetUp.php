@@ -10,7 +10,7 @@ use PHPUnit\DbUnit\Operation\{Composite, Factory, Operation};
 
 // grab the encrypted properties file
 require_once("/etc/apache2/capstone-mysql/cohort22/astronomers");
-require_once ("autoload.php");
+require_once("autoload.php");
 require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
 
 /**

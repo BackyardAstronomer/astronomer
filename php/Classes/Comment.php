@@ -2,7 +2,7 @@
 
 namespace BackyardAstronomer\Astronomer;
 require_once(dir(__DIR__, 2) . "/vendor/autoload.php");
-require_once ("autoload.php");
+require_once("autoload.php");
 use Ramsey\Uuid\Uuid;
 
 /**
