@@ -33,7 +33,7 @@ class EventTest extends AstronomerTestSetUp {
 
 	/**
 	 * content of the event
-	 * @var string
+	 * @var string $VALID_EVENT_CONTENT
 	 */
 	protected $VALID_EVENT_CONTENT = "PHPUnit test passing";
 
@@ -42,6 +42,18 @@ class EventTest extends AstronomerTestSetUp {
 	 * @var string $VALID_EVENT_CONTENT2
 	 */
 	protected $VALID_EVENT_CONTENT2 = "PHPUnit test still passing";
+
+	/**
+	 * Title of the event
+	 * @var string $VALID_EVENT_TITLE
+	 */
+	protected $VALID_EVENT_TITLE = "PHPUnit test passing";
+
+	/**
+	 *title of the updated event
+	 * @var string $VALID_EVENT_TITLE2
+	 */
+	protected $VALID_EVENT_TITLE2 = "PHPUnit test still passing";
 
 	/**
 	 * timestamp of the event; this starts as null and is assigned later
@@ -72,6 +84,28 @@ class EventTest extends AstronomerTestSetUp {
 		$this->VALID_EVENT_START_DATE = new \DateTime();
 		//calculate the end date
 		$this->VALID_EVENT_END_DATE = new \DateTime();
+	}
+
+	public function testInsertValidEvent() : void {
+		//count the number of rows and save for later
+		$numRows = $this->getConnection()->getRowCount("event");
+
+		//create new event and insert into MySQL
+		$eventId = generateUuidV4();
+		$event = new Event($eventId, $this->profile->getProfileId(), $this->profile->getProfileId(), $this->VALID_EVENT_TITLE, $this->VALID_EVENT_CONTENT, $this->VALID_EVENT_START_DATE, $this->VALID_EVENT_END_DATE);
+		$event->insert($this->getPDO());
+
+		//grab the data form MySQL and enforce the fields match our expectations
+		$pdoEvent = Event::getEventByEventId($this->getPDO(), $event->getEventId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
+		$this->assertEquals($pdoEvent->getEventId(), $eventId);
+		$this->assertEquals($pdoEvent->getEventEventTypeId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoEvent->getEventProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoEvent->getEventTitle(), $this->VALID_EVENT_TITLE);
+		$this->assertEquals($pdoEvent->getEventContent(), $this->VALID_EVENT_CONTENT);
+		//format the dates 2 seconds since the beginning of time to avoid rounding error
+		$this->assertEquals($pdoEvent->getEventStartDate()->getTimestamp(), $this->VALID_EVENT_START_DATE->getTimestamp());
+		$this->assertEquals($pdoEvent->getEventEndDate()->getTimestamp(), $this->VALID_EVENT_END_DATE->getTimestamp());
 	}
 
 
