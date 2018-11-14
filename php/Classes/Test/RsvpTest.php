@@ -52,11 +52,19 @@ class TsvpTest extends TestCase {
 		// create and insert a Event to test Rsvp
 		$this->event = new Event(generateUuidV4(), generateUuidV4(), generateUuidV4(), "blind star watch party","may the braille be with you","05/04/77", "05/25/77");
 
-
-
-
-
 	}
+
+	/**
+	 * test inserting a valid Rsvp and verify that the actual mySQL data matches
+	 **/
+	public function testInsertValidResvp() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("rsvp");
+
+		// create a new Rsvp and insert into mySQL
+		$rsvpID
+	}
+
 
 
 

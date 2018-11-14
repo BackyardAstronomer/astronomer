@@ -174,48 +174,8 @@ class Rsvp implements \JsonSerializable {
 		$statement->execute($parameters);
 	}
 
+//took out get Rsvp by rsvpId
 
-	/**
-	 * gets the Rsvp by rsvpId
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @param Uuid|string $rsvpId tweet id to search for
-	 * @return Rsvp|null Rsvp found or null if not found
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when a variable are not the correct data type
-	 **/
-	public static function getRsvpByRsvpId(\PDO $pdo, $rsvpEventId, $rsvpProfileId) : ?Rsvp {
-		// sanitize the rsvpId before searching
-		try {
-			$rsvpEventId = self::validateUuid($rsvpEventId);
-			$rsvpProfileId = self::validateUuid($rsvpProfileId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
-		}
-
-		// create query template
-		$query = "SELECT rsvpProfileId, rsvpEventId, rsvpEventCounter FROM rsvp WHERE rsvpEventId = :rsvpEventId and WHERE rsvpProfileId = :rsvpProfileId ";
-		$statement = $pdo->prepare($query);
-
-		// bind the rsvpEventId and rsvpProfileId to the place holder in the template
-		$parameters = ["rsvpEventId" => $rsvpEventId->getBytes()];
-		$parameters = ["rsvpProfileId" => $rsvpProfileId->getBytes()];
-		$statement->execute($parameters);
-
-		// grab the rsvp from mySQL
-		try {
-			$rsvp = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
-			if($row !== false) {
-				$rsvp = new rsvp($row["rsvpProfileId"], $row["rsvpEventId"], $row["rsvpEventCounter"]);
-			}
-		} catch(\Exception $exception) {
-			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
-		}
-		return($rsvp);
-	}
 
 	/**
 	 * gets the Rsvp by  RsvpProfileId
