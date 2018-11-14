@@ -1,14 +1,12 @@
 <?php
 namespace BackyardAstronomer\Astronomer;
-use BackyardAstronomer\astronomer\{Event, Profile, Comment};
 
-require_once ("AstronomerTestSetUp.php");
+use  BackyardAstronomer\Astronomer\Event;
+
+require_once("AstronomerTestSetUp.php");
+
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
-
-// grab the uuid generator
-require_once(dirname(__DIR__) . "../lib/Uuid.php");
-require_once (dirname(__DIR__) . "");
 
 /**
  *  Full PHPUnit test for Event class

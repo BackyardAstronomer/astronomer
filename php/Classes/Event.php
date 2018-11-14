@@ -1,7 +1,7 @@
 <?php
 namespace BackyardAstronomer\Astronomer;
 require_once("autoload.php");
-require_once(dirname(__DIR__,2) . "../vendor/autoload.php");
+require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 
 use Ramsey\Uuid\Uuid;
 /**
@@ -393,7 +393,7 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 			$event = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
-			if($row === true) {
+			if($row !== false) {
 				$event = new Event($row["eventId"], $row["eventEventTypeId"], $row["eventProfileId"], $row["eventTitle"], $row["eventContent"], $row["eventStartDate"], $row["eventEndDate"]);
 			}
 		} catch(\Exception $exception){
