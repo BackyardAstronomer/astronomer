@@ -1,6 +1,6 @@
 <?php
 namespace BackyardAstronomer\Astronomer;
-use BackyardAstronomer\astronomer\{Event, Profile};
+use BackyardAstronomer\astronomer\{Event, Profile, Comment};
 
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
