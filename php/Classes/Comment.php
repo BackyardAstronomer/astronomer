@@ -136,8 +136,9 @@ class Comment {
 		if(empty($newCommentContent) === true) {
 			throw(new \RangeException("Comment content is empty or insecure"));
 		}
-//TODO check for range exception
-
+		if(strlen ($newCommentContent)>255) {
+			throw (new \RangeException("Comment is too many characters"));
+		}
 		//store the comment content
 		$this->commentContent = $newCommentContent;
 	}
@@ -303,7 +304,7 @@ public function setCommentDate($newCommentDate = null): void {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $comment comment id to search for
-	 * @return Comment\null comment found or null if not found
+	 * @return comment\null comment found or null if not found
 	 * @throws \PDOException when mySQL related error occur
 	 * @throws \TypeError when a variable is not the correct data type
 	 *
