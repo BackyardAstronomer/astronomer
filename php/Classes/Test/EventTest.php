@@ -108,5 +108,33 @@ class EventTest extends AstronomerTestSetUp {
 		$this->assertEquals($pdoEvent->getEventEndDate()->getTimestamp(), $this->VALID_EVENT_END_DATE->getTimestamp());
 	}
 
+/**
+ * test inserting Event, editing it, and updating it
+ */
 
+public function testUpdateValidEvent() : void{
+	//count the number of rows and save it for later
+	$numRows = $this->getConnection()->getRowCount("event");
+
+	//create a new Event and insert into MySQL
+	$eventId = generateUuidV4();
+	$event = new Event($eventId, $this->profile->getProfileId(), $this->profile->getProfileId(), $this->VALID_EVENT_TITLE, $this->VALID_EVENT_CONTENT, $this->VALID_EVENT_START_DATE, $this->VALID_EVENT_END_DATE);
+	$event->insert($this->getPDO());
+
+	//edit the Event and update in MySQL
+	$event->setEventContent($this->VALID_EVENT_CONTENT2);
+	$event->update($this->getPDO());
+
+	//grab the data form MySQL and enforce the fields match our expectations
+	$pdoEvent = Event::getEventByEventId($this->getPDO(), $event->getEventId());
+	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
+	$this->assertEquals($pdoEvent->getEventId(), $eventId);
+	$this->assertEquals($pdoEvent->getEventEventTypeId(), $this->profile->getProfileId());
+	$this->assertEquals($pdoEvent->getEventProfileId(), $this->profile->getProfileId());
+	$this->assertEquals($pdoEvent->getEventTitle(), $this->VALID_EVENT_TITLE2);
+	$this->assertEquals($pdoEvent->getEventContent(), $this->VALID_EVENT_CONTENT2);
+	//format the dates 2 seconds since the beginning of time to avoid rounding error
+	$this->assertEquals($pdoEvent->getEventStartDate()->getTimestamp(), $this->VALID_EVENT_START_DATE->getTimestamp());
+	$this->assertEquals($pdoEvent->getEventEndDate()->getTimestamp(), $this->VALID_EVENT_END_DATE->getTimestamp());
+}
 }
