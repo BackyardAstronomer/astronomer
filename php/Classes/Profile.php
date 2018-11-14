@@ -70,8 +70,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 */
 
-	public function __construct($newProfileId, string $newProfileEmail, string $newProfileBio, string $newProfileName,
-										 string $newProfileImage, string $newProfileActivationToken, string $newProfileHash) {
+	public function __construct($newProfileId, string $newProfileActivationToken, string $newProfileBio, string $newProfileEmail,  string $newProfileHash,  string $newProfileImage, string $newProfileName) {
 
 		try {
 
