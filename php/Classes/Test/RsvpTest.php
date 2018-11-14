@@ -88,7 +88,7 @@ class TsvpTest extends TestCase {
 		$rsvp->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoRsvp = Rsvp::getRsvpByRvpEventIdRsvpProfileId($this->getPDO(), $rsvp->getRsvpByRvpEventIdRsvpProfileId());
+		$pdoRsvp = Rsvp::getRsvpByRsvpProfileIdRsvpEventId($this->getPDO(), $rsvp->getRsvpByRsvpProfileIdRsvpEventId());
 		$this->asserEquals($numRows = 1, $this->getConnectoion()->getRowCount("rsvp"));
 		$this->assertEquals($pdoRsvp->getRsvpProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoRsvp->getRsvpEventId(), $this->event->getEventId());

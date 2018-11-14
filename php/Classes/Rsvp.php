@@ -184,17 +184,17 @@ class Rsvp implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getRsvpByRvpEventIdRsvpProfileId(\PDO $pdo, $rsvpEventId, $rsvpProfileId) : ?Rsvp {
+	public static function getRsvpByRsvpProfileIdRsvpEventId(\PDO $pdo,$rsvpProfileId, $rsvpEventId ) : ?Rsvp {
 		// sanitize the rsvpId before searching
 		try {
-			$rsvpEventId = self::validateUuid($rsvpEventId);
 			$rsvpProfileId = self::validateUuid($rsvpProfileId);
+			$rsvpEventId = self::validateUuid($rsvpEventId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 
 		// create query template
-		$query = "SELECT rsvpProfileId, rsvpEventId, rsvpEventCounter FROM rsvp WHERE rsvpEventId = :rsvpEventId and WHERE rsvpProfileId = :rsvpProfileId ";
+		$query = "SELECT rsvpProfileId, rsvpEventId, rsvpEventCounter FROM rsvp WHERE rsvpProfileId = :rsvpProfileId and WHERE rsvpEventId = :rsvpEventId  ";
 		$statement = $pdo->prepare($query);
 
 		// bind the rsvpEventId and rsvpProfileId to the place holder in the template
