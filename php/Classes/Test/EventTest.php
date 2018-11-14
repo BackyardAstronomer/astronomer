@@ -173,7 +173,8 @@ class EventTest extends AstronomerTestSetUp {
 	 */
 	public function testGetInvalidEventByEventId() : void {
 		// grab a profile id that exceeds the maximum allowable profile id
-		$event = Event::getEventByEventId($this->getPDO(), generateUuidV4());
+		$eventId = generateUuidV4();
+		$event = Event::getEventByEventId($this->getPDO(), $eventId);
 		$this->assertNull($event);
 	}
 
@@ -193,7 +194,7 @@ class EventTest extends AstronomerTestSetUp {
 		$results = Event::getEventByEventEventTypeId($this->getPDO(), $event->getEventEventTypeId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\php\\Classes\\Event", $results);
+		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\Event", $results);
 
 		//grab the result from the array and validate it
 		$pdoEvent = $results[0];
