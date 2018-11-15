@@ -66,9 +66,10 @@ class Comment {
 		try {
 			$this->setCommentId($newCommentId);
 			$this->setCommentProfileId($newCommentProfileId);
+			$this->setCommentEventId($newCommentEventId);
 			$this->setCommentContent($newCommentContent);
 			$this->setCommentDate($newCommentDate);
-			$this->setCommentEventId($newCommentEventId);
+
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exception = get_class($exception);
 			throw(new $exception($exception->getMessage(), 0, $exception));
