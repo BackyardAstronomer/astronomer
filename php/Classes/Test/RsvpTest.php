@@ -72,7 +72,7 @@ class TsvpTest extends TestCase {
 		$this->eventType->insert($this->getPdo);
 
 		// create and insert a Event to test Rsvp
-		$this->event = new Event(generateUuidV4(), generateUuidV4(), generateUuidV4(), "blind star watch party","May the braille be with you","\DateTime()", "\DateTime()");
+		$this->event = new Event(generateUuidV4(), $this->eventType->getEventTypeId(), $this->profileType->getProfileTypeId(), "blind star watch party","May the braille be with you","\DateTime()", "\DateTime()");
 
 	}
 
@@ -131,5 +131,9 @@ class TsvpTest extends TestCase {
 		$results = Rsvp::getRsvpByRsvpProfileId($this->PDO(), $rsvp->getRsvpProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
 		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\Astronomer\php\classes\rsvp", $results);
+
+		//grab the result from the array and validate it
+		$pdoRsvp = $results[0];
 	}
 }
