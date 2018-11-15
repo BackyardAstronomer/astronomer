@@ -4,6 +4,7 @@ namespace BackyardAstronomer\Astronomer;
 use  BackyardAstronomer\Astronomer\Event;
 
 require_once("AstronomerTestSetUp.php");
+require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
 
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
@@ -25,7 +26,7 @@ class EventTest extends AstronomerTestSetUp {
 	protected $profile = null;
 
 	/**
-	 * EventType that classifies the event; this is for foriegn key relations
+	 * EventType that classifies the event; this is for foreign key relations
 	 * @var EventType eventType
 	 */
 	protected $eventType = null;
@@ -82,10 +83,12 @@ class EventTest extends AstronomerTestSetUp {
 		$this->VALID_PROFILE_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
 
 		//create and insert a profile to own the event
-		$this->profile = new Profile(generateUuidV4(), 'thisisanemail@test.com', "this is a bio blah blah blah blah", "Test Astronomer", null, null, $this->VALID_PROFILE_HASH);
+		$profileId = generateUuidV4();
+		$this->profile = new Profile($profileId, 'thisisanemail@test.com', "this is a bio blah blah blah blah", "Test Astronomer", null, null, $this->VALID_PROFILE_HASH);
 		$this->profile->insert($this->getPDO());
 		//create and insert an event type to classify the event
-		$this->eventType = new EventType(generateUuidV4(), "This Is Event Name");
+		$eventTypeId = generateUuidV4();
+		$this->eventType = new EventType($eventTypeId, "This Is Event Name");
 		$this->eventType->insert($this->getPDO());
 
 		//calculate the start date (date unit test was set up...)
