@@ -117,9 +117,9 @@ class TsvpTest extends TestCase {
 	}
 
 /**
-* gets the Rsvp by resvpEventId and RsvpProfileId
+* gets the Rsvp by RsvpProfileId
 **/
-	public function testGetValidRsvpbyRsvpProfileId() : void {
+	public function testGetValidRsvpByRsvpProfileId() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("rsvp");
 
@@ -128,5 +128,8 @@ class TsvpTest extends TestCase {
 		$rsvp->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Rsvp::getRsvpByRsvpProfileId($this->PDO(), $rsvp->getRsvpProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
+		$this->assertCount(1, $results);
 	}
 }
