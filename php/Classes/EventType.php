@@ -115,11 +115,11 @@ public function setEventTypeName(string $newEventTypeName) : void {
 	public function insert(\PDO $pdo) : void {
 
 		// create query template
-		$query = "INSERT INTO EventType(eventTypeId, eventTypeName) VALUES(:eventTypeId, :eventTypeName)";
+		$query = "INSERT INTO eventType(eventTypeId, eventTypeName) VALUES(:eventTypeId, :eventTypeName)";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["eventTypeId" => $this->eventTypeId->getBytes(), "eventTypeName" => $this->eventTypeName,];
+		$parameters = ["eventTypeId" => $this->eventTypeId->getBytes(), "eventTypeName" => $this->eventTypeName];
 		$statement->execute($parameters);
 	}
 
@@ -133,7 +133,7 @@ public function setEventTypeName(string $newEventTypeName) : void {
 	public function delete(\PDO $pdo) : void {
 
 		// create query template
-		$query = "DELETE FROM EventType WHERE eventTypeId = :eventTypeId";
+		$query = "DELETE FROM eventType WHERE eventTypeId = :eventTypeId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holder in the template
@@ -151,7 +151,7 @@ public function setEventTypeName(string $newEventTypeName) : void {
 	public function update(\PDO $pdo) : void {
 
 		// create query template
-		$query = "UPDATE EventType SET eventTypeId = :eventTypeId, eventTypeName = :eventTypeName";
+		$query = "UPDATE eventType SET eventTypeId = :eventTypeId, eventTypeName = :eventTypeName";
 		$statement = $pdo->prepare($query);
 
 
@@ -220,7 +220,7 @@ public function setEventTypeName(string $newEventTypeName) : void {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$eventType = new eventType($row["eventTypeId"], $row["eventTypeName"]);
-				$eventTypes[$eventType->key()] = $eventType;
+				$eventTypes[$eventTypes->key()] = $eventType;
 				$eventTypes->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it

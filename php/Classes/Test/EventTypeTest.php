@@ -2,12 +2,12 @@
 namespace BackyardAstronomer\Astronomer;
 require_once("AstronomerTestSetUp.php");
 
-use BackyardAstronomer\Astronomer\php\classes\EventType;
+use BackyardAstronomer\Astronomer\EventType;
 
 // grab the uuid generator
-require_once(dirname(__DIR__, 3) . "/lib/uuid.php");
+require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
 
-require_once("autoload.php");
+require_once(dirname(__DIR__)."/autoload.php");
 require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
 
 /**
@@ -41,7 +41,7 @@ public function testInsertValidEventType() : void {
 	$numRows = $this->getConnection()->getRowCount("eventType");
 
 	//create a new EventType and insert into mySql
-	$eventTypeId =generateUuidV4();
+	$eventTypeId = generateUuidV4();
 	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
 	$eventType->insert($this->getPDO());
 
@@ -49,8 +49,8 @@ public function testInsertValidEventType() : void {
 	$pdoEventType = EventType::getEventTypeByEventTypeId($this->getPDO(), $eventType->getEventTypeId());
 	$this->assertEquals($pdoEventType->getEventTypeId(), $eventTypeId);
 	$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("eventType"));
-	$this->assertEquals($pdoEventType->getEventTypeId());
-	$this->assertEquals($pdoEventType->getEventTypeName(),$this->VALID_EVENTTYPENAME2);
+	$this->assertEquals($pdoEventType->getEventTypeId(), $eventTypeId);
+	$this->assertEquals($pdoEventType->getEventTypeName(),$this->VALID_EVENTTYPENAME);
 
 }
 
@@ -94,7 +94,7 @@ public function testUpdateValidEventType() : void {
 	$pdoEventType = EventType::getEventTypeByEventTypeId($this->getPDO(), $eventType->getEventTypeId());
 	$this->assertEquals($pdoEventType->getEventTypeId(), $eventTypeId);
 	$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("eventType"));
-	$this->assertEquals($pdoEventType->getEventTypeId());
+	$this->assertEquals($pdoEventType->getEventTypeId(), $eventTypeId);
 	$this->assertEquals($pdoEventType->getEventTypeName(),$this->VALID_EVENTTYPENAME2);
 
 }
@@ -111,10 +111,11 @@ public function testGetAllValidEventType() : void {
 
 	//grab the data from mySQL and make sure the field match
 	// getting data from mySQL and enforce the fields match our expectations
-	$results = EventType::getAllEventType($this->getPDO());
+	$results = eventType::getAllEventTypes($this->getPDO());
 	$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("eventType"));
-	$this->assertEquals(1, $results);
-	$this->assertContainsOnlyInstancesOf("BackyardAstronomer\Astronomer\php\classes\EventType", $results);
+	$this->assertCount(1, $results);
+	//enfoce no other objects bled into test
+	$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\EventType", $results);
 
 	//grab results for the array and validate
 	$pdoEventType = $results[0];
