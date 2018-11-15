@@ -88,17 +88,32 @@ class TsvpTest extends TestCase {
 		$rsvp->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoRsvp = Rsvp::getRsvpByRsvpProfileIdRsvpEventId($this->getPDO(), $rsvp->getRsvpByRsvpProfileIdRsvpEventId());
+		$pdoRsvp = Rsvp::getRsvpByRsvpProfileIdRsvpEventId($this->getPDO(), $rsvp->getRsvpProfileId(), $rsvp->getRsvpEventId());
 		$this->asserEquals($numRows = 1, $this->getConnectoion()->getRowCount("rsvp"));
 		$this->assertEquals($pdoRsvp->getRsvpProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoRsvp->getRsvpEventId(), $this->event->getEventId());
 		$this->assertEquals($pdoRsvp->getRsvpEventCounter(), $this->VALID_RSVPEVENTCOUNTER);
 	}
 
+	/**
+	 * test creating a Rsvp and then deleting it
+	 **/
+	public function testDeleteValidRsvp() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("rsvp");
 
+		// create a new Rsvp and insert into mySQL
+		$rsvp = new Rsvp($this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_RSVPEVENTCOUNTER);
+		$rsvp->insert($this->getPDO());
 
+		//delete the Rsvp from MySQL
+		$this->asserEquals($numRows = 1, $this->getConnectoion()->getRowCount("rsvp"));
+		$rsvp->delete($this->getPDO());
 
-
-
+// grab the data from mySQL and enforce the fields match our expectations
+		$pdoRsvp = Rsvp::getRsvpByRsvpProfileIdRsvpEventId($this->getPDO(), $rsvp->getRsvpProfileId(), $rsvp->getRsvpEventId());
+		$this->assertNull($pdoRsvp);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("tweet"));
+	}
 
 }
