@@ -2,13 +2,10 @@
 namespace BackyardAstronomer\Astronomer;
 require_once("AstronomerTestSetUp.php");
 
-// grab the uuid generator
-require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
-
-
-
 use BackyardAstronomer\Astronomer\php\classes\EventType;
 
+// grab the uuid generator
+require_once(dirname(__DIR__, 3) . "/lib/uuid.php");
 
 require_once("autoload.php");
 require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
@@ -22,7 +19,7 @@ require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
  * @see eventType
  * @author Dayn Augustson <daugustson@cnm.edu>
  **/
-class EventTypeTest extends TestCase {
+class EventTypeTest extends AstronomerTestSetUp {
 
 	/**
 	 * content of the EventType
