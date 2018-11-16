@@ -408,7 +408,7 @@ public function setCommentDate($newCommentDate = null): void {
 			  throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($comment);
+		return($comments);
 	}
 
 } //this last one closes the class as a whole

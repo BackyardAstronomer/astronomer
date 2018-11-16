@@ -1,10 +1,8 @@
 <?php
 namespace BackyardAstronomer\Astronomer;
-use BackyardAstronomer\astronomer\ {Event, Profile, Comment};
+use BackyardAstronomer\Astronomer\ {Event, Profile, Comment};
 require_once (dirname(__DIR__) . "/autoload.php");
 require_once (dirname(__DIR__, 2) . "/lib/uuid.php");
-
-use phpDocumentor\Reflection\Types\Void_;
 use Ramsey\Uuid\Uuid;
 /**
  * Full PHPUnit test for Comment Class
@@ -21,20 +19,35 @@ class CommentTest extends AstronomerTestSetUp {
 	 * @var Profile $profile
 	 */
 	protected $profile = null;
+
 	/**
 	 * event that the comment is on for foreign key relations
 	 * @var Event $event
 	 *
 	 */
-	protected $event;
-
+	protected $event = null;
 
 	/**
-	 * valid  hash to create
+	 * valid hash to create
 	 * @var  $VALID_HASH
 	 *
 	 */
 	protected $VALID_HASH;
+
+	/**
+	 * content of the comment
+	 * @var string $VALID_COMMENT_CONTENT
+	 */
+
+	protected $VALID_COMMENT_CONTENT = "nice";
+
+	/**
+	 * content of the comment
+	 * @var string $VALID_COMMENT_CONTENT2
+	 */
+
+	protected $VALID_COMMENT_CONTENT2 = "nice again";
+
 
 	/**
 	 *timestamp of the comment; this starts as null and is assigned later
@@ -42,13 +55,9 @@ class CommentTest extends AstronomerTestSetUp {
 	 */
 	protected $VALID_COMMENTDATE;
 
-/**
- * valid activationToken to create the comment object to own the test
- * @var string $VALID_ACTIVATION
- */
-
-protected $VALID_ACTIVATION;
-
+	/**
+	 *create dependant objects before running each test
+	 */
 
 
 
@@ -58,15 +67,25 @@ public final function setUp(): void {
 
 	//create a salt and hash for the mocked profile
 	$password = "abc123";
-	$this->VALID_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
-	$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
+	$this->VALID_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost"=>384]);
 
 	//create and insert the mocked profile
-	$this->profile = new Profile(generateUuidV4(), generateUuidV4(), "This is a sample bio", sampleemail@test . com, null, null, "Jane Smith");
+	$profileId = generateUuidV4();
+	$this->profile = new Profile($profileId, "this is an activation token", "This is a sample bio", "sampleemail@test.com", $this->VALID_HASH, null, "Jane Smith");
 	$this->profile->insert($this->getPDO());
 
-	//create and insert mocked comment
-	$this->comment - new Comment(generateUuidV4(), generateUuidV4(), generateUuidV4(), "Sample Comment Content", new \DateTime());
+
+	//create and insert event type
+	$eventTypeId = generateUuidV4();
+	$this->eventType = new EventType($eventTypeId, "Star Party");
+	$this->eventType->insert($this->getPDO());
+
+	//create and insert event
+	$eventId = generateUuidV4();
+	$this->event = new Event($eventId, $eventTypeId, $profileId, "Star Party", "Sample Content for Title", "\DateTime()", "\DateTime()" );
+	$this->event->insert($this->getPDO());
+
+
 
 
 	//calculate the date(just use the time the unit test was set up)
@@ -83,65 +102,73 @@ public final function setUp(): void {
 		$numRows = $this->getConnection()->getRowCount("comment");
 
 		//create a new comment and insert into MySQL
-		$comment = new Comment($this->profile->getProfileId(), $this->comment->getCommentId(), $this->VALID_COMMENTDATE);
+		$commentId = generateUuidV4();
+		$comment = new Comment($commentId, $this->event->getEventId(), $this->profile->getProfileId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENTDATE);
 		$comment->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoLike = Like::getCommentByCommentEventIdAndCommentProfileId($this->getPDO(), $this->profile->getProfileId(), $this->comment->getCommentId());
+		$pdoComment = Comment::getCommentByCommentId($this->getPDO(), 	$this->profile->getProfileId(), $this->event->getEventId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
-		$this->assertEquals($pdoLike->getLikeProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoLike->getCommentEventId(), $this->comment->getCommentId());
+		$this->assertEquals($pdoComment->getCommentId(), $commentId);
+		$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoComment->getCommentEventId(), $this->event->getEventId());
+		$this->assertEquals($pdoComment->getCommentContent(), $this->VALID_COMMENT_CONTENT);
 		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoLike->getCommentDate()->getTimeStamp(), $this->VALID_COMMENTDATE->getTimestamp());
+		$this->assertEquals($pdoComment->getCommentDate()->getTimeStamp(), $this->VALID_COMMENTDATE->getTimestamp());
+
 	}
 
 
+	/**
+	 *test inserting, editing, then updating a comment
+	 */
+
+
+	public function testUpdateValidComment() :void {
+		//count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("comment");
+
+		//create a new comment and insert into MySQL
+		$commentId = generateUuidV4();
+		$comment = new Comment($commentId, $this->event->getEventId(), $this->profile->getProfileId(), $this->VALID_COMMENT_CONTENT, $this->$this->VALID_COMMENTDATE);
+		$comment->insert($this->getPDO());
+
+		//edit the comment, and then update it
+		$comment->setCommentContent($this->VALID_COMMENT_CONTENT2);
+		$comment->update($this->getPDO());
+
+		//grab the data from MySQL and force the data to match the expectations
+		$pdoComment = Comment::getCommentByCommentId($this->getPDO(), $comment->getCommentContent());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
+		$this->assertEquals($pdoComment->getCommentId(), $commentId);
+		$this->assertEquals($pdoComment->getCommentEventId(), $this->event->getEventId());
+		$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoComment->getCommentContent(), $this->VALID_COMMENT_CONTENT2);
+
+		//format the dates 2 seconds since the beginning to avoid rounding error
+		$this->assertEquals($pdoComment->getCommentDate()->getTimestamp(), $this->VALID_COMMENTDATE->getTimestamp());
+	}
 	/**
 	 * test creating a comment and then deleting it
 	 **/
 	public function testDeleteValidComment() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("comment");
+
 		// create a new Comment and insert to into mySQL
-		$comment = new Like($this->profile->getProfileId(), $this->comment->getCommentId(), $this->VALID_COMMENTDATE);
+		$commentId = generateUuidV4();
+		$comment = new Comment($commentId, $this->profile->getProfileId(), $this->event->getEventId(),$this->VALID_COMMENT_CONTENT, $this->VALID_COMMENTDATE);
 		$comment->insert($this->getPDO());
+
 		// delete the Comment from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
 		$comment->delete($this->getPDO());
+
 		// grab the data from mySQL and enforce the Comment does not exist
-		$pdoComment = Comment::getCommentByEventIdAndCommentProfileId($this->getPDO(), $this->profile->getProfileId(), $this->event->getEventId());
+		$pdoComment = Comment::getCommentByCommentId($this->getPDO(), $comment);
 		$this->assertNull($pdoComment);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("comment"));
 	}
-
-
-	/**
-	 * test inserting a Comment and regrabbing it from mySQL
-	 **/
-	public function testGetValidCommentByEventIdAndProfileId() : void {
-		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("comment");
-		// create a new Comment and insert to into mySQL
-		$comment = new Comment($this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_COMMENTDATE);
-		$comment->insert($this->getPDO());
-		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoLike = Comment::getCommentByCommentEventIdAndCommentProfileId($this->getPDO(), $this->profile->getProfileId(), $this->event->getCommentId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
-		$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoComment->getCommentEventId(), $this->event->getEventId());
-		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoComment->getCommentDate()->getTimeStamp(), $this->VALID_COMMENTDATE->getTimestamp());
-	}
-
-	/**
-	 * test grabbing a Comment that does not exist
-	 **/
-	public function testGetInvalidCommentByEventIdAndProfileId() {
-		// grab a event id and profile id that exceeds the maximum allowable event id and profile id
-		$comment = Comment::getCommentByCommentEventIdAndCommentProfileId($this->getPDO(), generateUuidV4(), generateUuidV4());
-		$this->assertNull($comment);
-	}
-
 
 
 	/**
@@ -150,31 +177,27 @@ public final function setUp(): void {
 	public function testGetValidCommentByEventId() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("comment");
+
 		// create a new Comment and insert to into mySQL
-		$like = new Like($this->profile->getProfileId(), $this->tweet->getTweetId(), $this->VALID_LIKEDATE);
-		$like->insert($this->getPDO());
+		$commentId = generateUuidV4();
+		$comment = new Comment($commentId, $this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_COMMENT_CONTENT, $this->VALID_COMMENTDATE);
+		$comment->insert($this->getPDO());
+
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Comment::getCommentByCommentEventId($this->getPDO(), $this->event->getEventId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\BackyardAstronomers\\Comment", $results);
+		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\Comment", $results);
+
 		// grab the result from the array and validate it
-		$pdoLike = $results[0];
+		$pdoComment = $results[0];
 		$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoComment->getCommentEventId(), $this->event->getEventId());
-		//format the date too seconds since the beginning of time to avoid round off error
+		//format the date two seconds since the beginning of time to avoid round off error
 		$this->assertEquals($pdoComment->getCommentDate()->getTimeStamp(), $this->VALID_COMMENTDATE->getTimestamp());
 	}
 
 
-	/**
-	 * test grabbing a Comment by a event id that does not exist
-	 **/
-	public function testGetInvalidCommentByEventId() : void {
-		// grab a event id that exceeds the maximum allowable event id
-		$comment = Comment::getCommentByCommentEventId($this->getPDO(), generateUuidV4());
-		$this->assertCount(0, $comment);
-	}
 	/**
 	 * test grabbing a Comment by profile id
 	 **/
@@ -182,14 +205,14 @@ public final function setUp(): void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("comment");
 		// create a new Comment and insert to into mySQL
-		$comment = new Comment($this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_COMMENTDATE);
+		$comment = new Comment($this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_COMMENTDATE, $this->VALID_COMMENT_CONTENT);
 		$comment->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Comment::getCommentByCommentProfileId($this->getPDO(), $this->profile->getProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
 		$this->assertCount(1, $results);
 		// enforce no other objects are bleeding into the test
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\BackyardAstronomers\\Comment", $results);
+		$this->assertContainsOnlyInstancesOf("BackyardAstronomers\\Astronomer\\Comment", $results);
 		// grab the result from the array and validate it
 		$pdoComment = $results[0];
 		$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());
@@ -198,14 +221,6 @@ public final function setUp(): void {
 		$this->assertEquals($pdoComment->getCommentDate()->getTimeStamp(), $this->VALID_COMMENTDATE->getTimestamp());
 	}
 
-	/**
-	 * test grabbing a Comment by a profile id that does not exist
-	 **/
-	public function testGetInvalidCommentByProfileId() : void {
-		// grab a comment id that exceeds the maximum allowable profile id
-		$comment = Comment::getCommentByCommentProfileId($this->getPDO(), generateUuidV4());
-		$this->assertCount(0, $comment);
-	}
 
 
 
