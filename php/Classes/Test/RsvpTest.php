@@ -1,10 +1,15 @@
 <?php
 namespace BackyardAstronomer\Astronomer;
 
-//todo need to look over the path below
-use BackyardAstronomer\Astronomer\php\classes\rsvp;
+namespace BackyardAstronomer\Astronomer;
+require_once("AstronomerTestSetUp.php");
 
-require_once("autoload.php");
+use BackyardAstronomer\Astronomer\Rsvp;
+
+// grab the uuid generator
+require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
+
+require_once(dirname(__DIR__)."/autoload.php");
 require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
 
 /**
