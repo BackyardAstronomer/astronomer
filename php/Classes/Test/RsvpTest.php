@@ -21,7 +21,7 @@ require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
  * @see Rsvp
  * @author Dayn Augustson <daugustson@cnm.edu>
  **/
-class TsvpTest extends TestCase {
+class TsvpTest extends AstronomerTestSetUp{
 	/**
 	 * Profile that created the Rsvp; this is for foreign key relations
 	 * @var Profile profile
@@ -141,4 +141,28 @@ class TsvpTest extends TestCase {
 		//grab the result from the array and validate it
 		$pdoRsvp = $results[0];
 	}
+
+	/**
+	 * gets the Rsvp by RsvpEventId
+	 **/
+	public function testGetValidRsvpByRsvpEventId() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("rsvp");
+
+		// create a new Rsvp and insert into mySQL
+		$rsvp = new Rsvp($this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_RSVPEVENTCOUNTER);
+		$rsvp->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$results = Rsvp::getRsvpByRsvpEventeId($this->PDO(), $rsvp->getRsvpEventId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\Rsvp", $results);
+
+		//grab the result from the array and validate it
+		$pdoRsvp = $results[0];
+	}
+
+
+
 }
