@@ -69,15 +69,18 @@ class TsvpTest extends AstronomerTestSetUp{
 
 
 		// create and insert a Profile to the test Rsvp
-		$this->profile = new Profile(generateUuidV4(), Null, "I am Groot", "test@phpunit.de",$this->VALID_PROFILE_HASH ,"https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "Dilbert");
+		$profileId = generateUuidV4();
+		$this->profile = new Profile($profileId, Null, "I am Groot", "test@phpunit.de",$this->VALID_PROFILE_HASH ,"https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "Dilbert");
 		$this->profile->insert($this->getPDO());
 
 		// create and insert EventType to test Rsvp
-		$this->eventType = new EventType(generateUuidV4(), "blind star watch");
+		$eventTypeId = generateUuidV4();
+		$this->eventType = new EventType($eventTypeId, "blind star watch");
 		$this->eventType->insert($this->getPdo);
 
 		// create and insert a Event to test Rsvp
-		$this->event = new Event(generateUuidV4(), $this->eventType->getEventTypeId(), $this->profileType->getProfileTypeId(), "blind star watch party","May the braille be with you","\DateTime()", "\DateTime()");
+		$eventId = generateUuidV4();
+		$this->event = new Event($eventId, $this->eventType->getEventTypeId(), $this->profileType->getProfileTypeId(), "blind star watch party","May the braille be with you","\DateTime()", "\DateTime()");
 
 	}
 
@@ -94,7 +97,7 @@ class TsvpTest extends AstronomerTestSetUp{
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoRsvp = Rsvp::getRsvpByRsvpProfileIdRsvpEventId($this->getPDO(), $rsvp->getRsvpProfileId(), $rsvp->getRsvpEventId());
-		$this->asserEquals($numRows = 1, $this->getConnectoion()->getRowCount("rsvp"));
+		$this->asserEquals($numRows + 1, $this->getConnectoion()->getRowCount("rsvp"));
 		$this->assertEquals($pdoRsvp->getRsvpProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoRsvp->getRsvpEventId(), $this->event->getEventId());
 		$this->assertEquals($pdoRsvp->getRsvpEventCounter(), $this->VALID_RSVPEVENTCOUNTER);
@@ -112,13 +115,13 @@ class TsvpTest extends AstronomerTestSetUp{
 		$rsvp->insert($this->getPDO());
 
 		//delete the Rsvp from MySQL
-		$this->asserEquals($numRows = 1, $this->getConnectoion()->getRowCount("rsvp"));
+		$this->asserEquals($numRows + 1, $this->getConnectoion()->getRowCount("rsvp"));
 		$rsvp->delete($this->getPDO());
 
 // grab the data from mySQL and enforce the fields match our expectations
 		$pdoRsvp = Rsvp::getRsvpByRsvpProfileIdRsvpEventId($this->getPDO(), $rsvp->getRsvpProfileId(), $rsvp->getRsvpEventId());
 		$this->assertNull($pdoRsvp);
-		$this->assertEquals($numRows, $this->getConnection()->getRowCount("tweet"));
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("rsvp"));
 	}
 
 /**
@@ -140,6 +143,10 @@ class TsvpTest extends AstronomerTestSetUp{
 
 		//grab the result from the array and validate it
 		$pdoRsvp = $results[0];
+		$this->assertEquals($pdoRsvp->getRsvpProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoRsvp->getRsvpEventId(), $this->event->getEventId());
+		$this->assertEquals($pdoRsvp->getRsvpEventCounter(), $this->VALID_RSVPEVENTCOUNTER);
+
 	}
 
 	/**
@@ -161,15 +168,18 @@ class TsvpTest extends AstronomerTestSetUp{
 
 		//grab the result from the array and validate it
 		$pdoRsvp = $results[0];
-	}
+		$this->assertEquals($pdoRsvp->getRsvpProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoRsvp->getRsvpEventId(), $this->event->getEventId());
+		$this->assertEquals($pdoRsvp->getRsvpEventCounter(), $this->VALID_RSVPEVENTCOUNTER);
 
+	}
+/**
 //test grab all Rsvp
 	public function testGetAllValidRsvp() : void {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("eventType");
 
 		//create a new EventType and insert into mySql
-		$eventTypeId = generateUuidV4();
 		$rsvp = new Rsvp($this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_RSVPEVENTCOUNTER);
 		$rsvp->insert($this->getPDO());
 
@@ -189,5 +199,5 @@ class TsvpTest extends AstronomerTestSetUp{
 		$this->assertEquals($pdoRsvp->getRevpEventCounter(), $this->VALID_RSVPEVENTCOUNTER);
 
 	}
-
+**/
 }

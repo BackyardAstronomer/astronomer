@@ -179,7 +179,7 @@ class Rsvp implements \JsonSerializable {
 	 * gets the Rsvp by resvpEventId and RsvpProfileId
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param Uuid|string $rsvpId tweet id to search for
+	 * @param Uuid|string $rsvpId rsvp id to search for
 	 * @return Rsvp|null Rsvp found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
@@ -303,8 +303,7 @@ class Rsvp implements \JsonSerializable {
 	 * @return \SplFixedArray SplFixedArray of eventType found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
-	 **/
-	public static function getAllRsvp(\PDO $pdo) : \SPLFixedArray {
+	 static function getAllRsvp(\PDO $pdo) : \SPLFixedArray {
 		// create query template
 		$query = "SELECT rsvpProfileId, rsvpEventId, rsvpEventCounter FROM Rsvp";
 		$statement = $pdo->prepare($query);
@@ -325,6 +324,7 @@ class Rsvp implements \JsonSerializable {
 		}
 		return ($rsvp);
 	}
+	 ** /
 	/**
 	 * formats the state variables for JSON serialization
 	 *
