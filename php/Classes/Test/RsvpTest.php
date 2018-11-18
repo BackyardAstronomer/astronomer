@@ -163,6 +163,31 @@ class TsvpTest extends AstronomerTestSetUp{
 		$pdoRsvp = $results[0];
 	}
 
+//test grab all Rsvp
+	public function testGetAllValidRsvp() : void {
+		//count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("eventType");
 
+		//create a new EventType and insert into mySql
+		$eventTypeId = generateUuidV4();
+		$rsvp = new Rsvp($this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_RSVPEVENTCOUNTER);
+		$rsvp->insert($this->getPDO());
+
+		//grab the data from mySQL and make sure the field match
+		// getting data from mySQL and enforce the fields match our expectations
+		$results = eventType::getAllRsvp($this->getPDO());
+		$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("rsvp"));
+		$this->assertCount(1, $results);
+		//enfoce no other objects bled into test
+		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\EventType", $results);
+
+		//grab results for the array and validate
+		$pdoRsvp = $results[0];
+		$this->assertEquals($pdoRsvp->(), $);
+		$this->assertEquals($pdoRsvp->getRsvpProfiledId(), $this->Profile->getProfileId);
+		$this->assertEquals($pdoRsvp->getRsvpEventId(), $this->event->getEventId);
+		$this->assertEquals($pdoRsvp->getRevpEventCounter(), $this->VALID_RSVPEVENTCOUNTER);
+
+	}
 
 }
