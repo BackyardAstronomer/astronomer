@@ -295,6 +295,36 @@ class Rsvp implements \JsonSerializable {
 		}
 		return($rsvps);
 	}
+
+	/**
+	 * gets all Rsvp
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of eventType found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllRsvp(\PDO $pdo) : \SPLFixedArray {
+		// create query template
+		$query = "SELECT rsvpProfileId, rsvpEventId, rsvpEventCounter FROM Rsvp";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of eventType
+		$rsvo = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$rsvp = new Rsvp($row["rsvpProfileId"], $row["rsvpEventId"], $row["rsvpEventCounter"]);
+				$rsvp [$rsvp->key()] = $rsvp;
+				$rsvp->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($rsvp);
+	}
 	/**
 	 * formats the state variables for JSON serialization
 	 *

@@ -136,7 +136,7 @@ class TsvpTest extends AstronomerTestSetUp{
 		$results = Rsvp::getRsvpByRsvpProfileId($this->PDO(), $rsvp->getRsvpProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\Astronomer\php\classes\rsvp", $results);
+		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\Rsvp", $results);
 
 		//grab the result from the array and validate it
 		$pdoRsvp = $results[0];
