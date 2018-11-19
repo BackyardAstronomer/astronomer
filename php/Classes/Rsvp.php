@@ -152,7 +152,7 @@ class Rsvp implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["rsvpProfileId" => $this->rsvpProfileId->getBytes(), "rsvpProfileId" => $this->rsvpProfileId->getBytes(), "rsvpEventCounter" => $this->rsvpEventCounter];
+		$parameters = ["rsvpProfileId" => $this->rsvpProfileId->getBytes(), "rsvpEventId" => $this->rsvpEventId->getBytes(), "rsvpEventCounter" => $this->rsvpEventCounter];
 		$statement->execute($parameters);
 	}
 
@@ -201,6 +201,7 @@ class Rsvp implements \JsonSerializable {
 		$parameters = ["rsvpEventId" => $rsvpEventId->getBytes()];
 		$parameters = ["rsvpProfileId" => $rsvpProfileId->getBytes()];
 		$statement->execute($parameters);
+
 
 		// grab the rsvp from mySQL
 		try {

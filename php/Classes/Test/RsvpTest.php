@@ -35,26 +35,33 @@ class TsvpTest extends AstronomerTestSetUp{
 	protected $VALID_PROFILE_HASH;
 
 	/**
+	 * valid activation token
+	 * @var string $profileActivationToken
+	 */
+	protected $VALID_ACTIVATION_TOKEN = null;
+
+	/**
 	 *  eventType that created the Rsvp
-	 * @var $VALID_HASH
+	 * @var string $eventType
 	 */
 	protected $eventType = null;
 
 	/**
 	 * Event that created the Rsvp; this is for foreign key relations
-	 * @var Profile profile
+	 * @var string $event
 	 **/
 	protected $event = null;
 
 	/**
 	 * event count for RSVP
-	 * @var Profile profile
+	 * @var int $VALID_RSVPEVENTCOUNTER
 	 **/
 	protected $VALID_RSVPEVENTCOUNTER = "1";
 
 	/**
 	 * event count for RSVP2
-	 * @var Profile profile
+	 *
+	 * @var int $VALID_RSVPEVENTCOUNTER2
 	 **/
 	protected $VALID_RSVPEVENTCOUNTER2 = "2";
 
@@ -66,11 +73,12 @@ class TsvpTest extends AstronomerTestSetUp{
 		parent::setUp();
 		$password = "abc123";
 		$this->VALID_PROFILE_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
+		$this->VALID_ACTIVATION_TOKEN = bin2hex(random_bytes(16));
 
 
 		// create and insert a Profile to the test Rsvp
 		$profileId = generateUuidV4();
-		$this->profile = new Profile($profileId, Null, "I am Groot", "test@phpunit.de",$this->VALID_PROFILE_HASH ,"https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "Dilbert");
+		$this->profile = new Profile($profileId, $this->VALID_ACTIVATION_TOKEN, "I am Groot", "test@phpunit.de",$this->VALID_PROFILE_HASH ,"https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "Dilbert");
 		$this->profile->insert($this->getPDO());
 
 		// create and insert EventType to test Rsvp
@@ -80,7 +88,8 @@ class TsvpTest extends AstronomerTestSetUp{
 
 		// create and insert a Event to test Rsvp
 		$eventId = generateUuidV4();
-		$this->event = new Event($eventId, $this->eventType->getEventTypeId(), $this->profileType->getProfileTypeId(), "blind star watch party","May the braille be with you","\DateTime()", "\DateTime()");
+		$this->event = new Event($eventId, $this->eventType->getEventTypeId(), $this->profile->getProfileId(), "blind star watch party","May the braille be with you","\DateTime()", "\DateTime()");
+		$this->eventType->insert($this->getPdo);
 
 	}
 
@@ -136,7 +145,7 @@ class TsvpTest extends AstronomerTestSetUp{
 		$rsvp->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Rsvp::getRsvpByRsvpProfileId($this->PDO(), $rsvp->getRsvpProfileId());
+		$results = Rsvp::getRsvpByRsvpProfileId($this->getPDO(), $rsvp->getRsvpProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\Rsvp", $results);
@@ -161,7 +170,7 @@ class TsvpTest extends AstronomerTestSetUp{
 		$rsvp->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Rsvp::getRsvpByRsvpEventeId($this->PDO(), $rsvp->getRsvpEventId());
+		$results = Rsvp::getRsvpByRsvpEventeId($this->getPDO(), $rsvp->getRsvpEventId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\Rsvp", $results);
