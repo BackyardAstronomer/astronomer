@@ -454,8 +454,7 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 	 * @throws \TypeError when a variable is not the correct data type
 	 */
 
-	public static function getEventByEventProfileId(\PDO $pdo, string $eventProfileId) : \SplFixedArray {
-
+	public static function getEventByEventProfileId(\PDO $pdo, $eventProfileId) : \SplFixedArray {
 		try{
 			$eventProfileId = self::validateUuid($eventProfileId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -473,7 +472,7 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 		//bind array of events
 		$events = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) === true){
+		while(($row = $statement->fetch()) !== false){
 			try{
 				$event = new Event($row["eventId"], $row["eventEventTypeId"], $row["eventProfileId"], $row["eventTitle"], $row["eventContent"], $row["eventStartDate"], $row["eventEndDate"]);
 				$events[$events->key()] = $event;

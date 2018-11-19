@@ -1,7 +1,7 @@
 <?php
 namespace BackyardAstronomer\Astronomer;
 
-use  BackyardAstronomer\Astronomer\Event;
+use BackyardAstronomer\Astronomer\Event;
 
 require_once("AstronomerTestSetUp.php");
 require_once(dirname(__DIR__, 2) . "/lib/uuid.php");
@@ -37,6 +37,11 @@ class EventTest extends AstronomerTestSetUp {
 	 */
 	protected $VALID_PROFILE_HASH;
 
+	/**
+	 * valid activation token
+	 * @var string $profileActivationToken
+	 */
+	protected $VALID_ACTIVATION_TOKEN = null;
 	/**
 	 * content of the event
 	 * @var string $VALID_EVENT_CONTENT
@@ -81,10 +86,11 @@ class EventTest extends AstronomerTestSetUp {
 		parent::setUp();
 		$password = "abc123";
 		$this->VALID_PROFILE_HASH = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
+		$this->VALID_ACTIVATION_TOKEN = bin2hex(random_bytes(16));
 
 		//create and insert a profile to own the event
 		$profileId = generateUuidV4();
-		$this->profile = new Profile($profileId, 'thisisanemail@test.com', "this is a bio blah blah blah blah", "Test Astronomer", null, null, $this->VALID_PROFILE_HASH);
+		$this->profile = new Profile($profileId, $this->VALID_ACTIVATION_TOKEN, 'bio blah blah blah', 'test@email.com', $this->VALID_PROFILE_HASH, "image", 'Jalk Jain');
 		$this->profile->insert($this->getPDO());
 		//create and insert an event type to classify the event
 		$eventTypeId = generateUuidV4();
@@ -110,7 +116,7 @@ class EventTest extends AstronomerTestSetUp {
 		$pdoEvent = Event::getEventByEventId($this->getPDO(), $event->getEventId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
 		$this->assertEquals($pdoEvent->getEventId(), $eventId);
-		$this->assertEquals($pdoEvent->getEventEventTypeId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoEvent->getEventEventTypeId(), $this->eventType->getEventTypeId());
 		$this->assertEquals($pdoEvent->getEventProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoEvent->getEventTitle(), $this->VALID_EVENT_TITLE);
 		$this->assertEquals($pdoEvent->getEventContent(), $this->VALID_EVENT_CONTENT);
@@ -142,7 +148,7 @@ class EventTest extends AstronomerTestSetUp {
 		$this->assertEquals($pdoEvent->getEventId(), $eventId);
 		$this->assertEquals($pdoEvent->getEventEventTypeId(),$this->eventType->getEventTypeId());
 		$this->assertEquals($pdoEvent->getEventProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoEvent->getEventTitle(), $this->VALID_EVENT_TITLE2);
+		$this->assertEquals($pdoEvent->getEventTitle(), $this->VALID_EVENT_TITLE);
 		$this->assertEquals($pdoEvent->getEventContent(), $this->VALID_EVENT_CONTENT2);
 		//format the dates 2 seconds since the beginning of time to avoid rounding error
 		$this->assertEquals($pdoEvent->getEventStartDate()->getTimestamp(), $this->VALID_EVENT_START_DATE->getTimestamp());
@@ -234,11 +240,10 @@ class EventTest extends AstronomerTestSetUp {
 		$results = Event::getEventByEventProfileId($this->getPDO(), $event->getEventProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\php\\Classes\\Event", $results);
+		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\Event", $results);
 
 		//grab the result from the array and validate it
 		$pdoEvent = $results[0];
-
 		$this->assertEquals($pdoEvent->getEventId(), $eventId);
 		$this->assertEquals($pdoEvent->getEventProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoEvent->getEventContent(), $this->VALID_EVENT_CONTENT);
@@ -271,13 +276,13 @@ class EventTest extends AstronomerTestSetUp {
 		$results = Event::getAllEvents($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\php\\Classes\\Event", $results);
+		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\Event", $results);
 
 		//grab the result from the array and validate it
 		$pdoEvent = $results[0];
 		$this->assertEquals($pdoEvent->getEventId(), $eventId);
 		$this->assertEquals($pdoEvent->getEventEventTypeId(), $this->eventType->getEventTypeId());
-		$this->assertEquals($pdoEvent->getProfileId(),$this->profile->getProfileId());
+		$this->assertEquals($pdoEvent->getEventProfileId(),$this->profile->getProfileId());
 		$this->assertEquals($pdoEvent->getEventTitle(), $this->VALID_EVENT_TITLE);
 		$this->assertEquals($pdoEvent-> getEventContent(), $this->VALID_EVENT_CONTENT);
 
