@@ -84,12 +84,12 @@ class TsvpTest extends AstronomerTestSetUp{
 		// create and insert EventType to test Rsvp
 		$eventTypeId = generateUuidV4();
 		$this->eventType = new EventType($eventTypeId, "blind star watch");
-		$this->eventType->insert($this->getPdo);
+		$this->eventType->insert($this->getPdo());
 
 		// create and insert a Event to test Rsvp
 		$eventId = generateUuidV4();
-		$this->event = new Event($eventId, $this->eventType->getEventTypeId(), $this->profile->getProfileId(), "blind star watch party","May the braille be with you","\DateTime()", "\DateTime()");
-		$this->eventType->insert($this->getPdo);
+		$this->event = new Event($eventId, $eventTypeId, $profileId, "blind star watch party","May the braille be with you","\DateTime()", "\DateTime()" );
+		$this->event->insert($this->getPdo());
 
 	}
 
