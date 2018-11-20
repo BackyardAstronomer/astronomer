@@ -129,7 +129,7 @@ public final function setUp(): void {
 		$comment->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoComment = Comment::getCommentByCommentId($this->getPDO(), 	$commentId);
+	$pdoComment = Comment::getCommentByCommentId($this->getPDO(),$comment->getCommentId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("comment"));
 		$this->assertEquals($pdoComment->getCommentId(), $commentId);
 		$this->assertEquals($pdoComment->getCommentProfileId(), $this->profile->getProfileId());

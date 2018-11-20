@@ -39,7 +39,7 @@ class Comment {
 
 	/**
 	 * this is the actual content of the comment
-	 * @var Uuid $commentContentId
+	 * @var string $commentContent
 	 */
 	private $commentContent;
 
@@ -55,7 +55,7 @@ class Comment {
 	/**
 	 *constructor of this Comment
 	 *
-	 * @param string|Uuid $newCommentId id of this comment or null if new comment
+	 * @param string|Uuid $newCommentId id of this comment
 	 * @param string|Uuid $newCommentProfileId id of the Profile that made this Comment
 	 * @param string|Uuid $newCommentContent string containing actual content data
 	 * @param string|Uuid $newCommentEventId string id of the event the comment is posted on
@@ -185,7 +185,7 @@ class Comment {
 	/**
 	 *
 	 *accessor method for comment profile id
-	 *
+	 * @param \Ramsey\Uuid\ $commentProfileId
 	 * @return Uuid value of comment profile id
 	 */
 
@@ -196,7 +196,7 @@ public function getCommentProfileId(): Uuid {
 /**
  * mutator method for comment profile id
  *
- * @param string | Uuid $newCommentProfileId new value of comment profile id
+ * @param Uuid $newCommentProfileId new value of comment profile id
  * @throws \RangeException if $newProfileId is not positive
  * @throws \TypeError if $newCommentProfile is not an integer
  **/
@@ -312,18 +312,18 @@ public function setCommentDate($newCommentDate = null): void {
 	 * gets the comment by comment Id
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param string $comment comment id to search for
-	 * @return comment\null comment found or null if not found
+	 * @param string $commentId comment id to search for
+	 * @return comment found or null if not found
 	 * @throws \PDOException when mySQL related error occur
 	 * @throws \TypeError when a variable is not the correct data type
 	 *
 	 */
 
-	public static function getCommentByCommentId(\PDO $pdo, $comment) : ?Comment {
+	public static function getCommentByCommentId(\PDO $pdo, $commentId) : ?Comment {
 		//sanitize the commentId before searching
 
 	try{
-		$comment = self::validateUuid($comment);
+		$commentId = self::validateUuid($commentId);
 } catch(\InvalidArgumentException |\RangeException |\Exception |\TypeError $exception) {
 		throw(new \PDOException($exception->getMessage(), 0, $exception));
 }
@@ -331,6 +331,10 @@ public function setCommentDate($newCommentDate = null): void {
 // create query template
 		$query = "SELECT commentId, commentEventId, commentProfileId, commentContent, commentDate from comment WHERE commentId = :commentId";
 	$statement = $pdo->prepare($query);
+
+	//bind the commentId to the placeholder in the template
+		$parameters =["commentId" => $commentId->getBytes()];
+		$statement->execute($parameters);
 
 	//grab the comment from mySQL
 	try {
