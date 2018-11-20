@@ -5,12 +5,12 @@
 		    <!--<file>EventTest.php</file>-->
 			<!--<file>EventTypeTest.php</file>-->
 			<!--<file>CommentTest.php</file>-->
-			<!--<file>RsvpTest.php</file>-->
-		</testsuite>
-	</testsuites>
+	<!--<file>RsvpTest.php</file>-->
+</testsuite>
+</testsuites>
 <!--	<filter>
-		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">..</directory>
-		</whitelist>
-	</filter>-->
+<whitelist processUncoveredFilesFromWhitelist="true">
+	<directory suffix=".php">..</directory>
+</whitelist>
+</filter>-->
 </phpunit>

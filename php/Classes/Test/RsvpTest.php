@@ -21,7 +21,7 @@ require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
  * @see Rsvp
  * @author Dayn Augustson <daugustson@cnm.edu>
  **/
-class TsvpTest extends AstronomerTestSetUp{
+class RsvpTest extends AstronomerTestSetUp{
 	/**
 	 * Profile that created the Rsvp; this is for foreign key relations
 	 * @var Profile profile
@@ -88,7 +88,7 @@ class TsvpTest extends AstronomerTestSetUp{
 
 		// create and insert a Event to test Rsvp
 		$eventId = generateUuidV4();
-		$this->event = new Event($eventId, $eventTypeId, $profileId, "blind star watch party","May the braille be with you","\DateTime()", "\DateTime()");
+		$this->event = new Event($eventId, $eventTypeId, $profileId, "blind star watch party","May the braille be with you",new \DateTime(), new \DateTime());
 		$this->event->insert($this->getPdo());
 
 	}
@@ -105,11 +105,11 @@ class TsvpTest extends AstronomerTestSetUp{
 		$rsvp->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoRsvp = Rsvp::getRsvpByRsvpProfileIdRsvpEventId($this->getPDO(), $rsvp->getRsvpProfileId(), $rsvp->getRsvpEventId());
-		$this->asserEquals($numRows + 1, $this->getConnectoion()->getRowCount("rsvp"));
-		$this->assertEquals($pdoRsvp->getRsvpProfileId(), $this->profile->getProfileId());
+		$pdoRsvp = Rsvp::getRsvpByRsvpEventIdRsvpProfileId($this->getPDO(), $this->event->getEventId(), $this->profile->getProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
 		$this->assertEquals($pdoRsvp->getRsvpEventId(), $this->event->getEventId());
-		$this->assertEquals($pdoRsvp->getRsvpEventCounter(), $this->VALID_RSVPEVENTCOUNTER);
+		$this->assertEquals($pdoRsvp->getRsvpProfileId(), $this->profile->getProfileId());
+
 	}
 
 	/**
@@ -124,11 +124,11 @@ class TsvpTest extends AstronomerTestSetUp{
 		$rsvp->insert($this->getPDO());
 
 		//delete the Rsvp from MySQL
-		$this->asserEquals($numRows + 1, $this->getConnectoion()->getRowCount("rsvp"));
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
 		$rsvp->delete($this->getPDO());
 
 // grab the data from mySQL and enforce the fields match our expectations
-		$pdoRsvp = Rsvp::getRsvpByRsvpProfileIdRsvpEventId($this->getPDO(), $rsvp->getRsvpProfileId(), $rsvp->getRsvpEventId());
+		$pdoRsvp = Rsvp::getRsvpByRsvpEventIdRsvpProfileId($this->getPDO(), $rsvp->getRsvpEventId(), $rsvp->getRsvpProfileId());
 		$this->assertNull($pdoRsvp);
 		$this->assertEquals($numRows, $this->getConnection()->getRowCount("rsvp"));
 	}
@@ -170,7 +170,7 @@ class TsvpTest extends AstronomerTestSetUp{
 		$rsvp->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Rsvp::getRsvpByRsvpEventeId($this->getPDO(), $rsvp->getRsvpEventId());
+		$results = Rsvp::getRsvpByRsvpEventId($this->getPDO(), $rsvp->getRsvpEventId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\Rsvp", $results);

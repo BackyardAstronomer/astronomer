@@ -73,9 +73,11 @@ class Rsvp implements \JsonSerializable {
 	public function setRsvpProfileId($newRsvpProfileId) : void {
 		try {
 			$uuid = self::validateUuid($newRsvpProfileId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		} //determine what exception type was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+
 		}
 
 		// convert and store the rsvp Profile Id
@@ -101,7 +103,9 @@ class Rsvp implements \JsonSerializable {
 	public function setRsvpEventId( $newRsvpEventId) : void {
 		try {
 			$uuid = self::validateUuid($newRsvpEventId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		}
+		//determine what exception type was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
@@ -176,31 +180,31 @@ class Rsvp implements \JsonSerializable {
 
 
 	/**
-	 * gets the Rsvp by resvpEventId and RsvpProfileId
+	 * gets the Rsvp by rsvpEventId and RsvpProfileId
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param Uuid|string $rsvpId rsvp id to search for
 	 * @return Rsvp|null Rsvp found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/
-	public static function getRsvpByRsvpProfileIdRsvpEventId(\PDO $pdo,$rsvpProfileId, $rsvpEventId ) : ?Rsvp {
+	public static function getRsvpByRsvpEventIdRsvpProfileId(\PDO $pdo,$rsvpEventId, $rsvpProfileId  ) : ?Rsvp {
 		// sanitize the rsvpId before searching
 		try {
-			$rsvpProfileId = self::validateUuid($rsvpProfileId);
 			$rsvpEventId = self::validateUuid($rsvpEventId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
+			$rsvpProfileId = self::validateUuid($rsvpProfileId);
+		} //determine what exception type was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
-
 		// create query template
-		$query = "SELECT rsvpProfileId, rsvpEventId, rsvpEventCounter FROM rsvp WHERE rsvpProfileId = :rsvpProfileId and WHERE rsvpEventId = :rsvpEventId  ";
+		$query = "SELECT rsvpProfileId, rsvpEventId, rsvpEventCounter FROM rsvp WHERE rsvpProfileId = :rsvpProfileId and rsvpEventId = :rsvpEventId  ";
 		$statement = $pdo->prepare($query);
 
 		// bind the rsvpEventId and rsvpProfileId to the place holder in the template
-		$parameters = ["rsvpEventId" => $rsvpEventId->getBytes()];
-		$parameters = ["rsvpProfileId" => $rsvpProfileId->getBytes()];
+		$parameters = ["rsvpEventId" => $rsvpEventId->getBytes(), "rsvpProfileId" => $rsvpProfileId->getBytes()];
 		$statement->execute($parameters);
+
 
 
 		// grab the rsvp from mySQL
@@ -211,9 +215,10 @@ class Rsvp implements \JsonSerializable {
 			if($row !== false) {
 				$rsvp = new rsvp($row["rsvpProfileId"], $row["rsvpEventId"], $row["rsvpEventCounter"]);
 			}
-		} catch(\Exception $exception) {
-			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		} //determine what exception type was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 		return($rsvp);
 	}
@@ -232,8 +237,10 @@ class Rsvp implements \JsonSerializable {
 
 		try {
 			$rsvpProfileId = self::validateUuid($rsvpProfileId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		} //determine what exception type was thrown
+		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 
 		// create query template
@@ -250,9 +257,10 @@ class Rsvp implements \JsonSerializable {
 				$rsvp = new Rsvp($row["rsvpProfileId"], $row["rsvpEventId"], $row["rsvpEventCounter"]);
 				$rsvps[$rsvps->key()] = $rsvp;
 				$rsvps->next();
-			} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			} //determine what exception type was thrown
+			catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+				$exceptionType = get_class($exception);
+				throw(new $exceptionType($exception->getMessage(), 0, $exception));
 			}
 		}
 		return($rsvps);
@@ -289,9 +297,10 @@ class Rsvp implements \JsonSerializable {
 				$rsvp = new Rsvp($row["rsvpProfileId"], $row["rsvpEventId"], $row["rsvpEventCounter"]);
 				$rsvps[$rsvps->key()] = $rsvp;
 				$rsvps->next();
-			} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			} //determine what exception type was thrown
+			catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+				$exceptionType = get_class($exception);
+				throw(new $exceptionType($exception->getMessage(), 0, $exception));
 			}
 		}
 		return($rsvps);
