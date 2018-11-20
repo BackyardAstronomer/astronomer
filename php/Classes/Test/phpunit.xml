@@ -2,15 +2,15 @@
 	<testsuites>
 		<testsuite name="Astronomer Unit Testing">
 			<!--<file>ProfileTest.php</file>-->
-		    <!--<file>EventTest.php</file>-->
+		<!--<file>EventTest.php</file>-->
 			<!--<file>EventTypeTest.php</file>-->
-			<!--<file>CommentTest.php</file>-->
-	<!--<file>RsvpTest.php</file>-->
-</testsuite>
-</testsuites>
+			<file>CommentTest.php</file>
+			<!--<file>RsvpTest.php</file>-->
+		</testsuite>
+	</testsuites>
 <!--	<filter>
-<whitelist processUncoveredFilesFromWhitelist="true">
-	<directory suffix=".php">..</directory>
-</whitelist>
-</filter>-->
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">..</directory>
+		</whitelist>
+	</filter>-->
 </phpunit>

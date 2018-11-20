@@ -1,7 +1,7 @@
 <?php
 
 namespace BackyardAstronomer\Astronomer;
-require_once(dir(__DIR__, 2) . "/vendor/autoload.php");
+require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 require_once("autoload.php");
 use Ramsey\Uuid\Uuid;
 
@@ -15,6 +15,9 @@ use Ramsey\Uuid\Uuid;
  * @var Uuid $commentId;
  */
 class Comment {
+	use ValidateDate;
+	use ValidateUuid;
+
 	/**
 	 * this is the primary key of the comment
 	 * @var Uuid $commentId ;
@@ -104,8 +107,12 @@ class Comment {
 	public function setCommentId($newCommentId): void {
 		try {
 			$uuid = self::validateUuid($newCommentId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
+
+		//converting and storing commentId
+
 		$this->commentId = $uuid;
 	}
 
@@ -172,7 +179,7 @@ class Comment {
 			throw (new$exceptionType($exception->getMessage(), 0, $exception));
 		}
 		//the following stores the new comment event id
-		$this->commentEventId = $newCommentEventId;
+		$this->commentEventId = $uuid;
 	}
 
 	/**
@@ -219,7 +226,7 @@ public function getCommentDate() : \DateTime {
 /**
  *mutator method for comment date
  *
- * @param \DateTime|string|null $newCommentDate comment date as a DatetTime object or string (or null to load the current time)
+ * @param \DateTime|string|null $newCommentDate comment date as a DateTime object or string (or null to load the current time)
  * @throws \InvalidArgumentException if $newContentDate is not a valid object or string
  * @throws \RangeException if $newCommentDate is a date that does not exist
  **/
@@ -235,7 +242,7 @@ public function setCommentDate($newCommentDate = null): void {
 	//store the comment date
 	try {
 		$newCommentDate = self::validateDateTime($newCommentDate);
-	} catch(\InvalidArgumentException |\RangeException $exception) {
+	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception){
 		$exceptionType = get_class($exception);
 		throw(new $exceptionType($exception->getMessage(), 0, $exception));
 	}
@@ -257,9 +264,10 @@ public function setCommentDate($newCommentDate = null): void {
 		// create query template
 		$query = "INSERT INTO comment(commentId, commentEventId, commentContent, commentDate, commentProfileId) VALUES(:commentId, :commentEventId, :commentContent, :commentDate, :commentProfileId)";
 		$statement = $pdo->prepare($query);
+		$formattedCommentDate = $this->commentDate->format("Y-m-d H:i:s.u");
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["commentId" => $this ->commentId->getBytes(), "commentEventId" => $this->commentEventId, "commentContent" => $this->commentContent, "commentDate" => $this->commentDate, "commentProfileId" => $this->commentProfileId];
+		$parameters = ["commentId" =>$this->commentId->getBytes(), "commentEventId" => $this->commentEventId->getBytes(), "commentContent" => $this->commentContent, "commentDate" =>$formattedCommentDate, "commentProfileId" => $this->commentProfileId->getBytes()];
 		$statement->execute($parameters);}
 
 
