@@ -10,3 +10,10 @@ require_once(dirname(__DIR__, 3) . "/php/lib/uuid.php");
 use BackyardAstronomer\Astronomer{
 	Profile;
 };
+
+/*
+ * API for the astronomer
+ *
+ * @author Chamisa Edmo
+ * @version 1.0
+ */
