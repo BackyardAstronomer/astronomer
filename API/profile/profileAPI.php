@@ -7,7 +7,7 @@ require_once(dirname(__DIR__, 3) . "/php/lib/uuid.php");
 //below needs to be changed to a file that we actually have, but I don't know what to change it to.
 //require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use BackyardAstronomer\Astronomer{
+use BackyardAstronomer\Astronomer {
 	Profile;
 };
 
@@ -28,6 +28,7 @@ $reply->status = 200;
 $reply->data = null;
 try {
 	//grab the mySQL connection
+	//these methods are linked to my own public access bits of info(profile id and profile email)
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/ddctwitter.ini");
 	//determine which HTTP method was used
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
