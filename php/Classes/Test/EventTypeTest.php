@@ -114,6 +114,7 @@ public function testGetAllValidEventType() : void {
 	$results = eventType::getAllEventTypes($this->getPDO());
 	$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("eventType"));
 	$this->assertCount(1, $results);
+
 	//enfoce no other objects bled into test
 	$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\EventType", $results);
 

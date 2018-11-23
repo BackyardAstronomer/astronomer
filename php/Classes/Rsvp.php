@@ -178,7 +178,6 @@ class Rsvp implements \JsonSerializable {
 		$statement->execute($parameters);
 	}
 
-
 	/**
 	 * gets the Rsvp by rsvpEventId and RsvpProfileId
 	 *
@@ -229,7 +228,7 @@ class Rsvp implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $rsvpProfileId profile id to search by
-	 * @return \SplFixedArray SplFixedArray of rsvps  found
+	 * @return \SplFixedArray SplFixedArray of rsvp  found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
@@ -319,7 +318,7 @@ class Rsvp implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
-		// build an array of eventType
+	 	// build an array of eventType
 		$rsvo = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {

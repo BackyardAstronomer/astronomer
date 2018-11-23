@@ -159,7 +159,7 @@ class RsvpTest extends AstronomerTestSetUp{
 	}
 
 	/**
-	 * gets the Rsvp by RsvpEventId
+ 	 * gets the Rsvp by RsvpEventId
 	 **/
 	public function testGetValidRsvpByRsvpEventId() : void {
 		// count the number of rows and save it for later
