@@ -7,8 +7,8 @@ require_once(dirname(__DIR__, 3) . "/php/lib/uuid.php");
 //below needs to be changed to a file that we actually have, but I don't know what to change it to.
 //require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use BackyardAstronomer\Astronomer {
-	Profile;
+use BackyardAstronomer\Astronomer\ {
+	Profile
 };
 
 /*
