@@ -75,3 +75,17 @@ try {
 			if(empty($_SESSION["profile"]) === true) {
 				throw(new \InvalidArgumentException("you must be logged in too rsvp to this event", 403));
 			}
+			validateJwtHeader();
+			$rsvp = new Rsvp($_SESSION["profile"]->getProfileId(), $requestObject->rsvpEventId);
+			$rsvp->insert($pdo);
+			$reply->message = "liked event successful";
+		} else if($method === "PUT") {
+			//enforce the end user has a XSRF token.
+			verifyXsrf();
+			//enforce the end user has a JWT token
+			validateJwtHeader();
+			//grab the rsvp by its composite key
+			$rsvp = Rsvp::getRsvpByRsvpEventIdRsvpProfileId($pdo, $requestObject->rsvpEventId, $requestObject->rsvpProfileId);
+			if($rsvp === null) {
+				throw (new RuntimeException("Rsvp does not exist"));
+			}
