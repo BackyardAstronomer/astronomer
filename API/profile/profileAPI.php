@@ -46,8 +46,8 @@ try {
 		setXsrfCookie();
 
 		//gets a post by content
-		if(empty($id) === false) {
-			$reply->data = Profile::getProfileByProfileId($pdo, $id);
+		if(empty($profileId) === false) {
+			$reply->data = Profile::getProfileByProfileId($pdo, $profileId);
 		} else if(empty($profileAtHandle) === false) {
 			$reply->data = Profile::getProfileByProfileName($pdo, $profileName);
 		} else if(empty($profileEmail) === false) {
@@ -63,7 +63,7 @@ try {
 		//validateJwtHeader();
 
 		//enforce the user is signed in and only trying to edit their own profile
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId()->toString() !== $id) {
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId()->toString() !== $profileId) {
 			throw(new \InvalidArgumentException("You are not allowed to access this profile", 403));
 		}
 		validateJwtHeader();
@@ -72,7 +72,7 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 		//retrieve the profile to be updated
-		$profile = Profile::getProfileByProfileId($pdo, $id);
+		$profile = Profile::getProfileByProfileId($pdo, $profileId);
 		if($profile === null) {
 			throw(new RuntimeException("Profile does not exist", 404));
 		}
@@ -103,7 +103,7 @@ try {
 		//enforce the end user has a JWT token
 		//validateJwtHeader();
 
-		$profile = Profile::getProfileByProfileId($pdo, $id);
+		$profile = Profile::getProfileByProfileId($pdo, $profileId);
 		if($profile === null) {
 			throw (new RuntimeException("Profile does not exist"));
 		}
