@@ -29,7 +29,7 @@ $reply->data = null;
 try {
 	//grab the mySQL connection
 	//these methods are linked to my own public access bits of info(profile id and profile email)
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/ddctwitter.ini");
+	$pdo = connectToEncryptedMySQL("../etc/apache2/capstone-mysql/encrypted-config.php");
 	//determine which HTTP method was used
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 	// sanitize input
