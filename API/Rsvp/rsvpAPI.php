@@ -47,3 +47,31 @@ try {
 				$reply->data = $rsvp;
 			}
 
+			//if none of the search parameters are met throw an exception
+		} else if(empty($rsvpEventId) === false) {
+			$reply->data = Rsvp::getRsvpByRsvpEventId($pdo, $rsvpEventId)->toArray();
+			//get all the rsvp associated with the rsvpProfileId
+		} else if(empty($rsvpProfileId) === false) {
+			$reply->data = Rsvp::getRsvpByRsvpProfileId($pdo, $rsvpProfileId)->toArray();
+		} else {
+			throw new InvalidArgumentException("incorrect search parameters ", 404);
+		}
+	} else if($method === "POST" || $method === "PUT") {
+		//decode the response from the front end
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode($requestContent);
+		if(empty($requestObject->rsvpEventId) === true) {
+			throw (new \InvalidArgumentException("No Event linked to the Rsvp", 405));
+		}
+		if(empty($requestObject->rsvpProfileId) === true) {
+			throw (new \InvalidArgumentException("No Provile linked to the rsvp", 405));
+		}
+		if($method === "POST") {
+			//enforce that the end user has a XSRF token.
+			verifyXsrf();
+			//enforce the end user has a JWT token
+			//validateJwtHeader();
+			// enforce the user is signed in
+			if(empty($_SESSION["profile"]) === true) {
+				throw(new \InvalidArgumentException("you must be logged in too rsvp to this event", 403));
+			}
