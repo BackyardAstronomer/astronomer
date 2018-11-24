@@ -89,3 +89,29 @@ try {
 			if($rsvp === null) {
 				throw (new RuntimeException("Rsvp does not exist"));
 			}
+			//enforce the user is signed in and only trying to edit their own rsvp
+			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $rsvp->getrsvpProfileId()) {
+				throw(new \InvalidArgumentException("You are not allowed to delete this rsvp", 403));
+			}
+			//validateJwtHeader();
+			//preform the actual delete
+			$rsvp->delete($pdo);
+			//update the message
+			$reply->message = "Rsvp successfully deleted";
+		}
+		// if any other HTTP request is sent throw an exception
+	} else {
+		throw new \InvalidArgumentException("invalid http request", 400);
+	}
+	//catch any exceptions that is thrown and update the reply status and message
+} catch(\Exception | \TypeError $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+}
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
+// encode and return reply to front end caller
+echo json_encode($reply);
+
