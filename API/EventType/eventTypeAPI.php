@@ -45,6 +45,7 @@ try {
 
 // handle GET request - if evenTypeId is present, that EventType is returned, otherwise all EventType are returned
 	if($method === "GET") {
+
 		//set XSRF cookie
 		setXsrfCookie();
 		//get a specific Event type or all Event type and update reply
