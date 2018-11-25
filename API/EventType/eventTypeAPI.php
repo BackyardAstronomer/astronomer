@@ -40,7 +40,7 @@ try {
 
 	// make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($evenTypeId) === true)) {
-		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
+		throw(new InvalidArgumentException("EventTypeID cannot be empty or negative", 405));
 	}
 
 // handle GET request - if evenTypeId is present, that EventType is returned, otherwise all EventType are returned
@@ -50,8 +50,6 @@ try {
 		//get a specific Event type or all Event type and update reply
 		if(empty($evenTypeId) === false) {
 			$reply->data = EventType::getEventTypeByEventTypeId($pdo, $evenTypeId);
-		} else if(empty(($evenTypeId) === false) {
-
 		}
 	}
 
