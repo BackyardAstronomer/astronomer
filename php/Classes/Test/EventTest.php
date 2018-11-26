@@ -284,7 +284,7 @@ class EventTest extends AstronomerTestSetUp {
 		$this->assertEquals($pdoEvent->getEventProfileId(),$this->profile->getProfileId());
 		$this->assertEquals($pdoEvent->getEventTitle(), $this->VALID_EVENT_TITLE);
 		$this->assertEquals($pdoEvent-> getEventContent(), $this->VALID_EVENT_CONTENT);
-		$this->assertEquals($results->profileName, $this->profile->getProfileName());
+		$this->assertEquals($results[0]->profileName, $this->profile->getProfileName());
 
 		//format the dates 2 seconds since the beginning of time to avoid rounding error
 		$this->assertEquals($pdoEvent->getEventStartDate()->getTimestamp(), $this->VALID_EVENT_START_DATE->getTimestamp());

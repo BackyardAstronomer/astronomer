@@ -496,7 +496,7 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 	public static function getAllEvents(\PDO $pdo) : \SPLFixedArray {
 
 		// create query template
-		$query = "SELECT event.eventId, event.eventEventTypeId, event.eventProfileId, event.eventTitle, event.eventContent, event.eventStartDate, event.eventEndDate, profile.profileName FROM event INNER JOIN profile ON event.eventProfileId = profile.profileId WHERE eventStartDate > now()";
+		$query = "SELECT event.eventId, event.eventEventTypeId, event.eventProfileId, event.eventTitle, event.eventContent, event.eventStartDate, event.eventEndDate, profile.profileName FROM event INNER JOIN profile ON event.eventProfileId = profile.profileId WHERE eventStartDate > now() ";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
