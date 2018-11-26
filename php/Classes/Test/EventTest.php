@@ -1,4 +1,4 @@
-cc<?php
+<?php
 namespace BackyardAstronomer\Astronomer;
 
 use BackyardAstronomer\Astronomer\Event;

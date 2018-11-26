@@ -10,10 +10,6 @@ use Ramsey\Uuid\Uuid;
  * @package BackyardAstronomer\astronomer
  */
 
-/**
- * this is the primary key for comment
- * @var Uuid $commentId;
- */
 class Comment {
 	use ValidateDate;
 	use ValidateUuid;
@@ -46,7 +42,7 @@ class Comment {
 	/**
 	 *
 	 * this is the date the comment was posted
-	 * @var \DateTime $ $commentDate
+	 * @var \DateTime $commentDate
 	 */
 
 	private $commentDate;
@@ -55,10 +51,10 @@ class Comment {
 	/**
 	 *constructor of this Comment
 	 *
-	 * @param string|Uuid $newCommentId id of this comment
-	 * @param string|Uuid $newCommentProfileId id of the Profile that made this Comment
-	 * @param string|Uuid $newCommentContent string containing actual content data
-	 * @param string|Uuid $newCommentEventId string id of the event the comment is posted on
+	 * @param |Uuid $newCommentId id of this comment
+	 * @param |Uuid $newCommentEventId id of the event the comment is posted on
+	 * @param |Uuid $newCommentProfileId id of the Profile that made this Comment
+	 * @param string $newCommentContent containing actual content data
 	 * @param \DateTime|string|null $newCommentDate date and time Comment was sent or null if set ot current date and time
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings are too long, negative integers)
@@ -68,14 +64,14 @@ class Comment {
 	public function __construct($newCommentId, $newCommentEventId, $newCommentProfileId, string $newCommentContent, $newCommentDate = null) {
 		try {
 			$this->setCommentId($newCommentId);
-			$this->setCommentProfileId($newCommentProfileId);
 			$this->setCommentEventId($newCommentEventId);
+			$this->setCommentProfileId($newCommentProfileId);
 			$this->setCommentContent($newCommentContent);
 			$this->setCommentDate($newCommentDate);
 
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-			$exception = get_class($exception);
-			throw(new $exception($exception->getMessage(), 0, $exception));
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 
 		}
 	}
@@ -107,7 +103,8 @@ class Comment {
 	public function setCommentId($newCommentId): void {
 		try {
 			$uuid = self::validateUuid($newCommentId);
-		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {$exceptionType = get_class($exception);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 
@@ -144,7 +141,7 @@ class Comment {
 		if(empty($newCommentContent) === true) {
 			throw(new \RangeException("Comment content is empty or insecure"));
 		}
-		if(strlen ($newCommentContent)>255) {
+		if(strlen($newCommentContent) > 255) {
 			throw (new \RangeException("Comment is too many characters"));
 		}
 		//store the comment content
@@ -165,7 +162,7 @@ class Comment {
 	/**
 	 * mutator method for comment event id
 	 *
-	 * @param string | Uuid $newCommentEventId new value of comment event id
+	 * @param | Uuid $newCommentEventId new value of comment event id
 	 * @throws \RangeException if $newCommentEventId is not positive
 	 * @throws \TypeError if $newCommentEventId is not an integer
 	 * @throws \InvalidArgumentException if event is insecure
@@ -176,7 +173,7 @@ class Comment {
 			$uuid = self::validateUuid($newCommentEventId);
 		} catch(\InvalidArgumentException |\ RangeException |\ Exception |\TypeError $exception) {
 			$exceptionType = get_class($exception);
-			throw (new$exceptionType($exception->getMessage(), 0, $exception));
+			throw (new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 		//the following stores the new comment event id
 		$this->commentEventId = $uuid;
@@ -189,67 +186,65 @@ class Comment {
 	 * @return Uuid value of comment profile id
 	 */
 
-public function getCommentProfileId(): Uuid {
-	return ($this->commentProfileId);
-}
-
-/**
- * mutator method for comment profile id
- *
- * @param Uuid $newCommentProfileId new value of comment profile id
- * @throws \RangeException if $newProfileId is not positive
- * @throws \TypeError if $newCommentProfile is not an integer
- **/
-
-public function setCommentProfileId($newCommentProfileId): void {
-	try {
-		$uuid = self::validateUuid($newCommentProfileId);
-	} catch(\InvalidArgumentException |\ RangeException |\ Exception |\TypeError $exception) {
-		$exceptionType = get_class($exception);
-		throw (new$exceptionType($exception->getMessage(), 0, $exception));
-	}
-	$this->commentProfileId = $newCommentProfileId;
-}
-
-
-
-/**
- * accessor method for comment date
- *
- * @return \DateTime value of comment date
- **/
-
-public function getCommentDate() : \DateTime {
-	return ($this->commentDate);
-}
-
-/**
- *mutator method for comment date
- *
- * @param \DateTime|string|null $newCommentDate comment date as a DateTime object or string (or null to load the current time)
- * @throws \InvalidArgumentException if $newContentDate is not a valid object or string
- * @throws \RangeException if $newCommentDate is a date that does not exist
- **/
-
-
-public function setCommentDate($newCommentDate = null): void {
-	// base case: if the date is null, use the current date and time
-	if($newCommentDate ===$newCommentDate){
-		$this->commentDate = new \DateTime();
-		return;
+	public function getCommentProfileId(): Uuid {
+		return ($this->commentProfileId);
 	}
 
-	//store the comment date
-	try {
-		$newCommentDate = self::validateDateTime($newCommentDate);
-	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception){
-		$exceptionType = get_class($exception);
-		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+	/**
+	 * mutator method for comment profile id
+	 *
+	 * @param Uuid $newCommentProfileId new value of comment profile id
+	 * @throws \RangeException if $newProfileId is not positive
+	 * @throws \TypeError if $newCommentProfile is not an integer
+	 **/
+
+	public function setCommentProfileId($newCommentProfileId): void {
+		try {
+			$uuid = self::validateUuid($newCommentProfileId);
+		} catch(\InvalidArgumentException |\ RangeException |\ Exception |\TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw (new$exceptionType($exception->getMessage(), 0, $exception));
+		}
+		$this->commentProfileId = $uuid;
+
 	}
-	$this->commentDate = $newCommentDate;
-}
 
 
+	/**
+	 * accessor method for comment date
+	 *
+	 * @return \DateTime value of comment date
+	 **/
+
+	public function getCommentDate(): \DateTime {
+		return ($this->commentDate);
+	}
+
+	/**
+	 *mutator method for comment date
+	 *
+	 * @param \DateTime|string|null $newCommentDate comment date as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newContentDate is not a valid object or string
+	 * @throws \RangeException if $newCommentDate is a date that does not exist
+	 **/
+
+
+	public function setCommentDate($newCommentDate = null): void {
+		// base case: if the date is null, use the current date and time
+		if($newCommentDate === $newCommentDate) {
+			$this->commentDate = new \DateTime();
+			return;
+		}
+
+		//store the comment date
+		try {
+			$newCommentDate = self::validateDateTime($newCommentDate);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+		$this->commentDate = $newCommentDate;
+	}
 
 
 	/**
@@ -259,34 +254,35 @@ public function setCommentDate($newCommentDate = null): void {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public function insert(\PDO $pdo) : void {
+	public function insert(\PDO $pdo): void {
 
 		// create query template
-		$query = "INSERT INTO comment(commentId, commentEventId, commentContent, commentDate, commentProfileId) VALUES(:commentId, :commentEventId, :commentContent, :commentDate, :commentProfileId)";
+		$query = "INSERT INTO comment(commentId, commentEventId, commentProfileId,  commentContent, commentDate) VALUES(:commentId, :commentEventId, :commentProfileId, :commentContent, :commentDate)";
 		$statement = $pdo->prepare($query);
 		$formattedCommentDate = $this->commentDate->format("Y-m-d H:i:s.u");
 
 		// bind the member variables to the place holders in the template
-		$parameters = ["commentId" =>$this->commentId->getBytes(), "commentEventId" => $this->commentEventId->getBytes(), "commentContent" => $this->commentContent, "commentDate" =>$formattedCommentDate, "commentProfileId" => $this->commentProfileId->getBytes()];
-		$statement->execute($parameters);}
+		$parameters = ["commentId" => $this->commentId->getBytes(), "commentEventId" => $this->commentEventId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentContent" => $this->commentContent, "commentDate" => $formattedCommentDate];
+		$statement->execute($parameters);
+	}
 
 
-		/**
-		 * updates this comment in mySQL
-		 *
-		 * @param \PDO $pdo PDO connection object
-		 * @throws \PDOException when mySQL related errors occur
-		 * @throws \TypeError if $pdo is not a PDO connection object
-		 **/
-		public function update(\PDO $pdo) : void {
+	/**
+	 * updates this comment in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo): void {
 
-			// create query template
-			$query = "UPDATE comment SET commentId = :commentId, commentEventId = :commentEventId, commentContent = :commentContent, commentDate = :commentDate, commentProfileId = :commentProfileId WHERE commentId = :commentId";
-			$statement = $pdo->prepare($query);
-
-			$parameters = ["commentId" => $this ->commentId->getBytes(), "commentEventId" => $this->commentEventId, "commentContent" => $this->commentContent, "commentDate" => $this->commentDate, "commentProfileId" => $this->commentProfileId];
-			$statement->execute($parameters);
-		}
+		// create query template
+		$query = "UPDATE comment SET commentId = :commentId, commentEventId = :commentEventId, commentProfileId = :commentProfileId, commentContent = :commentContent, commentDate = :commentDate WHERE commentId = :commentId";
+		$statement = $pdo->prepare($query);
+		$formattedDate = $this->commentDate->format("Y-m-d H:i:s.u");
+		$parameters = ["commentId" => $this->commentId->getBytes(), "commentEventId" => $this->commentEventId->getBytes(), "commentProfileId" => $this->commentProfileId->getBytes(), "commentContent" => $this->commentContent, "commentDate" => $formattedDate];
+		$statement->execute($parameters);
+	}
 
 	/**
 	 * deletes this comment from mySQL
@@ -295,67 +291,64 @@ public function setCommentDate($newCommentDate = null): void {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public function delete(\PDO $pdo) : void {
+	public function delete(\PDO $pdo): void {
 
 		// create query template
-		$query = "DELETE FROM comment WHERE commentId = :commentId, commentEventId = :commentEventId, commentContent = :commentContent, commentDate = :commentDate, commentProfileId = :commentProfileId WHERE commentId = :commentId";
+		$query = "DELETE FROM comment WHERE commentId = :commentId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holder in the template
-		$parameters = ["commentId" => $this ->commentId->getBytes(), "commentEventId" => $this->commentEventId, "commentContent" => $this->commentContent, "commentDate" => $this->commentDate, "commentProfileId" => $this->commentProfileId];
+		$parameters = ["commentId" => $this->commentId->getBytes()];
 		$statement->execute($parameters);
 	}
-
 
 
 	/**
 	 * gets the comment by comment Id
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param string $commentId comment id to search for
+	 * @param Uuid $commentId comment id to search for
 	 * @return comment found or null if not found
 	 * @throws \PDOException when mySQL related error occur
 	 * @throws \TypeError when a variable is not the correct data type
 	 *
 	 */
 
-	public static function getCommentByCommentId(\PDO $pdo, $commentId) : ?Comment {
+	public static function getCommentByCommentId(\PDO $pdo, $commentId): ?Comment {
 		//sanitize the commentId before searching
 
-	try{
-		$commentId = self::validateUuid($commentId);
-} catch(\InvalidArgumentException |\RangeException |\Exception |\TypeError $exception) {
-		throw(new \PDOException($exception->getMessage(), 0, $exception));
-}
+		try {
+			$commentId = self::validateUuid($commentId);
+		} catch(\InvalidArgumentException |\RangeException |\Exception |\TypeError $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
 
 // create query template
 		$query = "SELECT commentId, commentEventId, commentProfileId, commentContent, commentDate from comment WHERE commentId = :commentId";
-	$statement = $pdo->prepare($query);
+		$statement = $pdo->prepare($query);
 
-	//bind the commentId to the placeholder in the template
-		$parameters =["commentId" => $commentId->getBytes()];
+		//bind the commentId to the placeholder in the template
+		$parameters = ["commentId" => $commentId->getBytes()];
 		$statement->execute($parameters);
 
-	//grab the comment from mySQL
-	try {
-		$comment = null;
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		$row = $statement->fetch();
-		if($row !== false) {
-			$comment = new Comment($row["commentId"], $row["commentEventId"], $row["commentProfileId"], $row["commentContent"], $row["commentDate"]);
+		//grab the comment from mySQL
+		try {
+			$comment = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$comment = new Comment($row["commentId"], $row["commentEventId"], $row["commentProfileId"], $row["commentContent"], $row["commentDate"]);
+			}
+		} catch(\Exception $exception) {
+			//if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+
 		}
-	} catch(\Exception $exception) {
-		//if the row couldn't be converted, rethrow it
-		throw(new \PDOException($exception->getMessage(), 0, $exception));
-
-	}
-	return($comment);
+		return ($comment);
 	}
 
 
-
-
-	public static function getCommentByCommentProfileId(\PDO $pdo, string  $commentProfileId) : \SPLFixedArray {
+	public static function getCommentByCommentProfileId(\PDO $pdo, $commentProfileId): \SPLFixedArray {
 		try {
 			$commentProfileId = self::validateUuid($commentProfileId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
@@ -363,33 +356,30 @@ public function setCommentDate($newCommentDate = null): void {
 		}
 
 		// create query template
-		$query = "SELECT commentId, commentProfileId, commentEventId, commentContent, commentDate FROM comment WHERE commentProfileId = :commentProfileId";
+		$query = "SELECT comment.commentId, comment.commentEventId, comment.commentProfileId, comment.commentContent, comment.commentDate, profile.profileName FROM comment INNER JOIN profile ON comment.commentProfileId = profile.profileId WHERE commentProfileId = :commentProfileId";
 		$statement = $pdo->prepare($query);
-
-		// bind the comment profile id to the place holder in the template
 		$parameters = ["commentProfileId" => $commentProfileId->getBytes()];
 		$statement->execute($parameters);
-
 		// build an array of comments
-		$comment = new \SplFixedArray($statement->rowCount());
+		$comments = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$comment = new comment($row["commentId"], $row["commentProfileId"], $row["commentEventId"], $row["commentContent"], $row["commentDate"]);
-				$comment[$comment->key()] = $comment;
-				$comment->next();
+				$comment = new Comment($row["commentId"], $row["commentEventId"], $row["commentProfileId"], $row["commentContent"], $row["commentDate"]);
+				$commentProfile = (object)["comment" => $comment, "profileName" => $row["profileName"]];
+				$comments[$comments->key()] = $commentProfile;
+				$comments->next();
 			} catch(\Exception $exception) {
 
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($comment);
+		return ($comments);
 	}
 
 
-
-	public static function getCommentByCommentEventId(\PDO $pdo, string  $commentEventId) : \SPLFixedArray {
+	public static function getCommentByCommentEventId(\PDO $pdo, $commentEventId): \SplFixedArray {
 		try {
 
 			$commentEventId = self::validateUuid($commentEventId);
@@ -399,7 +389,7 @@ public function setCommentDate($newCommentDate = null): void {
 
 
 		// create query template
-		$query = "SELECT commentId, commentProfileId, commentEventId, commentContent, commentDate FROM comment WHERE 							  commentProfileId = :commentProfileId";
+		$query = "SELECT comment.commentId, comment.commentEventId, comment.commentProfileId, comment.commentContent, comment.commentDate, profile.profileName FROM comment INNER JOIN profile ON comment.commentProfileId = profile.profileId WHERE commentEventId = :commentEventId";
 		$statement = $pdo->prepare($query);
 
 		// bind the comment event id to the place holder in the template
@@ -411,16 +401,34 @@ public function setCommentDate($newCommentDate = null): void {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$comment = new comment($row["commentId"], $row["commentProfileId"], $row["commentEventId"], $row["commentContent"], 				$row["commentDate"]);
-				$comment[$comment->key()] = $comment;
-				$comment->next();
+				$comment = new Comment($row["commentId"], $row["commentEventId"], $row["commentProfileId"], $row["commentContent"], $row["commentDate"]);
+				$commentProfile = (object)["comment" => $comment, "profileName" => $row["profileName"]];
+				$comments[$comments->key()] = $commentProfile;
+				$comments->next();
 			} catch(\Exception $exception) {
 
 				// if the row couldn't be converted, rethrow it
-			  throw(new \PDOException($exception->getMessage(), 0, $exception));
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($comments);
+		return ($comments);
 	}
 
-} //this last one closes the class as a whole
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() : array {
+		$fields = get_object_vars($this);
+
+		//format the date so that the front end can consume it
+		$fields["commentDate"] = round(floatval($this->commentDate->format("U.u")) * 1000);
+		return($fields);
+	}
+
+
+
+
+
+} //this one closes the class as a whole

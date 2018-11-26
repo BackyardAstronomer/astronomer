@@ -526,10 +526,6 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 	public function jsonSerialize() : array {
 		$fields = get_object_vars($this);
 
-		$fields["eventId"] = $this->eventId->toString();
-		$fields["eventEventTypeId"] = $this->eventEventTypeId->toString();
-		$fields["eventProfileId"] = $this->eventProfileId->toString();
-
 		//format the date so that the front end can consume it
 		$fields["eventStartDate"] = round(floatval($this->eventStartDate->format("U.u")) * 1000);
 		$fields["eventEndDate"] = round(floatval($this->eventEndDate->format("U.u")) * 1000);
