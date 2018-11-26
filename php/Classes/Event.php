@@ -506,7 +506,8 @@ string $newEventTitle, string $newEventContent, $newEventStartDate = null, $newE
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$event = new Event($row["eventId"], $row["eventEventTypeId"], $row["eventProfileId"], $row["eventTitle"], $row["eventContent"], $row["eventStartDate"], $row["eventEndDate"]);
-				$events[$events->key()] = $event;
+				$eventProfile = (object) ["event" => $event, "profileName" => $row["profileName"]];
+				$events[$events->key()] = $eventProfile;
 				$events->next();
 			} catch(\Exception $exception) {
 

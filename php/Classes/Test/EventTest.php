@@ -276,15 +276,15 @@ class EventTest extends AstronomerTestSetUp {
 		$results = Event::getAllEvents($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("event"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\Event", $results);
 
 		//grab the result from the array and validate it
-		$pdoEvent = $results[0];
+		$pdoEvent = $results[0]->event;
 		$this->assertEquals($pdoEvent->getEventId(), $eventId);
 		$this->assertEquals($pdoEvent->getEventEventTypeId(), $this->eventType->getEventTypeId());
 		$this->assertEquals($pdoEvent->getEventProfileId(),$this->profile->getProfileId());
 		$this->assertEquals($pdoEvent->getEventTitle(), $this->VALID_EVENT_TITLE);
 		$this->assertEquals($pdoEvent-> getEventContent(), $this->VALID_EVENT_CONTENT);
+		$this->assertEquals($results->profileName, $this->profile->getProfileName());
 
 		//format the dates 2 seconds since the beginning of time to avoid rounding error
 		$this->assertEquals($pdoEvent->getEventStartDate()->getTimestamp(), $this->VALID_EVENT_START_DATE->getTimestamp());
