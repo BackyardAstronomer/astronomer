@@ -12,7 +12,7 @@ use BackyardAstronomer\Astronomer\ {
 };
 
 /*
- * API for the astronomer
+ * api for the astronomer
  *
  * @author Chamisa Edmo
  * @version 1.0

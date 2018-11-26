@@ -13,7 +13,7 @@ use BackyardAstronomer\Astronomer\ {
 
 
 /**
-* API for eventType
+* api for eventType
 *
 * @author Dayn Augustson
 * @version 1.0
