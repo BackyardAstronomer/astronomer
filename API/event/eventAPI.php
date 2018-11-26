@@ -84,6 +84,7 @@ try {
 		if(empty($requestObject->eventEndDate) === true) {
 			throw(new \InvalidArgumentException("events must have end dateTime", "https://http.cat/[406].jpeg"));
 		}
+		// TODO add POST method to this block
 		if($method === "PUT") {
 			// retrieve the event to update
 			$event = Event::getEventByEventId($pdo, $eventId);
@@ -100,7 +101,7 @@ try {
 			//enforce the end user has a JWT token
 			validateJwtHeader();
 
-			//create new tweet and insert into the database
+			//create new event and insert into the database
 			$newEventId = generateUuidV4();
 			$event = new Event($newEventId, $_SESSION["eventType"]->getEventTypeId(), $_SESSION["profile"]->getProfileId(), $requestObject->eventTitle, $requestObject->eventContent, $requestObject->eventStartDate, $requestObject->eventEndDate);
 			$event->insert($pdo);
@@ -108,6 +109,8 @@ try {
 			//update reply
 			$reply->message = "Event created OK";
 		}
+
+
 	}else if($method === "DELETE") {
 		// enforce user has xsrf token
 		verifyXsrf();
