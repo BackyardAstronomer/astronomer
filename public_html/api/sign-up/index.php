@@ -23,14 +23,17 @@ $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 try {
-	//grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("../etc/apache2/capstone-mysql/cohort22/astronomers.ini");
+	$secrets =  new \Secrets("/etc/apache2/capstone-mysql/cohort22/astronomers");
+	$pdo = $secrets->getPdoObject();
+
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	if($method === "POST") {
+
 		//decode the json and turn it into a php object
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
+
 		//profile at handle is a required field
 		if(empty($requestObject->profileId) === true) {
 			throw(new \InvalidArgumentException ("That profile ID does not exist", 405));
@@ -45,15 +48,15 @@ try {
 		}
 		//profile email is a required field
 		if(empty($requestObject->profileEmail) === true) {
-			throw(new \InvalidArgumentException ("No profile email present", 405));
+			throw(new \InvalidArgumentException ("No profile email is present", 405));
 		}
 		//if phone is empty set it too null
 		if(empty($requestObject->profileImage) === true) {
 			$requestObject->profileImage = null;
 		}
-		//if phone is empty set it too null
+		//profile name is a required field
 		if(empty($requestObject->profileName) === true) {
-			$requestObject->profileName = null;
+			throw(new \InvalidArgumentException ("No profile name is present", 405));
 		}
 		//make sure the password and confirm password match
 		if ($requestObject->profilePassword !== $requestObject->profilePasswordConfirm) {
@@ -63,7 +66,7 @@ try {
 		$profileActivationToken = bin2hex(random_bytes(16));
 		$profileId = generateUuidV4();
 		//create the profile object and prepare to insert into the database
-		$profile = new Profile($profileId, $profileActivationToken, "null", $requestObject->profileEmail, $hash, "image.jpg", "Chameezy");
+		$profile = new Profile($profileId, $requestObject->profileActivationToken, "null", $requestObject->profileEmail, $requestObject->hash, "null", "ChameezyE");
 		//insert the profile into the database
 		$profile->insert($pdo);
 		//compose the email message to send with th activation token
