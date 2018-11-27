@@ -2,7 +2,7 @@
 
 require_once dirname(__DIR__, 3) . "../vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "../php/classes/autoload.php";
-require_once ("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 require_once dirname(__DIR__, 3) . "../php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "../php/lib/uuid.php";
 require_once dirname(__DIR__, 3) . "../php/lib/jwt.php";
@@ -17,120 +17,150 @@ use BackyardAstronomer\Astronomer\ {
  * @author Stephen Pelot <stephenpelot@gmail.com>
  */
 
-//verifying the session, or start if not active
+
+//verify the session, start if not active
 if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 
-//prepare and empty reply
+//prepare an empty reply
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 
 try {
-	//get mysql connection
+	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/cohort22/astronomers.ini");
 
-	// which http method used
+	//determine which HTTP method was used
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$commentId = filter_input(INPUT_GET, "commentId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$id = filter_input(INPUT_GET, "commentId", FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
 	$commentEventId = filter_input(INPUT_GET, "commentEventId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$commentProfileId = filter_input(INPUT_GET, "commentProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$commentContent = filter_input(INPUT_GET, "commentContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$commentDate = filter_input(INPUT_GET, "commentDate", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$commentProfileId = filter_input(INPUT_GET, "commentProfile", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES); $commentContent = filter_input(INPUT_GET, "commentContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES); $commentDate = filter_input(INPUT_GET, "commentDate", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-	//ensure id is valid for methods that need it
-	if(($method === "DELETE" || $method = "PUT") && (empty($commentId) === true)) {
-		throw(new InvalidArgumentException("id cannot be empty or negative", 401));}
-
-		// handle GET request - if id is present, that comment is returned, otherwise all comments are returned
-		if($method === "GET") {
-
-			//set xsrf token
-			setXsrfCookie();
-
-			//get a specific comment or all comment and update reply
-			if(empty($Id) === false) {
-				$reply->data = Comment::getCommentByCommentProfileId($pdo, $commentId);
-			} else if(empty($eventCommentTypeId) === false) {
-				$reply->data = Comment::getCommentByCommentProfileId($pdo, $_SESSION["commentType"]->getEventId())->toArray();
-			} else if(empty($commentProfileId) === false) {
-
-				//if user is logged in grab all comments by that user based on log in
-				$reply->data = Comment::get($pdo, $_SESSION["profile"]->getProfileId())->toArray();
-			} else {
-				$reply->data = Comment::getAllComments($pdo)->toArray();
-			}
-		} else if($method === "PUT" || $method === "POST") {
-
-			//enforce user has xsrf token
-			verifyXsrf();
-
-			// enforce user is signed in
-			if(empty($_SESSION["profile"]) === true) {
-				throw(new \InvalidArgumentException("you must be signed in to create comments", 401));
-			}
-			$requestContent = file_get_contents("php://input");
-
-			// retrieves JSON package that the front end sent, and stores it in $requestContent
-			$requestObject = json_decode($requestContent);
-
-			// this line decodes json package and stores result in $requestObject
-
-			// ensure event content is available (required)
-			if(empty($requestObject->commentContent) === true) {
-				throw(new \InvalidArgumentException("No content for Comment", 405));
-			}
+	//make sure the id is valid for methods that require it
+	if(($method === "DELETE" || $method === "PUT") && empty($commentId) === true) {
+		throw(new InvalidArgumentException("comment Id cannot be empty", 405));
+	}
 
 
-			// ensure date is not null
-			if(empty($requestObject->eventStartDate) === true) {
-				throw(new \InvalidArgumentException("comments must have dateTime", "https://http.cat/[406].jpeg"));
-			}
+	// handle GET request - if id is present, that comment is returned, otherwise all comment are returned
+	if($method === "GET") {
+		//set XSRF cookie
+		setXsrfCookie();
+
+		//get a specific comment or all comments and update reply
+		if(empty($id) === false) {
+			$reply->data = Comment::getCommentByCommentId($pdo, $id);
+		} else if(empty($commentEventId) === false) {
+			$reply->data = Comment::getCommentByCommentEventId($pdo, $commentEventId)->toArray();
+		} else if(empty($commentProfileId) === false) {
+			$reply->data = Comment::getCommentByCommentProfileId($pdo, $commentProfileId)->toArray();
+		} else if(empty($commentContent) === false) {
+			$reply->data = Comment::getCommentByCommentContent($pdo, $commentContent)->toArray();
+		} else if(empty($commentDate) === false) {
+			$reply->data = Comment::getCommentByCommentDate($pdo, $commentDate)->toArray();
+		}	
+			else {
+			$reply->data = Comment::getAllComments($pdo)->toArray();
+		}
+	} else if($method === "PUT" || $method === "POST") {
+
+		//enforce that the user has an XSRF token
+		verifyXsrf();
+
+		$requestContent = file_get_contents("php://input");
+		// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
+		$requestObject = json_decode($requestContent);
+		// This Line Then decodes the JSON package and stores that result in $requestObject
+
+		//make sure comment content is available (required field)
+		if(empty($requestObject->commentContent) === true) {
+			throw(new \InvalidArgumentException ("No content for Comment.", 405));
 		}
 
-
-
-				// retrieve the event to update
-				$comment = Comment::getCommentByCommentId($pdo, $commentId);
-				if($comment === null) {
-					throw (new \RuntimeException("comment does not exist", "https://http.cat/[404].jpg"));
-				}
-				//enforce user has a JWT token
-
-				//enforce user is signed in and only trying to edit their own comment
-				if(empty($_SESSION["profile"])=== true || $_SESSION["profile"]->getProfileId()->toString() !== $comment->getCommentProfileId()->toString()) {
-					throw(new \InvalidArgumentException("you must be logged in to post comments", 403));
-				}
-
-				//enforce the end user has a JWT token
-				validateJwtHeader();
-
-				//create new comment and insert into the database
-				$newCommentId = generateUuidV4();
-				$comment = new Comment($newCommentId, $_SESSION["commentEventId"]->getCommentEventId(), $_SESSION["profile"]->getProfileId(), $requestObject->commentContent, $requestObject->commentDate);
-				$comment->insert($pdo);
-
-				//update reply
-				$reply->message = "Comment has been created";
+		// make sure comment date is accurate (optional field)
+		if(empty($requestObject->commentDate) === true) {
+			$requestObject->commentDate = null;
+		} else {
+			// if the date exists, Angular's milliseconds since the beginning of time MUST be converted
+			$commentDate = DateTime::createFromFormat("U.u", $requestObject->commentDate / 1000);
+			if($commentDate === false) {
+				throw(new RuntimeException("invalid comment date", 400));
 			}
+			$requestObject->commentDate = $commentDate;
+		}
 
+		//perform the actual put or post
+		if($method === "PUT") {
 
-		}else if($method === "DELETE") {
-
-			// enforce user has xsrf token
-			verifyXsrf();
-
-
-			// retrieve the Comment to be deleted
+			// retrieve the comment to update
 			$comment = Comment::getCommentByCommentId($pdo, $id);
-			if($comment === null){
-				throw new(RuntimeException("Comment does not exist", 404));
+			if($comment === null) {
+				throw(new RuntimeException("Comment does not exist", 404));
 			}
+
+			//enforce the user is signed in and only trying to edit their own comment
+			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId()->toString() !== $comment->getCommentProfileId()->toString()) {
+				throw(new \InvalidArgumentException("You are not allowed to edit this comment", 403));
+			}
+
+			// update all attributes
+			$comment->setCommentDate($requestObject->commentDate);
+			$comment->setCommentContent($requestObject->commentContent);
+			$comment->update($pdo);
+
+			// update reply
+			$reply->message = "Comment updated OK";
+
+		} else if($method === "POST") {
+
+			// enforce the user is signed in
+			if(empty($_SESSION["profile"]) === true) {
+				throw(new \InvalidArgumentException("you must be logged in to post comments", 403));
+			}
+
+			// create new comment and insert into the database
+			$comment = new Comment(generateUuidV4(), $_SESSION["profile"]->getProfileId(), $requestObject->commentContent, null);
+			$comment->insert($pdo);
+
+			// update reply
+			$reply->message = "Comment created OK";
 		}
 
+	} else if($method === "DELETE") {
+
+		//enforce that the end user has a XSRF token.
+		verifyXsrf();
+
+		// retrieve the Comment to be deleted
+		$comment = Comment::getCommentByCommentId($pdo, $id);
+		if($comment === null) {
+			throw(new RuntimeException("Comment does not exist", 404));
+		}
+
+		//enforce the user is signed in and only trying to edit their own comment
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $comment->getCommentProfileId()) {
+			throw(new \InvalidArgumentException("You are not allowed to delete this comment", 403));
+		}
+
+		// delete comment
+		$comment->delete($pdo);
+		// update reply
+		$reply->message = "Comment deleted OK";
+	} else {
+		throw (new InvalidArgumentException("Invalid HTTP method request"));
+	}
+// update the $reply->status $reply->message
+} catch(\Exception | \TypeError $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+}
+
+// encode and return reply to front end caller
+header("Content-type: application/json");
+echo json_encode($reply);
 
 
-};
