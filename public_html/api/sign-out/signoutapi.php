@@ -5,7 +5,7 @@ require_once ("/etc/apache2/capstone-mysql/encrypted-config.php");
 /**
  * api for signing out
  *
- * @author Gkephart
+ * @author Stephen Pelot <stephenpelot@gmail.com>
  * @version 1.0
  **/
 //verify the xsrf challenge
@@ -18,7 +18,7 @@ $reply->status = 200;
 $reply->data = null;
 try {
 	//grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/ddctwitter.ini");
+	$pdo = connectToEncryptedMySQL("\../etc/apache2/capstone-mysql/cohort22/astronomers.ini");
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	if($method === "GET") {
