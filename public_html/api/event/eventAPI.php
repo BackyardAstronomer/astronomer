@@ -104,7 +104,7 @@ try {
 			validateJwtHeader();
 
 			//update all attributes
-			$event->setEventDate($requestObject->eventDate);
+			//$event->setEventDate($requestObject->eventDate);
 			$event->setEventContent($requestContent->eventContent);
 			$event->update($pdo);
 
