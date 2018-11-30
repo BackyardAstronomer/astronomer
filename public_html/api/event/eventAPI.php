@@ -84,7 +84,9 @@ try {
 		if(empty($requestObject->eventEndDate) === true) {
 			throw(new \InvalidArgumentException("events must have end dateTime", "https://http.cat/[406].jpeg"));
 		}
-		// TODO add POST method to this block
+
+
+
 		if($method === "PUT") {
 			// retrieve the event to update
 			$event = Event::getEventByEventId($pdo, $eventId);
@@ -95,20 +97,23 @@ try {
 
 			//enforce user is signed in and only trying to edit their own event
 			if(empty($_SESSION["profile"])=== true || $_SESSION["profile"]->getProfileId()->toString() !== $event->getEventProfileId()->toString()) {
-				throw(new \InvalidArgumentException("you must be loged in to post events", 403));
+				throw(new \InvalidArgumentException("You are not allowed to edit this event", 'https://http.cat/[403]'));
 			}
 
 			//enforce the end user has a JWT token
 			validateJwtHeader();
 
-			//create new event and insert into the database
-			$newEventId = generateUuidV4();
-			$event = new Event($newEventId, $_SESSION["eventType"]->getEventTypeId(), $_SESSION["profile"]->getProfileId(), $requestObject->eventTitle, $requestObject->eventContent, $requestObject->eventStartDate, $requestObject->eventEndDate);
-			$event->insert($pdo);
+			//update all attributes
+			$event->setEventDate($requestObject->eventDate);
+			$event->setEventContent($requestContent->eventContent);
+			$event->update($pdo);
 
 			//update reply
-			$reply->message = "Event created OK";
+			$reply->message = "Event updated OK";
+		}else if($method === "POST"){
+			//enforce user is signed in
 		}
+
 
 
 	}else if($method === "DELETE") {
