@@ -111,10 +111,22 @@ try {
 			//update reply
 			$reply->message = "Event updated OK";
 		}else if($method === "POST"){
+
 			//enforce user is signed in
+			if(empty($_SESSION["profile"]) === true){
+				throw(new \InvalidArgumentException("you must be logged in to post events", 403));
+			}
+
+			//enforce end user has JWT token
+			validateJwtHeader();
+
+			//create new event and insert into database
+			$event = new Event(generateUuidV4(), $_SESSION["eventType"]->getEventTypeId(), $_SESSION["profile"]->getProfileId(), $requestObject->eventTitle, $requestContent->eventContent, null, null);
+			$event->insert($pdo);
+
+			//update reply
+			$reply->message = "Event created OK";
 		}
-
-
 
 	}else if($method === "DELETE") {
 		// enforce user has xsrf token
@@ -125,5 +137,28 @@ try {
 		if($event === null){
 			throw new(RuntimeException("Event does not exist", 404));
 		}
+
+		//enforce the user is signed in and only trying to edit their own event
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId()->toString() !== $event->getEventProfileId()->toString()){
+			throw(new \InvalidArgumentException("You are not allowed to delete this event", 403));
+		}
+
+		//enforce JWT token
+		validateJwtHeader();
+
+		//delete event
+		$event->delete($pdo);
+		//update reply
+		$reply->message = "Event deleted OK";
+	} else {
+		throw(new \InvalidArgumentException("Invalid HTTP method request", 418));
 	}
+	//update the $reply->status $reply->message
+} catch(\TypeError | \Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
 }
+
+//encode and return to front end caller
+header("Content-type: application/json");
+echo json_encode($reply);
