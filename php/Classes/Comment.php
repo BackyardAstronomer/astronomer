@@ -139,7 +139,7 @@ class Comment {
 		$newCommentContent = trim($newCommentContent);
 		$newCommentContent = filter_var($newCommentContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newCommentContent) === true) {
-			throw(new \RangeException("Comment content is empty or insecure"));
+			throw(new \RangeException("Comment content  is empty or insecure"));
 		}
 		if(strlen($newCommentContent) > 255) {
 			throw (new \RangeException("Comment is too many characters"));

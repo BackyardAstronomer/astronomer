@@ -1,14 +1,14 @@
 <?php
 
-require_once dirname(__DIR__, 3) . "../vendor/autoload.php";
-require_once dirname(__DIR__, 3) . "../php/classes/autoload.php";
+require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
+require_once dirname(__DIR__, 3) . "/php/Classes/autoload.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
-require_once dirname(__DIR__, 3) . "../php/lib/xsrf.php";
-require_once dirname(__DIR__, 3) . "../php/lib/uuid.php";
-require_once dirname(__DIR__, 3) . "../php/lib/jwt.php";
+require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
+require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
+require_once dirname(__DIR__, 3) . "/php/lib/jwt.php";
 
 use BackyardAstronomer\Astronomer\ {
-	Comment
+	Comment, Event, EventType, Profile
 };
 
 /**
@@ -31,6 +31,25 @@ $reply->data = null;
 try {
 	$secrets =  new \Secrets("/etc/apache2/capstone-mysql/cohort22/astronomers");
 	$pdo = $secrets->getPdoObject();
+
+//	$password = "abc123";
+//	$hash = password_hash($password, PASSWORD_ARGON2I, ["time_cost" => 384]);
+//	$token = bin2hex(random_bytes(16));
+//
+//	$profile = new Profile(generateUuidV4(), $token, "hello", "hello@hello.com", $hash,"http://best-image-ever.com", "world" );
+//	$profile->insert($pdo);
+//
+//	var_dump("profileId", $profile->getProfileId()->toString());
+//
+//	$eventType = new EventType(generateUuidV4(), "star party");
+//	$eventType->insert($pdo);
+//
+//	$event = new Event(generateUuidV4(), $eventType->getEventTypeId(), $profile->getProfileId(), "Star Party!", "Hello world", new \DateTime());
+//
+//	var_dump("eventID", $event->getEventId()->toString());
+//	$event->insert($pdo);
+
+	//$_SESSION["profile"] = Profile::getProfileByProfileId($pdo,"bc8c85bc-5e0a-4b88-a0e9-2db164bca2ff");
 
 	//determine which HTTP method was used
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
@@ -69,7 +88,7 @@ try {
 		$requestObject = json_decode($requestContent);
 		// This Line Then decodes the JSON package and stores that result in $requestObject
 
-		if(empty($requestObject->commentDate) === true){
+		if(empty($requestObject->commentEventId) === true){
 			throw(new \InvalidArgumentException("Comment is not linked to an event", 405));
 		}
 
