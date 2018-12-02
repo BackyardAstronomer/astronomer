@@ -134,7 +134,7 @@ class Rsvp implements \JsonSerializable {
 	public function setRsvpEventCounter(int $newRsvpEventCounter) : void {
 		//check to make sure not getting a negative number
 		if($newRsvpEventCounter <=0){
-			throw(new \RangeException("rsvp event counter is not positive"));
+			throw(new \RangeException("rsvp event counter cannot be negative"));
 		}
 
 		// store the rsvpEventCounter content

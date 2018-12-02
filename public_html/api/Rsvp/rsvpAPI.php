@@ -43,7 +43,7 @@ try {
 		//gets  a specific like associated based on its composite key
 		if ($rsvpEventId  !== null && $rsvpProfileId !== null) {
 			$rsvp = Rsvp::getRsvpByRsvpEventIdRsvpProfileId($pdo, $rsvpEventId, $rsvpProfileId);
-			if($rsvp!== null) {
+			if($rsvp !== null) {
 				$reply->data = $rsvp;
 			}
 
@@ -54,15 +54,15 @@ try {
 		} else if(empty($rsvpProfileId) === false) {
 			$reply->data = Rsvp::getRsvpByRsvpProfileId($pdo, $rsvpProfileId)->toArray();
 		} else {
-			throw new InvalidArgumentException("incorrect search parameters ", 404);
+			throw new \InvalidArgumentException("incorrect search parameters", 404);
 		}
 	} else if($method === "POST" || $method === "PUT") {
+
 		//decode the response from the front end
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 		if(empty($requestObject->rsvpEventId) === true) {
 			throw (new \InvalidArgumentException("No Event linked to the RSVP", 405));
-
 		}
 		if(empty($requestObject->rsvpProfileId) === true) {
 			throw (new \InvalidArgumentException("No Profile linked to the RSVP", 405));
@@ -70,14 +70,18 @@ try {
 		if($method === "POST") {
 			//enforce that the end user has a XSRF token.
 			verifyXsrf();
+
 			//enforce the end user has a JWT token
 			//validateJwtHeader();
+
 			// enforce the user is signed in
 			if(empty($_SESSION["profile"]) === true) {
 				throw(new \InvalidArgumentException("you must be logged in too rsvp to this event", 403));
 			}
+
 			validateJwtHeader();
-			$rsvp = new Rsvp($_SESSION["profile"]->getProfileId(), $requestObject->rsvpEventId);
+
+			$rsvp = new Rsvp($_SESSION["profile"]->getProfileId(), $requestObject->rsvpEventId, 1);
 			$rsvp->insert($pdo);
 			$reply->message = "liked event successful";
 		} else if($method === "PUT") {
