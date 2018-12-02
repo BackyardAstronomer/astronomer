@@ -12,7 +12,7 @@ use BackyardAstronomer\Astronomer\ {
 	Rsvp, Profile
 };
 /**
- * Api for the rsvp class
+ * Api for the Rsvp class
  *
  * @author Dayn Augustson
  */
