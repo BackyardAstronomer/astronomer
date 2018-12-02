@@ -152,7 +152,7 @@ class Rsvp implements \JsonSerializable {
 	public function insert(\PDO $pdo) : void {
 
 		// create query template
-		$query = "INSERT INTO rsvp (rsvpProfileId, rsvpEventId, rsvpEventCounter  ) VALUES(:rsvpProfileId, :rsvpEventId, :rsvpEventCounter )";
+		$query = "INSERT INTO rsvp (rsvpProfileId, rsvpEventId, rsvpEventCounter) VALUES(:rsvpProfileId, :rsvpEventId, :rsvpEventCounter)";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template

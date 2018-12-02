@@ -1,11 +1,11 @@
 <?php
-require_once(dirname(__DIR__, 3) . "../vendor/autoload.php");
-require_once(dirname(__DIR__, 3) . "../php/classes/autoload.php");
-require_once(dirname(__DIR__, 3) . "../php/lib/jwt.php");
-require_once(dirname(__DIR__, 3) . "../php/lib/xsrf.php");
-require_once(dirname(__DIR__, 3) . "../php/lib/uuid.php");
+require_once(dirname(__DIR__, 3) . "/vendor/autoload.php");
+require_once(dirname(__DIR__, 3) . "/php/Classes/autoload.php");
+require_once(dirname(__DIR__, 3) . "/php/lib/jwt.php");
+require_once(dirname(__DIR__, 3) . "/php/lib/xsrf.php");
+require_once(dirname(__DIR__, 3) . "/php/lib/uuid.php");
 //below needs to be changed to a file that we actually have, but I don't know what to change it to.
-require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
 use BackyardAstronomer\Astronomer\ {
 	Profile
@@ -22,6 +22,7 @@ use BackyardAstronomer\Astronomer\ {
 if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
+
 //prepare an empty reply
 $reply = new stdClass();
 $reply->status = 200;
@@ -29,11 +30,13 @@ $reply->data = null;
 try {
 	//grab the mySQL connection
 	//these methods are linked to my own public access bits of info(profile id and profile email)
-	$pdo = connectToEncryptedMySQL("../etc/apache2/capstone-mysql/cohort22/astronomers.ini");
+	$secrets =  new \Secrets("/etc/apache2/capstone-mysql/cohort22/astronomers");
+	$pdo = $secrets->getPdoObject();
+
 	//determine which HTTP method was used
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 	// sanitize input
-	$profileId = filter_input(INPUT_GET, "profileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$profileName = filter_input(INPUT_GET, "profileName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$profileActivationToken = filter_input(INPUT_GET, "profileActivationToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -42,12 +45,13 @@ try {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 	if($method === "GET") {
+
 		//set XSRF cookie
 		setXsrfCookie();
 
 		//gets a post by content
-		if(empty($profileId) === false) {
-			$reply->data = Profile::getProfileByProfileId($pdo, $profileId);
+		if(empty($id) === false) {
+			$reply->data = Profile::getProfileByProfileId($pdo, $id);
 		} else if(empty($profileAtHandle) === false) {
 			$reply->data = Profile::getProfileByProfileName($pdo, $profileName);
 		} else if(empty($profileEmail) === false) {
@@ -63,7 +67,7 @@ try {
 		//validateJwtHeader();
 
 		//enforce the user is signed in and only trying to edit their own profile
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId()->toString() !== $profileId) {
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId()->toString() !== $id) {
 			throw(new \InvalidArgumentException("You are not allowed to access this profile", 403));
 		}
 		validateJwtHeader();
@@ -72,7 +76,7 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 		//retrieve the profile to be updated
-		$profile = Profile::getProfileByProfileId($pdo, $profileId);
+		$profile = Profile::getProfileByProfileId($pdo, $id);
 		if($profile === null) {
 			throw(new RuntimeException("Profile does not exist", 404));
 		}
@@ -88,7 +92,6 @@ try {
 		if(empty($requestObject->profileActivationToken) === true) {
 			$requestObject->ProfileActivationToken = $profile->getProfileActivationToken();
 		}
-		$profile->setProfileId($requestObject->profileId);
 		$profile->setProfileName($requestObject->profileName);
 		$profile->setProfileEmail($requestObject->profileEmail);
 		$profile->setProfileActivationToken($requestObject->profileActivationToken);
@@ -103,7 +106,7 @@ try {
 		//enforce the end user has a JWT token
 		//validateJwtHeader();
 
-		$profile = Profile::getProfileByProfileId($pdo, $profileId);
+		$profile = Profile::getProfileByProfileId($pdo, $id);
 		if($profile === null) {
 			throw (new RuntimeException("Profile does not exist"));
 		}

@@ -149,7 +149,7 @@ class Profile implements \JsonSerializable {
 			throw(new \InvalidArgumentException("email input is empty or insecure"));
 		}
 		//the following verifies the email content will fit in the database
-		if(strlen($newProfileEmail) > 50) {
+		if(strlen($newProfileEmail) > 128) {
 			throw(new \RangeException("this email is too long"));
 		}
 

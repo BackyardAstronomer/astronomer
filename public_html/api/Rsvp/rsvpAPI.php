@@ -35,7 +35,7 @@ try {
 	//sanitize the search parameters
 	$rsvpEventId = $id = filter_input(INPUT_GET, "rsvpEventId", FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
 
-	$rsvpProfileId = $id = filter_input(INPUT_GET, "resvpPorfileId", FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
+	$rsvpProfileId = $id = filter_input(INPUT_GET, "rsvpProfileId", FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	if($method === "GET") {
 		//set XSRF cookie
@@ -61,10 +61,11 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 		if(empty($requestObject->rsvpEventId) === true) {
-			throw (new \InvalidArgumentException("No Event linked to the Rsvp", 405));
+			throw (new \InvalidArgumentException("No Event linked to the RSVP", 405));
+
 		}
 		if(empty($requestObject->rsvpProfileId) === true) {
-			throw (new \InvalidArgumentException("No Provile linked to the rsvp", 405));
+			throw (new \InvalidArgumentException("No Profile linked to the RSVP", 405));
 		}
 		if($method === "POST") {
 			//enforce that the end user has a XSRF token.

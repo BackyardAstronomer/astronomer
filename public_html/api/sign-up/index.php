@@ -1,9 +1,9 @@
 <?php
 require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
-require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
+require_once dirname(__DIR__, 3) . "/php/Classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
-require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
 
 use BackyardAstronomer\Astronomer\ {
@@ -34,14 +34,6 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		//profile at handle is a required field
-		if(empty($requestObject->profileId) === true) {
-			throw(new \InvalidArgumentException ("That profile ID does not exist", 405));
-		}
-		//verify that the confirm password is present
-		if(empty($requestObject->profileActivationToken) === true) {
-			throw(new \InvalidArgumentException ("Not a valid profile activation token", 405));
-		}
 		//if phone is empty set it too null
 		if(empty($requestObject->profileBio) === true) {
 			$requestObject->profileBio = null;
@@ -50,30 +42,42 @@ try {
 		if(empty($requestObject->profileEmail) === true) {
 			throw(new \InvalidArgumentException ("No profile email is present", 405));
 		}
-		//if phone is empty set it too null
-		if(empty($requestObject->profileImage) === true) {
-			$requestObject->profileImage = null;
-		}
 		//profile name is a required field
 		if(empty($requestObject->profileName) === true) {
 			throw(new \InvalidArgumentException ("No profile name is present", 405));
+		}
+		//verify that profile password is present
+		if(empty($requestObject->profilePassword) === true) {
+			throw(new \InvalidArgumentException ("Must input valid password", 405));
+		}
+		//verify that the confirm password is present
+		if(empty($requestObject->profilePasswordConfirm) === true) {
+			throw(new \InvalidArgumentException ("Must input valid password", 405));
 		}
 		//make sure the password and confirm password match
 		if ($requestObject->profilePassword !== $requestObject->profilePasswordConfirm) {
 			throw(new \InvalidArgumentException("passwords do not match"));
 		}
-		$hash = password_hash($requestObject->profilePassword, PASSWORD_ARGON2I, ["time_cost" => 384]);
+
+		$newProfileHash = password_hash($requestObject->profilePassword, PASSWORD_ARGON2I, ["time_cost" => 384]);
+
 		$profileActivationToken = bin2hex(random_bytes(16));
+
 		$profileId = generateUuidV4();
+
 		//create the profile object and prepare to insert into the database
-		$profile = new Profile($profileId, $requestObject->profileActivationToken, "null", $requestObject->profileEmail, $requestObject->hash, "null", "ChameezyE");
+		$profile = new Profile($profileId,  $profileActivationToken, $requestObject->profileBio, $requestObject->profileEmail, $newProfileHash, "http://awesome.image", $requestObject->profileName);
+
 		//insert the profile into the database
 		$profile->insert($pdo);
+
 		//compose the email message to send with th activation token
 		$messageSubject = "One step closer -- Account Activation";
+
 		//building the activation link that can travel to another server and still work. This is the link that will be clicked to confirm the account.
 		//make sure URL is /public_html/api/activation/$activation
 		$basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
+
 		//create the path
 		$urlglue = $basePath . "/api/activation/?activation=" . $profileActivationToken;
 		//create the redirect link
