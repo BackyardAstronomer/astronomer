@@ -34,7 +34,7 @@ try {
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 
 // sanitize input
-
+	$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
 	$eventTypeName = filter_input(INPUT_GET, "eventTypeName ", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 
@@ -43,8 +43,28 @@ try {
 		throw(new InvalidArgumentException("EventTypeID cannot be empty or negative", 405));
 	}
 
+	if($method === "GET") {
+		//set XSRF cookie
+		setXsrfCookie();
 
-
-
+		//get a specific tweet based on arguments provided or all the tweets and update reply
+		if(empty($id) === false) {
+			$reply->data = EventType::getEventTypeByEventTypeId($pdo, $id);
+		}
+		else {
+			$reply->data = EventType::getAllEventTypes($pdo)->toArray();
+		}
 
 }
+// update the $reply->status $reply->message
+} catch(\Exception | \TypeError $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+}
+
+// encode and return reply to front end caller
+header("Content-type: application/json");
+echo json_encode($reply);
+
+// finally - JSON encodes the $reply object and sends it back to the front end.
+
