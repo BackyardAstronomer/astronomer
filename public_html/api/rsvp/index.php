@@ -12,7 +12,7 @@ use BackyardAstronomer\Astronomer\ {
 	Rsvp, Profile
 };
 /**
- * Api for the Rsvp class
+ * Api for the rsvp class
  *
  * @author Dayn Augustson
  */
@@ -89,7 +89,7 @@ try {
 			//grab the rsvp by its composite key
 			$rsvp = Rsvp::getRsvpByRsvpEventIdRsvpProfileId($pdo, $requestObject->rsvpEventId, $requestObject->rsvpProfileId);
 			if($rsvp === null) {
-				throw (new \RuntimeException("Rsvp does not exist"));
+				throw (new \RuntimeException("rsvp does not exist"));
 			}
 			//enforce the user is signed in and only trying to edit their own rsvp
 			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->profile->getProfileId() !== $rsvp->getrsvpProfileId()) {
@@ -99,7 +99,7 @@ try {
 			//preform the actual delete
 			$rsvp->delete($pdo);
 			//update the message
-			$reply->message = "Rsvp successfully deleted";
+			$reply->message = "rsvp successfully deleted";
 		}
 		// if any other HTTP request is sent throw an exception
 	} else {

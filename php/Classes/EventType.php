@@ -106,7 +106,7 @@ public function setEventTypeName(string $newEventTypeName) : void {
 }
 
 	/**
-	 * inserts EventType into mySQL
+	 * inserts eventType into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -124,7 +124,7 @@ public function setEventTypeName(string $newEventTypeName) : void {
 	}
 
 	/**
-	 * deletes this EventType from mySQL
+	 * deletes this eventType from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -142,7 +142,7 @@ public function setEventTypeName(string $newEventTypeName) : void {
 	}
 
 	/**
-	 * updates EventType in mySQL
+	 * updates eventType in mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -160,11 +160,11 @@ public function setEventTypeName(string $newEventTypeName) : void {
 	}
 
 	/**
-	 * gets the EventType by eventTypeId
+	 * gets the eventType by eventTypeId
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param Uuid|string $eventTypeId event Type Id to search for
-	 * @return EventType|null EventType found or null if not found
+	 * @return EventType|null eventType found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when a variable are not the correct data type
 	 **/

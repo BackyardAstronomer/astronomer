@@ -13,9 +13,9 @@ require_once(dirname(__DIR__)."/autoload.php");
 require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
 
 /**
- * Full PHPUnit test for the Rsvp class
+ * Full PHPUnit test for the rsvp class
  *
- * This is a complete PHPUnit test of the Rsvp class. It is complete because *ALL* mySQL/PDO enabled methods
+ * This is a complete PHPUnit test of the rsvp class. It is complete because *ALL* mySQL/PDO enabled methods
  * are tested for both invalid and valid inputs.
  *
  * @see Rsvp
@@ -23,7 +23,7 @@ require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
  **/
 class RsvpTest extends AstronomerTestSetUp{
 	/**
-	 * Profile that created the Rsvp; this is for foreign key relations
+	 * Profile that created the rsvp; this is for foreign key relations
 	 * @var Profile profile
 	 **/
 	protected $profile = null;
@@ -41,13 +41,13 @@ class RsvpTest extends AstronomerTestSetUp{
 	protected $VALID_ACTIVATION_TOKEN = null;
 
 	/**
-	 *  eventType that created the Rsvp
+	 *  eventType that created the rsvp
 	 * @var string $eventType
 	 */
 	protected $eventType = null;
 
 	/**
-	 * Event that created the Rsvp; this is for foreign key relations
+	 * Event that created the rsvp; this is for foreign key relations
 	 * @var string $event
 	 **/
 	protected $event = null;
@@ -76,17 +76,17 @@ class RsvpTest extends AstronomerTestSetUp{
 		$this->VALID_ACTIVATION_TOKEN = bin2hex(random_bytes(16));
 
 
-		// create and insert a Profile to the test Rsvp
+		// create and insert a Profile to the test rsvp
 		$profileId = generateUuidV4();
 		$this->profile = new Profile($profileId, $this->VALID_ACTIVATION_TOKEN, "I am Groot", "test@phpunit.de",$this->VALID_PROFILE_HASH ,"https://media.giphy.com/media/3og0INyCmHlNylks9O/giphy.gif", "Dilbert");
 		$this->profile->insert($this->getPDO());
 
-		// create and insert EventType to test Rsvp
+		// create and insert eventType to test rsvp
 		$eventTypeId = generateUuidV4();
 		$this->eventType = new EventType($eventTypeId, "blind star watch");
 		$this->eventType->insert($this->getPdo());
 
-		// create and insert a Event to test Rsvp
+		// create and insert a Event to test rsvp
 		$eventId = generateUuidV4();
 		$this->event = new Event($eventId, $eventTypeId, $profileId, "blind star watch party","May the braille be with you",new \DateTime(), new \DateTime());
 		$this->event->insert($this->getPdo());
@@ -94,13 +94,13 @@ class RsvpTest extends AstronomerTestSetUp{
 	}
 
 	/**
-	 * test inserting a valid Rsvp and verify that the actual mySQL data matches
+	 * test inserting a valid rsvp and verify that the actual mySQL data matches
 	 **/
 	public function testInsertValidRsvp() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("rsvp");
 
-		// create a new Rsvp and insert into mySQL
+		// create a new rsvp and insert into mySQL
 		$rsvp = new Rsvp($this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_RSVPEVENTCOUNTER);
 		$rsvp->insert($this->getPDO());
 
@@ -113,17 +113,17 @@ class RsvpTest extends AstronomerTestSetUp{
 	}
 
 	/**
-	 * test creating a Rsvp and then deleting it
+	 * test creating a rsvp and then deleting it
 	 **/
 	public function testDeleteValidRsvp() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("rsvp");
 
-		// create a new Rsvp and insert into mySQL
+		// create a new rsvp and insert into mySQL
 		$rsvp = new Rsvp($this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_RSVPEVENTCOUNTER);
 		$rsvp->insert($this->getPDO());
 
-		//delete the Rsvp from MySQL
+		//delete the rsvp from MySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
 		$rsvp->delete($this->getPDO());
 
@@ -134,13 +134,13 @@ class RsvpTest extends AstronomerTestSetUp{
 	}
 
 /**
-* gets the Rsvp by RsvpProfileId
+* gets the rsvp by RsvpProfileId
 **/
 	public function testGetValidRsvpByRsvpProfileId() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("rsvp");
 
-		// create a new Rsvp and insert into mySQL
+		// create a new rsvp and insert into mySQL
 		$rsvp = new Rsvp($this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_RSVPEVENTCOUNTER);
 		$rsvp->insert($this->getPDO());
 
@@ -148,7 +148,7 @@ class RsvpTest extends AstronomerTestSetUp{
 		$results = Rsvp::getRsvpByRsvpProfileId($this->getPDO(), $rsvp->getRsvpProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\Rsvp", $results);
+		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\rsvp", $results);
 
 		//grab the result from the array and validate it
 		$pdoRsvp = $results[0];
@@ -159,13 +159,13 @@ class RsvpTest extends AstronomerTestSetUp{
 	}
 
 	/**
- 	 * gets the Rsvp by RsvpEventId
+ 	 * gets the rsvp by RsvpEventId
 	 **/
 	public function testGetValidRsvpByRsvpEventId() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("rsvp");
 
-		// create a new Rsvp and insert into mySQL
+		// create a new rsvp and insert into mySQL
 		$rsvp = new Rsvp($this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_RSVPEVENTCOUNTER);
 		$rsvp->insert($this->getPDO());
 
@@ -173,7 +173,7 @@ class RsvpTest extends AstronomerTestSetUp{
 		$results = Rsvp::getRsvpByRsvpEventId($this->getPDO(), $rsvp->getRsvpEventId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("rsvp"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\Rsvp", $results);
+		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\rsvp", $results);
 
 		//grab the result from the array and validate it
 		$pdoRsvp = $results[0];
@@ -183,13 +183,13 @@ class RsvpTest extends AstronomerTestSetUp{
 
 	}
 /**
-//test grab all Rsvp
+//test grab all rsvp
 	public function testGetAllValidRsvp() : void {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("eventType");
 
-		//create a new EventType and insert into mySql
-		$rsvp = new Rsvp($this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_RSVPEVENTCOUNTER);
+		//create a new eventType and insert into mySql
+		$rsvp = new rsvp($this->profile->getProfileId(), $this->event->getEventId(), $this->VALID_RSVPEVENTCOUNTER);
 		$rsvp->insert($this->getPDO());
 
 		//grab the data from mySQL and make sure the field match
@@ -198,7 +198,7 @@ class RsvpTest extends AstronomerTestSetUp{
 		$this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("rsvp"));
 		$this->assertCount(1, $results);
 		//enfoce no other objects bled into test
-		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\EventType", $results);
+		$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\eventType", $results);
 
 		//grab results for the array and validate
 		$pdoRsvp = $results[0];

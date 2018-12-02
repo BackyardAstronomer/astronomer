@@ -26,7 +26,7 @@ class EventTest extends AstronomerTestSetUp {
 	protected $profile = null;
 
 	/**
-	 * EventType that classifies the event; this is for foreign key relations
+	 * eventType that classifies the event; this is for foreign key relations
 	 * @var EventType eventType
 	 */
 	protected $eventType = null;

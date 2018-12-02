@@ -41,7 +41,7 @@ try {
 //
 //	var_dump("profileId", $profile->getProfileId()->toString());
 //
-//	$eventType = new EventType(generateUuidV4(), "star party");
+//	$eventType = new eventType(generateUuidV4(), "star party");
 //	$eventType->insert($pdo);
 //
 //	$event = new Event(generateUuidV4(), $eventType->getEventTypeId(), $profile->getProfileId(), "Star Party!", "Hello world", new \DateTime());

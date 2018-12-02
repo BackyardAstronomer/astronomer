@@ -22,25 +22,25 @@ require_once(dirname(__DIR__,3) . "/vendor/autoload.php");
 class EventTypeTest extends AstronomerTestSetUp {
 
 	/**
-	 * content of the EventType
+	 * content of the eventType
 	 * @var string $VALID_EVENTTYPENAME
 	 **/
 	protected $VALID_EVENTTYPENAME = "PHPUnit test passing";
 
 	/**
-	 * content of the updated EventType
+	 * content of the updated eventType
 	 * @var string $VALID_EVENTTYPENAME2
 	 **/
 	protected $VALID_EVENTTYPENAME2 = "PHPUnit test still passing";
 
 	/**
- * test inserting a valid EventType and verify that it actual mySql data matches
+ * test inserting a valid eventType and verify that it actual mySql data matches
  **/
 public function testInsertValidEventType() : void {
 	//count the number of rows and save them for later
 	$numRows = $this->getConnection()->getRowCount("eventType");
 
-	//create a new EventType and insert into mySql
+	//create a new eventType and insert into mySql
 	$eventTypeId = generateUuidV4();
 	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
 	$eventType->insert($this->getPDO());
@@ -61,32 +61,32 @@ public function testDeleteValidEventType() : void {
 	//count the number of rows and save it for later
 	$numRows = $this->getConnection()->getRowCount("eventType");
 
-	//create a new EventType and insert into mySql
+	//create a new eventType and insert into mySql
 	$eventTypeId = generateUuidV4();
 	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
 	$eventType->insert($this->getPDO());
 
-	//delete the EventType from mySQL
+	//delete the eventType from mySQL
 	 $this->assertEquals($numRows + 1,$this->getConnection()->getRowCount("eventType"));
 	 $eventType->delete($this->getPDO());
 
-	 //grab the data from mySQL and make sure the EventType has be deleted
+	 //grab the data from mySQL and make sure the eventType has be deleted
 	$pdoEventType = EventType::getEventTypeByEventTypeId($this->getPDO(), $eventType->getEventTypeId());
 	$this->assertNull($pdoEventType);
 	$this->assertEquals($numRows, $this->getConnection()->getRowCount("eventType"));
 }
 
-//test inserting a EventType, editing it, and then up then updating it
+//test inserting a eventType, editing it, and then up then updating it
 public function testUpdateValidEventType() : void {
 	//count the number of rows and save it for later
 	$numRows = $this->getConnection()->getRowCount("eventType");
 
-	//create a new EventType and insert into mySql
+	//create a new eventType and insert into mySql
 	$eventTypeId =generateUuidV4();
 	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
 	$eventType->insert($this->getPDO());
 
-	//edit the EventType and update in in mySQL
+	//edit the eventType and update in in mySQL
 	$eventType->setEventTypeName($this->VALID_EVENTTYPENAME2);
 	$eventType->update($this->getPDO());
 
@@ -104,7 +104,7 @@ public function testGetAllValidEventType() : void {
 	//count the number of rows and save it for later
 	$numRows = $this->getConnection()->getRowCount("eventType");
 
-	//create a new EventType and insert into mySql
+	//create a new eventType and insert into mySql
 	$eventTypeId = generateUuidV4();
 	$eventType = new EventType($eventTypeId, $this->VALID_EVENTTYPENAME);
 	$eventType->insert($this->getPDO());
@@ -116,7 +116,7 @@ public function testGetAllValidEventType() : void {
 	$this->assertCount(1, $results);
 
 	//enfoce no other objects bled into test
-	$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\EventType", $results);
+	$this->assertContainsOnlyInstancesOf("BackyardAstronomer\\Astronomer\\eventType", $results);
 
 	//grab results for the array and validate
 	$pdoEventType = $results[0];
