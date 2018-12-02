@@ -87,12 +87,18 @@ try {
 		} else if($method === "PUT") {
 			//enforce the end user has a XSRF token.
 			verifyXsrf();
+
 			//enforce the end user has a JWT token
+<<<<<<< Updated upstream
+			validateJwtHeader();
+
+=======
 			//validateJwtHeader();
+>>>>>>> Stashed changes
 			//grab the rsvp by its composite key
 			$rsvp = Rsvp::getRsvpByRsvpEventIdRsvpProfileId($pdo, $requestObject->rsvpEventId, $requestObject->rsvpProfileId);
 			if($rsvp === null) {
-				throw (new RuntimeException("Rsvp does not exist"));
+				throw (new \RuntimeException("Rsvp does not exist"));
 			}
 			//enforce the user is signed in and only trying to edit their own rsvp
 			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $rsvp->getrsvpProfileId()) {
