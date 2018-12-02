@@ -11,7 +11,7 @@ require_once dirname(__DIR__, 3) . "/php/lib/jwt.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
 use BackyardAstronomer\Astronomer\ {
-	Rsvp
+	Rsvp, Profile
 };
 /**
  * Api for the rsvp class
@@ -81,7 +81,7 @@ try {
 
 			validateJwtHeader();
 
-			$rsvp = new Rsvp($_SESSION["profile"]->getProfileId(), $requestObject->rsvpEventId, 1);
+			$rsvp = new Rsvp($_SESSION["profile"]->profile->getProfileId(), $requestObject->rsvpEventId, 1);
 			$rsvp->insert($pdo);
 			$reply->message = "liked event successful";
 		} else if($method === "PUT") {
@@ -94,7 +94,7 @@ try {
 				throw (new \RuntimeException("Rsvp does not exist"));
 			}
 			//enforce the user is signed in and only trying to edit their own rsvp
-			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $rsvp->getrsvpProfileId()) {
+			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->profile->getProfileId() !== $rsvp->getrsvpProfileId()) {
 				throw(new \InvalidArgumentException("You are not allowed to delete this rsvp", 403));
 			}
 			validateJwtHeader();
