@@ -238,10 +238,8 @@ public function setEventTypeName(string $newEventTypeName) : void {
 	 **/
 	public function jsonSerialize() : array {
 		$fields = get_object_vars($this);
-
 		$fields["eventTypeId"] = $this->eventTypeId->toString();
-
-
+		return $fields;
 	}
 
 
