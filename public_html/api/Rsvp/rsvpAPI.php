@@ -16,14 +16,14 @@ use BackyardAstronomer\Astronomer\ {
 /**
  * Api for the rsvp class
  *
- * @author Dayn Augustosn
+ * @author Dayn Augustson
  */
 //verify the session, start if not active
 if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 //prepare an empty reply
-$reply = new stdClass();
+$reply = new \stdClass();
 $reply->status = 200;
 $reply->data = null;
 try {
@@ -88,13 +88,6 @@ try {
 			//enforce the end user has a XSRF token.
 			verifyXsrf();
 
-			//enforce the end user has a JWT token
-<<<<<<< Updated upstream
-			validateJwtHeader();
-
-=======
-			//validateJwtHeader();
->>>>>>> Stashed changes
 			//grab the rsvp by its composite key
 			$rsvp = Rsvp::getRsvpByRsvpEventIdRsvpProfileId($pdo, $requestObject->rsvpEventId, $requestObject->rsvpProfileId);
 			if($rsvp === null) {

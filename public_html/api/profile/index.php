@@ -119,7 +119,7 @@ try {
 
 		//delete the post from the database
 		$profile->delete($pdo);
-		$reply->message = "Profile Deleted";
+		$reply->message = "Profile Deleted Successfully";
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP request", 400));
 	}
