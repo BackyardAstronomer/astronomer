@@ -1,18 +1,18 @@
 <?php
 namespace BackyardAstronomer\Astronomer;
 
-use BackyardAstronomer\Astronomer\Rsvp;
-
-require_once dirname(__DIR__, 3) . "../vendor/autoload.php";
-require_once dirname(__DIR__, 3) . "../php/classes/autoload.php";
-require_once dirname(__DIR__, 3) . "../php/lib/xsrf.php";
-require_once dirname(__DIR__, 3) . "../php/lib/uuid.php";
-require_once dirname(__DIR__, 3) . "../php/lib/jwt.php";
-require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 
+require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
+require_once dirname(__DIR__, 3) . "/php/Classes/autoload.php";
+require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
+require_once dirname(__DIR__, 3) . "/php/lib/uuid.php";
+require_once dirname(__DIR__, 3) . "/php/lib/jwt.php";
+require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
-
+use BackyardAstronomer\Astronomer\ {
+	Rsvp
+};
 /**
  * Api for the rsvp class
  *
@@ -87,20 +87,18 @@ try {
 		} else if($method === "PUT") {
 			//enforce the end user has a XSRF token.
 			verifyXsrf();
-
 			//enforce the end user has a JWT token
-			validateJwtHeader();
-
+			//validateJwtHeader();
 			//grab the rsvp by its composite key
 			$rsvp = Rsvp::getRsvpByRsvpEventIdRsvpProfileId($pdo, $requestObject->rsvpEventId, $requestObject->rsvpProfileId);
 			if($rsvp === null) {
-				throw (new \RuntimeException("Rsvp does not exist"));
+				throw (new RuntimeException("Rsvp does not exist"));
 			}
 			//enforce the user is signed in and only trying to edit their own rsvp
 			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $rsvp->getrsvpProfileId()) {
 				throw(new \InvalidArgumentException("You are not allowed to delete this rsvp", 403));
 			}
-			//validateJwtHeader();
+			validateJwtHeader();
 			//preform the actual delete
 			$rsvp->delete($pdo);
 			//update the message

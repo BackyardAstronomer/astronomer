@@ -96,7 +96,7 @@ class Rsvp implements \JsonSerializable {
 	/**
 	 * mutator method for rsvp Event ID
 	 *
-	 * @param Uuid|string $newRsvpEventID new value of rsvp Event ID
+	 * @param Uuid $newRsvpEventId new value of rsvp Event ID
 	 * @throws \RangeException if $newRsvpEventID is not positive
 	 * @throws \TypeError if $newRsvpEventID is not a uuid or string
 	 **/
