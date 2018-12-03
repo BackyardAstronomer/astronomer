@@ -1,7 +1,7 @@
 <?php
-require_once dirname(__DIR__,3)."php/classes/autoload.php";
-require_once dirname(__DIR__,3)."php/lib/xsrf.php";
-require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once dirname(__DIR__,3)."/php/Classes/autoload.php";
+require_once dirname(__DIR__,3)."/php/lib/xsrf.php";
+require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
 use BackyardAstronomer\Astronomer\Profile;
 /**
@@ -19,7 +19,8 @@ $reply->status = 200;
 $reply->data = null;
 try{
 	//grab MySQL connection object
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/cohort22/astronomers.ini");
+	$secrets =  new \Secrets("/etc/apache2/capstone-mysql/cohort22/astronomers");
+	$pdo = $secrets->getPdoObject();
 
 	//check HTTP method being used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
