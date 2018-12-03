@@ -14,6 +14,8 @@ use BackyardAstronomer\Astronomer\ {
  * api for handling sign-in
  *
  * @author Dayn Augustson
+ * Stolen from
+ * @author Gkephart
  **/
 //prepare an empty reply
 $reply = new stdClass();
