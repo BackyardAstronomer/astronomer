@@ -22,8 +22,8 @@ $reply->status = 200;
 $reply->data = null;
 try {
 	//grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("\../etc/apache2/capstone-mysql/cohort22/astronomers.ini");
-	//determine which HTTP method was used
+	$secrets =  new \Secrets("/etc/apache2/capstone-mysql/cohort22/astronomers");
+	$pdo = $secrets->getPdoObject();	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 	if($method === "GET") {
 		$_SESSION = [];
