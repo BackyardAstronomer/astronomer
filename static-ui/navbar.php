@@ -13,7 +13,7 @@
 						<li class="nav-item">
 							<a class="nav-link" href="#">Event</a>
 						<li class="nav-item">
-							<a class="sign-in.php" href="#">Sign in</a>
+							<a class="nav-link" href="#">Sign in</a>
 						<li class="nav-item">
 							<a class="nav-link" href="#">Create Account</a>
 						</li>
