@@ -5,10 +5,13 @@
 		<div class="row justify-content-center">
 			<form>
 				<div class="form-group col-4">
-					<input type="text" class="form-control" id="eventTitle" placeholder="Title of event">
+					<input type="text" class="form-control" id="eventTitle" placeholder="Title of event.">
 				</div>
-				<div class="form-group">
-					<input type="text">
+				<div class="form-group col-4">
+					<textarea rows="5" class="form-control" id="eventContent" placeholder="Write a short description of the event here."></textarea>
+				</div>
+				<div class="form-group col-4">
+
 				</div>
 			</form>
 		</div>
