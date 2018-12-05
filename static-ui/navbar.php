@@ -2,7 +2,7 @@
 
 <!-- This sets up a navbar grabbed this code from getbootstrap.com -->
 		<header>
-			<nav class="navbar nav-pills navbar-expand-lg">
+			<nav class="navbar navbar-expand-lg bg-light">
 				<a class="navbar-brand" href="#"></a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -15,7 +15,7 @@
 						<li class="nav-item">
 							<a class="nav-link" href="#">Sign in</a>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Create Account</a>
+							<a class="nav-link" href="#create-account">Create Account</a>
 						</li>
 					</ul>
 				</div>

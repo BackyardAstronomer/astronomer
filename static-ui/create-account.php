@@ -2,7 +2,7 @@
 
 <main>
 
-	<div class="container text-center">
+	<div id="create-account" class="container text-center">
 		<h1>Sign Up for Backyard Astronomer!</h1>
 		<form class="form-control-lg" id="form" action="" method="post">
 			<div class="info">
