@@ -1,6 +1,6 @@
 <?php require_once ("head-utils.php");?>
 
-<!-- This sets up my nav bar grabbed this code from getbootstrap.com -->
+<!-- This sets up a navbar grabbed this code from getbootstrap.com -->
 		<header>
 			<nav class="navbar navbar-expand-lg">
 				<a class="navbar-brand" href="#"></a>

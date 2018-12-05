@@ -1,3 +1,13 @@
+#bg{
+	position: fixed;
+	top: 0;
+	left: 0;
+
+	/* Preserve aspect ratio */
+	min-width: 100%;
+	min-height: 100%;
+}
+
 #carouselExampleIndicators {
 	position: center;
 	align-items: center;
