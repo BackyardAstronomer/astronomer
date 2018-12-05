@@ -15,7 +15,7 @@
 						<li class="nav-item">
 							<a class="nav-link" href="#">ToBeNamed</a>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Log in</a>
+							<a class="sign-in.php" href="#">Sign in</a>
 						<li class="nav-item">
 							<a class="nav-link" href="#">Create Account</a>
 						</li>
