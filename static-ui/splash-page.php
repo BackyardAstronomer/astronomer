@@ -4,8 +4,10 @@
 	<?php require_once ("head-utils.php");
 	require_once ("navbar.php");
 	?>
-		<!--Link to CSS-->
+		<!--link to CSS-->
 		<link rel="stylesheet" href="style.css"/>
+
+		<!--link to background image-->
 		<img src="img/sky.jpg" id="bg" alt="galaxy">
 
 	</head>
