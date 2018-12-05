@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	<?php require_once ("head-utils.php");
-	require_once ("navbar.php");
+	<?php require_once ("template.php");
 	?>
 		<!--link to CSS-->
 		<link rel="stylesheet" href="style.css"/>
