@@ -1,8 +1,7 @@
-<main>
-
-	<div id="create-account" class="container text-center">
+<div class="container">
+<div id="create-account" class="container text-center">
 		<h1>Sign Up for Backyard Astronomer!</h1>
-		<form class="form-control-lg" id="form" action="" method="post">
+		<form class="form-control-lg" [formGroup]="createAccountForm" id="form" (ngSubmit)="createProfile" novalidate>
 			<div class="info">
 				<input type="text" class="form-control" id="profileName" name="name" placeholder="User Name">
 				<input type="email" class="form-control" id="profileEmail" name="email" placeholder="Email">
@@ -13,5 +12,4 @@
 			</div>
 		</form>
 	</div>
-
-</main>
+</div>
