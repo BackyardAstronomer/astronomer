@@ -1,4 +1,4 @@
-<?php require_once ("template.php");?>
+<?php require_once ("./css/style.css");?>
 <main>
 	<div class="container text-center">
 		<h1>Create Event</h1>
