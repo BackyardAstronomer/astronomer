@@ -1,5 +1,4 @@
-<?php require_once ("head-utils.php");
-	require_once ("navbar.php");?>
+<?php require_once ("template.php");?>
 <main>
 	<div class="container text-center">
 		<h1>Create Event</h1>
