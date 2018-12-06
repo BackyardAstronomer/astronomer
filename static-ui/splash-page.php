@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	<?php require_once ("template.php");
-	?>
+	<?php require_once ("head-utils.php")?>
+	<?php require_once("navbar.php")?>
+
 		<!--link to CSS
-		<link rel="stylesheet" href="style.css"/>
+		<link rel="stylesheet" href="style.css"/>-->
 
 		<!--link to background image
 		<img src="img/sky.jpg" id="bg" alt="galaxy">-->
