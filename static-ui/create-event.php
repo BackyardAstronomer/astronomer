@@ -1,4 +1,4 @@
-<?php require_once ("./css/style.css");?>
+<?php require_once ("head-utils.php");?>
 <main>
 	<div class="container text-center">
 		<h1>Create Event</h1>
@@ -11,11 +11,14 @@
 					<textarea rows="5" class="form-control" id="eventContent" placeholder="Write a short description of the event here."></textarea>
 				</div>
 				<div class="form-group col-8-offset-2">
+					<label for="startDateTime">Event Start Date/Time</label>
 					<input type="datetime-local" class="form-control" id="startDateTime" placeholder="select the starting date and time">
 				</div>
 				<div class="form-group col-8-offset-2">
+					<label for="endDateTime">Event End Date/Time</label>
 					<input type="datetime-local" class="form-control" id="endDateTime" placeholder="select the expected end date and time">
 				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
 			</form>
 		</div>
 	</div>
