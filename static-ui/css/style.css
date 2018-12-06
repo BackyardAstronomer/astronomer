@@ -12,3 +12,10 @@
 	position: center;
 	align-items: center;
 }
+
+body {
+	background: url(../img/sky.jpg) no-repeat center top scroll;
+	background-size: cover;
+
+}
+

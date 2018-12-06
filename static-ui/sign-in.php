@@ -2,10 +2,7 @@
 <?php require_once ("navbar.php");?>
 
 <main>
-
 	<!-- Modal -->
-
-
 	<div class="modal fade" id="signIn" tabindex="-1" role="dialog" aria-labelledby="signIn" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
