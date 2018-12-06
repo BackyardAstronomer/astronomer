@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html>
-	<?php
-	require_once("head-utils.php");
-	require_once("navbar.php")
-	?>
-	<body>
-		<div class="container-fluid">
+<?php require_once ("head-utils.php")?>
+<main>
+<div class="container-fluid">
 			<div class="row">
-				<div class="col-4">
+				<div class="col-4 offset-4">
 					<div class="card">
 
 						<img class="card-img-top" src="/images/pathToYourImage.png" alt="Profile Picture">
@@ -26,11 +21,27 @@
 					</div>
 				</div>
 			</div>
-			<div class="d-flex flex-column">
-				<div class="p-2">Flex item 1</div>
-				<div class="p-2">Flex item 2</div>
-				<div class="p-2">Flex item 3</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="jumbotron col-8 offset-2">
+						<div class="container">
+							<h1 class="display-4">Fluid jumbotron</h1>
+							<p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+						</div>
+					</div>
+					<div class="jumbotron col-8 offset-2">
+						<div class="container">
+							<h1 class="display-4">Fluid jumbotron</h1>
+							<p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+						</div>
+					</div>
+					<div class="jumbotron col-8 offset-2">
+						<div class="container">
+							<h1 class="display-4">Fluid jumbotron</h1>
+							<p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-	</body>
-</html>
+		</main>
