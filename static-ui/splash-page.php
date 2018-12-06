@@ -3,11 +3,11 @@
 	<head>
 	<?php require_once ("template.php");
 	?>
-		<!--link to CSS-->
+		<!--link to CSS
 		<link rel="stylesheet" href="style.css"/>
 
-		<!--link to background image-->
-		<img src="img/sky.jpg" id="bg" alt="galaxy">
+		<!--link to background image
+		<img src="img/sky.jpg" id="bg" alt="galaxy">-->
 
 	</head>
 	<body>
