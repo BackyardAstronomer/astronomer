@@ -1,11 +1,14 @@
 <?php require_once ("head-utils.php")?>
+<?php require_once ("navbar.php");?>
+
+
 <main>
 <div class="container-fluid">
 			<div class="row">
 				<div class="col-4 offset-4">
 					<div class="card">
 
-						<img class="card-img-top" src="/images/pathToYourImage.png" alt="Profile Picture">
+						<img class="card-img-top" src="" alt="Profile Picture">
 						<div class="card-body">
 							<h4 class="card-title">Profile Name</h4>
 							<p class="card-text">
@@ -25,20 +28,20 @@
 				<div class="row">
 					<div class="jumbotron col-8 offset-2">
 						<div class="container">
-							<h1 class="display-4">Fluid jumbotron</h1>
-							<p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+							<h1 class="display-4">Event 1</h1>
+							<p class="lead">This is where the information pertaining to the event will be shown. It includes date, time, details about the event's purpose, and the location where it will be held.</p>
 						</div>
 					</div>
 					<div class="jumbotron col-8 offset-2">
 						<div class="container">
-							<h1 class="display-4">Fluid jumbotron</h1>
-							<p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+							<h1 class="display-4">Event 2</h1>
+							<p class="lead">This is where the information pertaining to the event will be shown. It includes date, time, details about the event's purpose, and the location where it will be held.</p>
 						</div>
 					</div>
 					<div class="jumbotron col-8 offset-2">
 						<div class="container">
-							<h1 class="display-4">Fluid jumbotron</h1>
-							<p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+							<h1 class="display-4">Event 3</h1>
+							<p class="lead">This is where the information pertaining to the event will be shown. It includes date, time, details about the event's purpose, and the location where it will be held.</p>
 						</div>
 					</div>
 				</div>
