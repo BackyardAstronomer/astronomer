@@ -38,13 +38,13 @@ try {
 		if(empty($requestObject->profileBio) === true) {
 			$requestObject->profileBio = null;
 		}
-		//profile email is a required field
-		if(empty($requestObject->profileEmail) === true) {
-			throw(new \InvalidArgumentException ("No profile email is present", 405));
-		}
 		//profile name is a required field
 		if(empty($requestObject->profileName) === true) {
 			throw(new \InvalidArgumentException ("No profile name is present", 405));
+		}
+		//profile email is a required field
+		if(empty($requestObject->profileEmail) === true) {
+			throw(new \InvalidArgumentException ("No profile email is present", 405));
 		}
 		//verify that profile password is present
 		if(empty($requestObject->profilePassword) === true) {

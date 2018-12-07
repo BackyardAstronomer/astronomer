@@ -5,13 +5,12 @@ import {CreateAccountService} from "../shared/services/create-account.service";
 import {CreateAccount} from "../shared/interfaces/create-account";
 
 @Component({
-	selector: "angular-example-app",
 	template: require("./splash.component.html")
 })
 
 export class SplashComponent implements OnInit {
 	createAccountForm: FormGroup;
-	status : Status = {status: null, message: null, type: null}
+	status : Status = {status: null, message: null, type: null};
 
 	constructor(private createAccountService : CreateAccountService, private formBuilder : FormBuilder){}
 
@@ -25,8 +24,7 @@ this.createAccountForm = this.formBuilder.group({
 	}
 	createProfile() : void {
 		let profile : CreateAccount = {profileName: this.createAccountForm.value.profileName, profileEmail: this.createAccountForm.value.profileEmail, profilePassword: this.createAccountForm.value.profilePassword, profilePasswordConfirm: this.createAccountForm.value.profilePasswordConfirm};
-		this.createAccountService.postProfile(profile)
-			.subscribe(status => {
+		this.createAccountService.postProfile(profile).subscribe(status => {
 				this.status = status;
 				if(this.status.status === 200) {
 					alert(status.message);
