@@ -4,11 +4,11 @@
 
 <main>
 <div class="container-fluid">
-			<div class="row">
+			<div class= "sticky-top">
 				<div class="col-4 offset-4">
 					<div class="card">
 
-						<img class="card-img-top" src="" alt="Profile Picture">
+						<img class="card-img-top" src="./img/placeholder.jpg" alt="Profile Picture">
 						<div class="card-body">
 							<h4 class="card-title">Profile Name</h4>
 							<p class="card-text">

@@ -9,6 +9,8 @@
 			<input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Update Email">
 			<input type="password" class="form-control" id="exampleFormControlInput1" placeholder="Enter New Password">
 			<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Enter Bio Here"></textarea>
+			<br>
+			<input class="btn" type="submit" value="Save your changes!">
 		</div>
 	</form>
 </form>
