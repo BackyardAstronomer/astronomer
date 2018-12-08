@@ -10,7 +10,7 @@
 
 					<div class="card">
 
-						<img class="card-img-top" src="./img/placeholder.jpg" alt="Profile Picture">
+						<img class="card-img-top" src="./img/placeholder.jpeg" alt="Profile Picture">
 						<div class="card-body">
 							<h4 class="card-title">Profile Name</h4>
 							<p class="card-text">
