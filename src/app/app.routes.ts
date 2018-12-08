@@ -1,16 +1,16 @@
 import {RouterModule, Routes} from "@angular/router";
-import{SplashComponent} from "./splash/splash.component";
 import {APP_BASE_HREF} from "@angular/common";
 import {DeepDiveInterceptor} from "./shared/interceptors/deep.dive.interceptor";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {SessionService} from "./shared/services/session.service";
 import {CreateAccountService} from "./shared/services/create-account.service";
+import {CreateAccountComponent} from "./create-account/createAccount.component";
 
 
-export const allAppComponents = [SplashComponent];
+export const allAppComponents = [CreateAccountComponent];
 
 export const routes: Routes = [
-	{path: "", component: SplashComponent}
+	{path: "", component: CreateAccountComponent}
 ];
 
 export const appRoutingProviders: any[] = [
