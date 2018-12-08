@@ -16,13 +16,13 @@ export class ProfileService {
 	insertProfile(profileId: Profile): Observable<Status> {
 		return(this.http.post<Status>(this.profileUrl, + profileId));
 	}
-	//call to the user API and delete the user in question
-	deleteProfile(profileId: string): Observable<Status> {
-		return (this.http.delete<Status>(this.profileUrl + profileId));
-	}
 	//call to the user API and edit the user in question
 	updateProfile(profileId: Profile): Observable<Status> {
 		return (this.http.put<Status>(this.profileUrl + Profile.profileId, profileId));
+	}
+	//call to the user API and delete the user in question
+	deleteProfile(profileId: string): Observable<Status> {
+		return (this.http.delete<Status>(this.profileUrl + profileId));
 	}
 	//call to the user API and get a user object based on its Id
 	getProfileByProfileId(profileId: string): Observable<Profile> {
