@@ -1,4 +1,7 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
+import {CommentService} from "../shared/services/comment.service";
+import {EventService} from "../shared/services/event.service";
+import {ProfileService} from "../shared/services/profile.service";
 
 
 @Component({
@@ -6,9 +9,20 @@ import {Component} from "@angular/core";
 })
 
 export class ProfileComponent implements OnInit{
-	users: User[];
+	profiles: Profiles[];
 	events: Events[];
 	status: Status = {status:null, message:null, type:null};
 
-	constructor(private )
+	constructor(private commentService: CommentService, private eventService: EventService, private profileService: ProfileService) {}
+
+	ngOnInit() {
+		this.profileService.getProfileByProfileId().subscribe(profiles => this.profiles = profiles);
+		this.loadProfies()
+	}
+	loadProfiles() : void {
+		this.profileService.getProfileByProfileId().subscribe(profiles => this.profiles = profiles)
+	}
+	loadEvents() : void {
+		this.eventService.getEventByProfileId().subscribe(events => this.events = events)
+	}
 }
