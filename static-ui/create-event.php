@@ -1,6 +1,9 @@
 <?php require_once ("head-utils.php");?>
+<?php require_once ("navbar.php");?>
+
 <main>
-	<div class="container text-center">
+	<div class="container">
+		<div class="card text-center eventCard mx-auto">
 		<h1>Create Event</h1>
 		<div class="row justify-content-center">
 			<form>
@@ -21,5 +24,6 @@
 				<button type="submit" class="btn btn-primary">Submit</button>
 			</form>
 		</div>
+	</div>
 	</div>
 </main>
