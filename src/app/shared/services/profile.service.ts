@@ -1,5 +1,8 @@
-import {Profile} from "inspector";
-import Profile = module
+import {Injectable} from "@angular/core";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {Status} from "../interfaces/status";
+import Profile = module;
 
 @Injectable()
 export class ProfileService {
@@ -19,10 +22,10 @@ export class ProfileService {
 	}
 	//call to the user API and edit the user in question
 	updateProfile(profileId: Profile): Observable<Status> {
-		return (this.http.put<Status>(this.profileUrl + profile.profileId, profileId));
+		return (this.http.put<Status>(this.profileUrl + Profile.profileId, profileId));
 	}
 	//call to the user API and get a user object based on its Id
-	getProfileByProfileId(profileId: string): Observable<User> {
+	getProfileByProfileId(profileId: string): Observable<Profile> {
 		return(this.http.get<Profile>(this.profileUrl + profileId));
 	}
 	// call to the user API and get an array of users based off the familyId
@@ -30,7 +33,7 @@ export class ProfileService {
 		return (this.http.get<any[]>(this.profileUrl, {params: new HttpParams().set("profileName", profileId)}));
 	}
 	//call to the user API and get a user object based on its Email
-	getProfileByProfileEmail(profileEmail: string): Observable<User> {
-		return(this.http.get<User>(this.profileUrl + profileEmail));
+	getProfileByProfileEmail(profileEmail: string): Observable<Profile> {
+		return(this.http.get<Profile>(this.profileUrl + profileEmail));
 	}
 }
