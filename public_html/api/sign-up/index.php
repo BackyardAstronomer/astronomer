@@ -34,14 +34,16 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		//if phone is empty set it too null
+		//if bio is empty set it too null
 		if(empty($requestObject->profileBio) === true) {
-			$requestObject->profileBio = null;
+		$requestObject->profileBio = null;
 		}
+
 		//profile name is a required field
 		if(empty($requestObject->profileName) === true) {
 			throw(new \InvalidArgumentException ("No profile name is present", 405));
 		}
+
 		//profile email is a required field
 		if(empty($requestObject->profileEmail) === true) {
 			throw(new \InvalidArgumentException ("No profile email is present", 405));

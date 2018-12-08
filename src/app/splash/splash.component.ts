@@ -28,6 +28,7 @@ this.createAccountForm = this.formBuilder.group({
 				this.status = status;
 				if(this.status.status === 200) {
 					alert(status.message);
+					this.createAccountForm.reset();
 				}
 			});
 	}

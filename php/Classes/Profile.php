@@ -75,7 +75,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 */
 
-	public function __construct($newProfileId, string $newProfileActivationToken, string $newProfileBio, string $newProfileEmail,  string $newProfileHash,  string $newProfileImage, string $newProfileName) {
+	public function __construct($newProfileId, ?string $newProfileActivationToken, ?string $newProfileBio, string $newProfileEmail,  string $newProfileHash,  ?string $newProfileImage, string $newProfileName) {
 
 		try {
 
@@ -163,7 +163,7 @@ class Profile implements \JsonSerializable {
 	 * @return string $profileBio as string value
 	 */
 
-	public function getProfileBio(): string {
+	public function getProfileBio(): ?string {
 		return ($this->profileBio);
 	}
 
@@ -176,7 +176,12 @@ class Profile implements \JsonSerializable {
 	 * @throws \TypeError if content is not a string
 	 */
 
-	public function setProfileBio(string $newProfileBio): void {
+	public function setProfileBio(?string $newProfileBio): void {
+		//The following statement allows this variable to be null upon profile setup
+		if($newProfileBio === null) {
+			$this->profileBio = null;
+			return;
+		}
 
 		//the following verifies the bio content is secure
 		$newProfileBio = trim($newProfileBio);
@@ -249,6 +254,12 @@ public function getProfileImage() : string {
  */
 
 public function setProfileImage($newProfileImage) : void {
+	//The following statement allows this variable to be null upon profile setup
+	if($newProfileImage === null) {
+		$this->profileImage = null;
+		return;
+	}
+
 	//the following verifies the description content is secure
 	$newProfileImage = trim($newProfileImage);
 	$newProfileImage = filter_var($newProfileImage, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -284,6 +295,13 @@ public function getProfileActivationToken() : string {
  */
 
 public function setProfileActivationToken($newProfileActivationToken) : void {
+	//The following statement allows this variable to be null upon profile setup
+	if($newProfileActivationToken === null) {
+		$this->profileActivationToken = null;
+		return;
+	}
+
+
 	//the following verifies the description is secure
 
 	$newProfileActivationToken = trim($newProfileActivationToken);
