@@ -24,6 +24,8 @@ export class ProfileComponent implements OnInit{
 
 	ngOnInit() {
 		this.profileService.getProfileByProfileId(this.jwtToken.auth.profileId).subscribe(profiles => this.profiles = profiles);
+		this.loadEvents();
+		this.loadRsvps();
 	}
 	loadEvents() : void {
 		this.eventService.getEventByProfileId(this.jwtToken.auth.profileId).subscribe(events => this.events = events)
