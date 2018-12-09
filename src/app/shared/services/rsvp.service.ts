@@ -24,15 +24,15 @@ export class RsvpService {
 	}
 
 	getRsvpByRsvpEventIdRsvpProfileId(rsvpRsvpEventIdRsvpProfileId: string): Observable<Status> {
-		return (this.http.get<any[]>(this.rsvpUrl, {params: new HttpParams().set("rsvpRsvpEventIdRsvpProfileId", rsvpRsvpEventIdRsvpProfileId)}));
+		return (this.http.get<Status>(this.rsvpUrl, {params: new HttpParams().set("rsvpRsvpEventIdRsvpProfileId", rsvpRsvpEventIdRsvpProfileId)}));
 	}
 
 	getRsvpByRsvpProfileId(rsvpRsvpProfileId: string): Observable<Status> {
-		return (this.http.get<any[]>(this.rsvpUrl, {params: new HttpParams().set("rsvpRsvpProfileId", rsvpRsvpProfileId)}));
+		return (this.http.get<Status>(this.rsvpUrl, {params: new HttpParams().set("rsvpRsvpProfileId", rsvpRsvpProfileId)}));
 	}
 
 	getRsvpByRsvpEventId(RsvpRsvpEventId: string): Observable<Status> {
-		return (this.http.get<any[]>(this.rsvpUrl, {params: new HttpParams().set("RsvpRsvpEventId", RsvpRsvpEventId)}));
+		return (this.http.get<Status>(this.rsvpUrl, {params: new HttpParams().set("RsvpRsvpEventId", RsvpRsvpEventId)}));
 	}
 }
 
