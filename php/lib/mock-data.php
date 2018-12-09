@@ -13,21 +13,21 @@ $pdo = $pdo->getPdoObject();
 
 	$hash = password_hash("abc123", PASSWORD_ARGON2I, ["time_cost" => 384]);
 
-//$profile = new Profile(generateUuidV4(), null,  null, "amanda@nasa.com", $hash, null, "Amanda");
-//$profile->insert($pdo);
-//echo "Amanda's profile : $profile->getProfileId()";
+$profile = new Profile(generateUuidV4(), null,  null, "amanda@nasa.com", $hash, null, "Amanda");
+$profile->insert($pdo);
+echo "Amanda's profile : $profile->getProfileId()";
 
 $profile2 = new Profile(generateUuidV4(), null,  null, "john@nasa.com", $hash, null, "John");
 $profile2->insert($pdo);
-echo "johns's profile : " . $profile2->getProfileId();
+echo "johns's profile : " . $profile2->getProfileId()->toString();
 
 $profile3 = new Profile(generateUuidV4(), null, null, "jacob@nasa.com", $hash, null, "Jacob");
 $profile3->insert($pdo);
-echo "jacob's profile : " . $profile3->getProfileId();
+echo "jacob's profile : " . $profile3->getProfileId()->toString();
 
 $eventTypeId = generateUuidV4();
-$this->eventType = new EventType($eventTypeId, "This Is Event Name");
-$this->eventType->insert($pdo);
-echo "event Type Id"
+$eventType = new EventType($eventTypeId, "This Is Event Name");
+$eventType->insert($pdo);
+echo "event Type Id:" . $eventTypeId;
 
-;
+$event = new Event(generateUuidV4(), $profile->getProfileId(), $eventType->getEventTypeId()), ;
