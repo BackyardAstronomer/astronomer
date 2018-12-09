@@ -43,7 +43,8 @@
     "@ng-bootstrap/ng-bootstrap": "^4.0.0",
     "core-js": "^2.5.5",
     "rxjs": "^6.3.0",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "@auth0/angular-jwt": "2.0.0"
   },
   "devDependencies": {
     "@fortawesome/fontawesome": "^1.1.7",
