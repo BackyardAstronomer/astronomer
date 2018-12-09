@@ -37,7 +37,6 @@ try {
 	// which http method used
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 
-	var_dump($method);
 
 	//sanitize input
 	$eventId = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -131,7 +130,7 @@ try {
 			validateJwtHeader();
 
 			//create new event and insert into database
-			$event = new Event(generateUuidV4(), $requestObject->eventTypeId, $requestObject->profileId, $requestObject->eventTitle, $requestObject->eventContent, null, null);
+			$event = new Event(generateUuidV4(), $requestObject->eventEventTypeId, $_SESSION["profile"]->getProfileId(), $requestObject->eventTitle, $requestObject->eventContent, null, null);
 			$event->insert($pdo);
 
 			//update reply
