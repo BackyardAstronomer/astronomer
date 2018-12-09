@@ -45,7 +45,9 @@ try {
 
 	//ensure id is valid for methods that need it
 // make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true)) {
+
+
+	if(($method === "DELETE" || $method === "PUT") && (empty($eventId) === true)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
@@ -62,7 +64,10 @@ try {
 			//if user is logged in grab all events by that user based on log in
 			$reply->data = Event::getEventByEventProfileId($pdo, $_SESSION["profile"]->getProfileId())->toArray();
 		}else{
+
+
 			$reply->data = Event::getAllEvents($pdo)->toArray();
+
 		}
 	} else if($method ==="PUT" || $method === "POST") {
 		//enforce user has xsrf token

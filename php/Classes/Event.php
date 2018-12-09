@@ -12,9 +12,10 @@ use Ramsey\Uuid\Uuid;
  * @author Jack Jain <jjain1998@gmail.com>
  * @version 1.0.0
  **/
-class Event {
+class Event implements \JsonSerializable {
 	use ValidateUuid;
 	use ValidateDate;
+
 
 	/**
  *ID of event; this is a primary key
