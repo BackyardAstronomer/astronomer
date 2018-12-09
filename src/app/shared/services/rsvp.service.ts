@@ -23,10 +23,16 @@ export class RsvpService {
 		return (this.http.delete<Status>(this.rsvpUrl + rsvpId));
 	}
 
-	getRsvpByRsvpEventIdRsvpProfileId
+	getRsvpByRsvpEventIdRsvpProfileId(rsvpId: string): Observable<Status> {
+		return (this.http.delete<Status>(this.rsvpUrl + rsvpId));
+	}
 
-	getRsvpByRsvpProfileId
+	getRsvpByRsvpProfileId(rsvpId: string): Observable<Status> {
+		return (this.http.delete<Status>(this.rsvpUrl + rsvpId));
+	}
 
-	getRsvpByRsvpEventId
+	getRsvpByRsvpEventId(rsvpId: string): Observable<Status> {
+		return (this.http.delete<Status>(this.rsvpUrl + rsvpId));
+	}
 
 }
