@@ -2,6 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {CommentService} from "../shared/services/comment.service";
 import {EventService} from "../shared/services/event.service";
 import {ProfileService} from "../shared/services/profile.service";
+import {Status} from "../shared/interfaces/status";
 
 
 @Component({
@@ -24,5 +25,8 @@ export class ProfileComponent implements OnInit{
 	}
 	loadEvents() : void {
 		this.eventService.getEventByProfileId().subscribe(events => this.events = events)
+	}
+	loadRsvps() : void {
+		this.rsvpService.getRsvpProfileId().subscribe(rsvp => this.rsvp = rsvps)
 	}
 }
