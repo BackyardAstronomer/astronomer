@@ -20,7 +20,7 @@ export class ProfileComponent implements OnInit{
 	rsvps: Rsvp[];
 	status: Status = {status:null, message:null, type:null};
 
-	constructor(private commentService: CommentService, private eventService: EventService, private profileService: ProfileService, private rsvpService: RsvpService, private jwt : JwtHelperService) {}
+	constructor(private commentService: CommentService, private eventService: EventService, private profileService: ProfileService, private rsvpService: RsvpService, private jwt: JwtHelperService) {}
 
 	ngOnInit() {
 		this.profileService.getProfileByProfileId(this.jwtToken.auth.profileId).subscribe(profiles => this.profiles = profiles);
@@ -29,6 +29,6 @@ export class ProfileComponent implements OnInit{
 		this.eventService.getEventByProfileId(this.jwtToken.auth.profileId).subscribe(events => this.events = events)
 	}
 	loadRsvps() : void {
-		this.rsvpService.getRsvpProfileId(this.jwtToken.auth.profileId).subscribe(rsvp => this.rsvps = rsvp)
+		this.rsvpService.getRsvpByRsvpEventIdRsvpProfileId(this.jwtToken.auth.profileId).subscribe(rsvp => this.rsvps = rsvp)
 	}
 }
