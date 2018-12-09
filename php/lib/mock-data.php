@@ -29,7 +29,7 @@ $eventTypeId = generateUuidV4();
 $eventType = new EventType($eventTypeId, "This Is Event Name");
 $eventType->insert($pdo);
 
-//format the sunrise ddo youate to use for testing
+//format the sunrise date to use for testing
 $startDate = new \DateTime("2019-01-02 11:14:00");
 
 //format the sunset date to use for testing

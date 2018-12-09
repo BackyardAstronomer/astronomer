@@ -37,14 +37,17 @@ try {
 	// which http method used
 	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ?? $_SERVER["REQUEST_METHOD"];
 
+	var_dump($method);
+
 	//sanitize input
-	$eventId = filter_input(INPUT_GET, "eventId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$eventId = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$eventEventTypeId = filter_input(INPUT_GET, "eventEventTypeId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$eventProfileId = filter_input(INPUT_GET, "eventProfileId", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//ensure id is valid for methods that need it
-	if(($method === "DELETE" || $method = "PUT") && (empty($eventId) === true)){
-		throw(new InvalidArgumentException("id cannot be empty or negative", 401));
+// make sure the id is valid for methods that require it
+	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true)) {
+		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
 	// handle GET request - if id is present, that event is returned, otherwise all events are returned
@@ -80,15 +83,15 @@ try {
 
 		// ensure date is not null
 		if(empty($requestObject->eventStartDate) === true) {
-			throw(new \InvalidArgumentException("events must have start dateTime", "https://http.cat/[406].jpeg"));
+			throw(new \InvalidArgumentException("events must have start dateTime", 406));
 		} else{
-			$secondsStart = $requestObject->eventStartDateTime;
+			$secondsStart = $requestObject->eventStartDate;
 			$formattedStartDate = date("Y-m-d H:i:s", $secondsStart / 1000);
 		}
 		if(empty($requestObject->eventEndDate) === true) {
-			throw(new \InvalidArgumentException("events must have end dateTime", "https://http.cat/[406].jpeg"));
+			throw(new \InvalidArgumentException("events must have end dateTime", 406));
 		} else{
-			$secondsEnd = $requestObject->eventEndDateTime;
+			$secondsEnd = $requestObject->eventEndDate;
 			$formattedEndDate = date("Y-m-d H:i:s", $secondsEnd/1000);
 		}
 
@@ -98,13 +101,13 @@ try {
 			// retrieve the event to update
 			$event = Event::getEventByEventId($pdo, $eventId);
 			if($event === null) {
-				throw (new \RuntimeException("event does not exist", "https://http.cat/[404].jpg"));
+				throw (new \RuntimeException("https://http.cat/[404].jpg", 404));
 			}
 			//enforce user has a JWT token
 
 			//enforce user is signed in and only trying to edit their own event
 			if(empty($_SESSION["profile"])=== true || $_SESSION["profile"]->getProfileId()->toString() !== $event->getEventProfileId()->toString()) {
-				throw(new \InvalidArgumentException("You are not allowed to edit this event", 'https://http.cat/[403]'));
+				throw(new \InvalidArgumentException("You are not allowed to edit this event", 403));
 			}
 
 			//enforce the end user has a JWT token
@@ -112,7 +115,7 @@ try {
 
 			//update all attributes
 			//$event->setEventDate($requestObject->eventDate);
-			$event->setEventContent($requestContent->eventContent);
+			$event->setEventContent($requestObject->eventContent);
 			$event->update($pdo);
 
 			//update reply
@@ -128,7 +131,7 @@ try {
 			validateJwtHeader();
 
 			//create new event and insert into database
-			$event = new Event(generateUuidV4(), $_SESSION["eventType"]->getEventTypeId(), $_SESSION["profile"]->getProfileId(), $requestObject->eventTitle, $requestContent->eventContent, null, null);
+			$event = new Event(generateUuidV4(), $requestObject->eventTypeId, $requestObject->profileId, $requestObject->eventTitle, $requestObject->eventContent, null, null);
 			$event->insert($pdo);
 
 			//update reply

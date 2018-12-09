@@ -281,7 +281,7 @@ public function setProfileImage($newProfileImage) : void {
  * @returns profile activation token as a string
  */
 
-public function getProfileActivationToken() : string {
+public function getProfileActivationToken() : ?string {
 	return ($this->profileActivationToken);
 }
 
@@ -294,7 +294,7 @@ public function getProfileActivationToken() : string {
  * @throws \TypeError if the name is not a string
  */
 
-public function setProfileActivationToken($newProfileActivationToken) : void {
+public function setProfileActivationToken(?string $newProfileActivationToken) : void {
 	//The following statement allows this variable to be null upon profile setup
 	if($newProfileActivationToken === null) {
 		$this->profileActivationToken = null;
