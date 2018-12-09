@@ -21,28 +21,10 @@
 			</div>
 		</div>
 		<div class="col-8">
-			<div class="jumbotron">
+			<div class="jumbotron" *ngFor="let event of events">
 				<div class="container">
-					<h1 class="display-4">Star Party</h1>
-					<p class="lead">Gonna be awesome</p>
-				</div>
-			</div>
-			<div class="jumbotron">
-				<div class="container">
-					<h1 class="display-4">Lecture</h1>
-					<p class="lead">We're gonna talk</p>
-				</div>
-			</div>
-			<div class="jumbotron">
-				<div class="container">
-					<h1 class="display-4">Meet up</h1>
-					<p class="lead">This is where the information pertaining to the event will be shown.</p>
-				</div>
-			</div>
-			<div class="jumbotron">
-				<div class="container">
-					<h1 class="display-4">Lecture</h1>
-					<p class="lead">This is where the information pertaining to the event will be shown.</p>
+					<h1 class="display-4">{{event.eventName}}</h1>
+					<p class="lead">{{event.eventContent}}</p>
 				</div>
 			</div>
 		</div>

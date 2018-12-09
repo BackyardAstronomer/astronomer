@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Status} from "../interfaces/status";
-import Profile = module;
+import {Profile} from "../interfaces/profile";
 
 @Injectable()
 export class ProfileService {
@@ -17,8 +17,8 @@ export class ProfileService {
 		return(this.http.post<Status>(this.profileUrl, + profileId));
 	}
 	//call to the user API and edit the user in question
-	updateProfile(profileId: Profile): Observable<Status> {
-		return (this.http.put<Status>(this.profileUrl + Profile.profileId, profileId));
+	updateProfile(profile: Profile): Observable<Status> {
+		return (this.http.put<Status>(this.profileUrl + profile.profileId, profile));
 	}
 	//call to the user API and delete the user in question
 	deleteProfile(profileId: string): Observable<Status> {

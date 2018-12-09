@@ -23,12 +23,12 @@ export class RsvpService {
 		return (this.http.delete<Status>(this.rsvpUrl + rsvpId));
 	}
 
-	getRsvpByRsvpEventIdRsvpProfileId(rsvpRsvpEventIdRsvpProfileId: string): Observable<Status> {
-		return (this.http.get<Status>(this.rsvpUrl, {params: new HttpParams().set("rsvpRsvpEventIdRsvpProfileId", rsvpRsvpEventIdRsvpProfileId)}));
+	getRsvpByRsvpEventIdRsvpProfileId(rsvpRsvpEventIdRsvpProfileId: string): Observable<Rsvp[]> {
+		return (this.http.get<Rsvp[]>(this.rsvpUrl, {params: new HttpParams().set("rsvpRsvpEventIdRsvpProfileId", rsvpRsvpEventIdRsvpProfileId)}));
 	}
 
-	getRsvpByRsvpProfileId(rsvpRsvpProfileId: string): Observable<Status> {
-		return (this.http.get<Status>(this.rsvpUrl, {params: new HttpParams().set("rsvpRsvpProfileId", rsvpRsvpProfileId)}));
+	getRsvpByRsvpProfileId(rsvpRsvpProfileId: string): Observable<Event> {
+		return (this.http.get<Event>(this.rsvpUrl, {params: new HttpParams().set("rsvpRsvpProfileId", rsvpRsvpProfileId)}));
 	}
 
 	getRsvpByRsvpEventId(RsvpRsvpEventId: string): Observable<Event> {
