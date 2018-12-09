@@ -25,4 +25,9 @@ $profile3 = new Profile(generateUuidV4(), null, null, "jacob@nasa.com", $hash, n
 $profile3->insert($pdo);
 echo "jacob's profile : " . $profile3->getProfileId();
 
-$event = new Event(id)
+$eventTypeId = generateUuidV4();
+$this->eventType = new EventType($eventTypeId, "This Is Event Name");
+$this->eventType->insert($pdo);
+echo "event Type Id"
+
+;
