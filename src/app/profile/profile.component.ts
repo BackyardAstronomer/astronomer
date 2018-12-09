@@ -5,6 +5,8 @@ import {ProfileService} from "../shared/services/profile.service";
 import {Status} from "../shared/interfaces/status";
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {Profile} from "../shared/interfaces/profile";
+import {RsvpService} from "../shared/services/rsvp.service";
+import {Rsvp} from "../shared/interfaces/rsvp";
 
 
 @Component({
