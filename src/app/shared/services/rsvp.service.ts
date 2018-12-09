@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Status} from "../interfaces/status";
 import {Observable} from "rxjs";
 import {Rsvp} from "../interfaces/rsvp";
@@ -10,8 +10,8 @@ export class RsvpService {
 
 	private rsvpUrl = "api/rsvp/";
 
-	postRsvp(rsvp: Rsvp) : Observable<Status>{
-	return(this.http.post<Status>(this.rsvpUrl, rsvp));
+	postRsvp(rsvpId: Rsvp) : Observable<Status>{
+	return(this.http.post<Status>(this.rsvpUrl, + rsvpId));
 	}
 
 	//call to the rsvp API and create the rsvp requested
@@ -23,16 +23,16 @@ export class RsvpService {
 		return (this.http.delete<Status>(this.rsvpUrl + rsvpId));
 	}
 
-	getRsvpByRsvpEventIdRsvpProfileId(rsvpId: string): Observable<Status> {
-		return (this.http.delete<Status>(this.rsvpUrl + rsvpId));
+	getRsvpByRsvpEventIdRsvpProfileId(rsvpRsvpEventIdRsvpProfileId: string): Observable<Status> {
+		return (this.http.get<any[]>(this.rsvpUrl, {params: new HttpParams().set("rsvpRsvpEventIdRsvpProfileId", rsvpRsvpEventIdRsvpProfileId)}));
 	}
 
-	getRsvpByRsvpProfileId(rsvpId: string): Observable<Status> {
-		return (this.http.delete<Status>(this.rsvpUrl + rsvpId));
+	getRsvpByRsvpProfileId(rsvpRsvpProfileId: string): Observable<Status> {
+		return (this.http.get<any[]>(this.rsvpUrl, {params: new HttpParams().set("rsvpRsvpProfileId", rsvpRsvpProfileId)}));
 	}
 
-	getRsvpByRsvpEventId(rsvpId: string): Observable<Status> {
-		return (this.http.delete<Status>(this.rsvpUrl + rsvpId));
+	getRsvpByRsvpEventId(RsvpRsvpEventId: string): Observable<Status> {
+		return (this.http.get<any[]>(this.rsvpUrl, {params: new HttpParams().set("RsvpRsvpEventId", RsvpRsvpEventId)}));
 	}
 }
 
