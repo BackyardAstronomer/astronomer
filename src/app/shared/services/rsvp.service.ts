@@ -10,8 +10,8 @@ export class RsvpService {
 
 	private rsvpUrl = "api/rsvp/";
 
-	postRsvp(rsvp: EventRsvp) : Observable<Status>{
-	return(this.http.post<Status>(this.RsvpUrl, Rsvp));
+	postRsvp(rsvp: Rsvp) : Observable<Status>{
+	return(this.http.post<Status>(this.rsvpUrl, rsvp));
 	}
 
 	//call to the rsvp API and create the rsvp requested
@@ -34,5 +34,6 @@ export class RsvpService {
 	getRsvpByRsvpEventId(rsvpId: string): Observable<Status> {
 		return (this.http.delete<Status>(this.rsvpUrl + rsvpId));
 	}
-
 }
+
+
