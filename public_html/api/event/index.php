@@ -81,9 +81,14 @@ try {
 		// ensure date is not null
 		if(empty($requestObject->eventStartDate) === true) {
 			throw(new \InvalidArgumentException("events must have start dateTime", "https://http.cat/[406].jpeg"));
+		} else{
+			$secondsStart = $requestObject->eventStartDateTime;
+			$formattedStartDate = date("Y-m-d H:i:s" $secondsStart / 1000);
 		}
 		if(empty($requestObject->eventEndDate) === true) {
 			throw(new \InvalidArgumentException("events must have end dateTime", "https://http.cat/[406].jpeg"));
+		} else{
+
 		}
 
 
