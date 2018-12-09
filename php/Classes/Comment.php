@@ -182,7 +182,6 @@ class Comment {
 	/**
 	 *
 	 *accessor method for comment profile id
-	 * @param \Ramsey\Uuid\ $commentProfileId
 	 * @return Uuid value of comment profile id
 	 */
 

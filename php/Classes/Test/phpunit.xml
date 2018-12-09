@@ -1,7 +1,7 @@
 <phpunit>
 	<testsuites>
 		<testsuite name="Astronomer Unit Testing">
-			<file>ProfileTest.php</file>
+		<file>ProfileTest.php</file>
 		<file>EventTest.php</file>
 			<file>EventTypeTest.php</file>
 			<file>CommentTest.php</file>
