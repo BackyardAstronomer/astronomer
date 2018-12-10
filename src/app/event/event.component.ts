@@ -1,16 +1,16 @@
 //import {Component, OnInit} from "@angular/core";
 
 //@Component({
-//	template: require("./profile.component.html")
+//	template: require("./event.component.html")
 //})
 
 //export class EventComponent implements OnInit {
 
 
-//	constructor(private )
+//constructor(private )
 
 
-//	ngOnInit() {
+//ngOnInit() {
 //		this.eventService.getEventByProfileId(this.jwtToken.auth.profileId).subscribe(events => this.events = events)
 //	}
 //}

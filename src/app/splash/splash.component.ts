@@ -10,12 +10,12 @@ import {EventUser} from "../shared/interfaces/event-user";
 
 export class SplashComponent implements OnInit{
 	//createCarouselEvent: ;
-	events: EventUser[];
-	status: Status = {status:null, message:null, type:null};
+	//events: EventUser[];
+	//status: Status = {status:null, message:null, type:null};
 
-	constructor(private eventService: EventService) {}
+	//constructor(//private eventService: EventService) {}
 
 	ngOnInit() {
-		this.eventService.getAllEvents().subscribe(events => this.events = events)
+		//this.eventService.getAllEvents().subscribe(events => this.events = events)
 	}
 }

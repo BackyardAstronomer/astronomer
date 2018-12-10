@@ -7,23 +7,29 @@ import {CreateAccountService} from "./shared/services/create-account.service";
 import {CreateAccountComponent} from "./create-account/createAccount.component";
 import {SplashComponent} from "./splash/splash.component";
 import {ProfileComponent} from "./profile/profile.component";
-import {EventComponent} from "./event/event.component";
+//import {EventComponent} from "./event/event.component";
+import {SignInComponent} from "./sign-in/sign-in.component";
+import {SignInService} from "./shared/services/sign-in.service";
+import {ProfileService} from "./shared/services/profile.service";
+import {FormBuilder} from "@angular/forms";
 
 
-export const allAppComponents = [SplashComponent];
+export const allAppComponents = [SplashComponent, ProfileComponent, SignInComponent];
 
 export const routes: Routes = [
 	{path: "", component: SplashComponent},
-	{path: "/profile", component: ProfileComponent},
-	{path: "/events", component: EventComponent},
-	{path: "/sign-in", component: SignInComponent}
+	{path: "profile", component: ProfileComponent},
+//	{path: "events", component: EventComponent},
+	{path: "sign-in", component: SignInComponent},
+	{path: "session service", component: SessionService},
+	{path: "form builder", component: FormBuilder}
 
 ];
 
 export const appRoutingProviders: any[] = [
 	{provide: APP_BASE_HREF, useValue: window["_base_href"]},
 	{provide: HTTP_INTERCEPTORS, useClass: DeepDiveInterceptor, multi: true},
-	SessionService, CreateAccountService
+	SessionService, CreateAccountService, SignInService, ProfileService
 ];
 
 export const routing = RouterModule.forRoot(routes);
