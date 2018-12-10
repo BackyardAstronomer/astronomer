@@ -15,6 +15,7 @@
 					<span class="col-2">StartDate</span>
 					<span class="col-2">EndDate</span>
 				</div>
+				<button class="btn btn-primary">Rsvp</button>
 			</div>
 		</div>
 	</div>
