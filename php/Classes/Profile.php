@@ -573,6 +573,8 @@ public static function getProfileByProfileActivationToken(\PDO $pdo, string $pro
 	 **/
 	public function jsonSerialize() : array {
 		$fields = get_object_vars($this);
+		unset($fields["profileHash"]);
+		unset($fields["profileActivationToken"]);
 
 		return($fields);
 	}

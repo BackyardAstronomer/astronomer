@@ -11,13 +11,12 @@ import {EventComponent} from "./event/event.component";
 import {SignInComponent} from "./sign-in/sign-in.component";
 import {SignInService} from "./shared/services/sign-in.service";
 import {ProfileService} from "./shared/services/profile.service";
-import {FormBuilder} from "@angular/forms";
 import {EventService} from "./shared/services/event.service";
 import {CommentService} from "./shared/services/comment.service";
 import {RsvpService} from "./shared/services/rsvp.service";
 
 
-export const allAppComponents = [SplashComponent, ProfileComponent, SignInComponent, EventComponent];
+export const allAppComponents = [SplashComponent, ProfileComponent, SignInComponent, EventComponent, CreateAccountComponent];
 
 export const routes: Routes = [
 	{path: "", component: SplashComponent},
@@ -25,8 +24,7 @@ export const routes: Routes = [
 	{path: "events", component: EventComponent},
 	{path: "sign-in", component: SignInComponent},
 	{path: "events", component: EventService},
-	{path: "session service", component: SessionService},
-	{path: "form builder", component: FormBuilder}
+	{path: "create-account", component: CreateAccountComponent}
 
 ];
 

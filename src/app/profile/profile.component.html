@@ -1,34 +1,45 @@
 <div class="wrapper">
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-4">
-			<div class="sticky-top">
-<!--this is the sticky card for the profile component on profile page-->
-				<div class="card">
+	<!--spacer div, lol-->
+	<div>
+		<p> </p>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-4">
+				<div class="sticky-top">
+					<!--this is the sticky card for the profile component on profile page-->
+					<div class="card">
 
-					<img class="card-img-top" src="planet-placeholders.jpg" alt="Profile Picture">
-					<div class="card-body">
-						<h4 class="card-title">{{profile.profileName}}</h4>
-						<p class="card-text">
-							{{profile.profileEmail}}
-						</p>
-						<p class="card-text">
-							{{profile.profileBio}}
-						</p>
+						<img class="card-img-top" src="planet-placeholders.jpg" alt="Profile Picture">
+						<div class="card-body">
+							<h4 class="card-title">{{profile.profileName}}</h4>
+							<p class="card-text">
+								{{profile.profileEmail}}
+							</p>
+							<p class="card-text">
+								{{profile.profileBio}}
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--this is the event column of jumbotrons-->
+			<div class="col-8">
+				<!--spacer div, lol-->
+				<div>
+					<p> </p>
+				</div>
+				<div class="alert alert-light text-dark" role="alert">
+					This is where your RSVP's will go!
+				</div>
+				<div class="jumbotron" *ngFor="let event of events">
+					<div class="container">
+						<h1 class="display-4">{{event.eventName}}</h1>
+						<p class="lead">{{event.eventContent}}</p>
 					</div>
 				</div>
 			</div>
 		</div>
-
-		<!--this is the event column of jumbotrons-->
-		<div class="col-8">
-			<div class="jumbotron" *ngFor="let event of events">
-				<div class="container">
-					<h1 class="display-4">{{event.eventName}}</h1>
-					<p class="lead">{{event.eventContent}}</p>
-				</div>
-			</div>
-		</div>
 	</div>
-</div>
 </div>

@@ -1,5 +1,6 @@
 @import 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css';
 
+
 #bg{
 	position: fixed;
 	top: 0;
@@ -10,14 +11,17 @@
 	min-height: 100%;
 }
 
+
 h1{
 	color: white;
 }
+
 
 #carouselExampleIndicators {
 	position: center;
 	align-items: center;
 }
+
 
 body {
 	background: url(../../src/app/images/sky.jpg) no-repeat center top scroll;
