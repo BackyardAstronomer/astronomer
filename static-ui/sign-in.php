@@ -2,9 +2,10 @@
 <?php require_once ("navbar.php");?>
 
 <main>
-
+<div class="container-fluid">
+	<div class="jumbotron m-5">
 	<div id="signin" class="container text-center">
-		<h1>Sign into Backyard Astronomer!</h1>
+		<h2>Sign into Backyard Astronomer!</h2>
 		<form class="form-control-lg" id="form" action="" method="post">
 			<div class="info">
 				<input type="email" class="form-control" id="profileEmail" name="email" placeholder="Email">
@@ -15,4 +16,6 @@
 			</div>
 		</form>
 	</div>
+</div>
+</div>
 </main>

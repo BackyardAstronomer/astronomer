@@ -17,7 +17,7 @@ h1{
 }
 
 body {
-	background: url(../../src/app/images/sky.jpg) no-repeat center top scroll;
+	background: linear-gradient(rgba(122, 15, 155, 0.25),rgba(68,9,86,0.45)), url(../../src/app/images/sky.jpg) no-repeat center top scroll;
 	background-size: cover;
 
 }
@@ -25,7 +25,7 @@ body {
 .eventCard{
 	margin-top: 75px;
 	width: 25rem;
-	
+
 }
 
 .eventCard h1 {
@@ -36,7 +36,11 @@ body {
 	height:150px;
 	overflow-y: scroll;
 }
+<<<<<<< Updated upstream
 .containerScroll {
 	height:150px;
 	overflow-y: scroll;
 }
+=======
+
+>>>>>>> Stashed changes
