@@ -3,7 +3,7 @@
 <!-- This sets up a navbar grabbed this code from getbootstrap.com -->
 		<header>
 			<nav class="navbar navbar-expand-lg bg-light">
-				<a class="navbar-brand" href="#"><i class="fas fa-star-and-crescent"></i></a>
+				<a class="navbar-brand" href="#"><i class="fas fa-stars"></i></a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>

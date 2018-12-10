@@ -44,7 +44,8 @@
     "core-js": "^2.5.5",
     "rxjs": "^6.3.0",
     "zone.js": "^0.8.26",
-    "@auth0/angular-jwt": "2.0.0"
+    "@auth0/angular-jwt": "2.0.0",
+    "ngx-slick": "^0.2.1"
   },
   "devDependencies": {
     "@fortawesome/fontawesome": "^1.1.7",

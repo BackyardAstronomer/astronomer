@@ -1,9 +1,10 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpParams} from "@angular/common/http";
-
+import {Event} from "../interfaces/event";
 import {Comment} from "../interfaces/comment";
 import {Status} from "../interfaces/status";
 import {Observable} from "rxjs";
+import {EventUser} from "../interfaces/event-user";
 
 
 @Injectable()
@@ -27,6 +28,10 @@ export class EventService {
 	// call to the event API and creat the event in question
 	createEvent(event: Comment): Observable<Status> {
 		return (this.http.post<Status>(this.eventUrl, +event));
+	}
+	//call to the event api to get all
+	getAllEvents(): Observable<EventUser[]> {
+		return (this.http.get<EventUser[]>(this.eventUrl))
 	}
 	// call to the event API and get an array of events based off the familyId
 	getEventByEventId(eventId: string): Observable<any[]> {
