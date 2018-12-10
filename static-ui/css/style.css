@@ -9,7 +9,7 @@
 	min-height: 100%;
 }
 h1{
-	color: white;
+	color: #f5f2d0;
 }
 #carouselExampleIndicators {
 	position: center;
@@ -19,7 +19,7 @@ h1{
 body {
 	background: linear-gradient(rgba(122, 15, 155, 0.25),rgba(68,9,86,0.45)), url(../../src/app/images/sky.jpg) no-repeat center top scroll;
 	background-size: cover;
-
+	color: #f5f2d0;
 }
 
 .jumbotron, .jumbotron-fluid, .card{
@@ -33,7 +33,7 @@ background-color: #583d60
 }
 
 .eventCard h1 {
-	color: #000; ;
+	color: #f5f2d0;
 }
 
 .containerScroll {
