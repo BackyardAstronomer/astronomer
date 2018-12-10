@@ -1,6 +1,8 @@
-export interface SignIn {
-	profileName: string;
-	profileEmail: string
-	profilePassword: string;
-	profilePasswordConfirm: string
-}
+
+
+
+import {Component} from "@angular/core";
+
+@Component({
+	template: require("./sign-in.component.html")
+})
