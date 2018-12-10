@@ -1,6 +1,5 @@
 import {Component, OnInit} from "@angular/core";
 import {CommentService} from "../shared/services/comment.service";
-import {EventService} from "../shared/services/event.service";
 import {ProfileService} from "../shared/services/profile.service";
 import {Status} from "../shared/interfaces/status";
 import {JwtHelperService} from "@auth0/angular-jwt";
@@ -20,7 +19,7 @@ export class ProfileComponent implements OnInit{
 	rsvps: Rsvp[];
 	status: Status = {status:null, message:null, type:null};
 
-	constructor(private commentService: CommentService, private eventService: EventService, private profileService: ProfileService, private rsvpService: RsvpService, private jwt: JwtHelperService) {}
+	constructor(private commentService: CommentService, private profileService: ProfileService, private rsvpService: RsvpService, private jwt: JwtHelperService) {}
 
 	ngOnInit() {
 		this.profileService.getProfileByProfileId(this.jwtToken.auth.profileId).subscribe(profiles => this.profiles = profiles);
@@ -28,9 +27,9 @@ export class ProfileComponent implements OnInit{
 		this.loadRsvps();
 	}
 	loadEvents() : void {
-		this.eventService.getEventByProfileId(this.jwtToken.auth.profileId).subscribe(events => this.events = events)
+		//this.eventService.getEventByProfileId(this.jwtToken.auth.profileId).subscribe(events => this.events = events)
 	}
 	loadRsvps() : void {
-		this.rsvpService.getRsvpByRsvpEventIdRsvpProfileId(this.jwtToken.auth.profileId).subscribe(rsvps => this.rsvps = rsvps)
+		this.rsvpService.getRsvpByRsvpProfileId(this.jwtToken.auth.profileId).subscribe(rsvp => this.rsvps = rsvp)
 	}
 }
