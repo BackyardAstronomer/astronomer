@@ -46,3 +46,8 @@ background-color: #583d60
 	height: 15vw;
 	object-fit: cover;
 }
+
+.img-thumbnail{
+	width: 5em;
+	height: 5em;
+}

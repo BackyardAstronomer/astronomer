@@ -21,9 +21,11 @@
 </div>
 <div class="container">
 	<div class="jumbotron containerScroll">
-		<div class="jumbotron">
-			<div class="media">
-				<img src="./img/planet-placeholders.jpg" alt="placeholder image" class="rounded-circle align-self-start">
+		<div class="media">
+			<img src="./img/planet-placeholders.jpg" alt="placeholder image" class="rounded-circle align-self-start img-thumbnail ">
+			<div class="media-body m-2 p-2">
+				<h5 class="mt-0">Profile Name</h5>
+				This is the comment content
 			</div>
 		</div>
 	</div>
