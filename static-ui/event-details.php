@@ -6,7 +6,7 @@
 <main>
 <div class="container justify-content-center">
 	<div class="row ">
-		<div class="card col-12 my-5 px-0 justify-content-center">
+		<div class="card col-12 mt-5 px-0 justify-content-center">
 			<img class="card-img-top" src="./img/planet-placeholders.jpg" alt="Planet cartoon image">
 			<div class="card-body text-center">
 				<h2 class="card-title">Event</h2>
@@ -21,7 +21,11 @@
 </div>
 <div class="container">
 	<div class="jumbotron containerScroll">
-
+		<div class="jumbotron">
+			<div class="media">
+				<img src="./img/planet-placeholders.jpg" alt="placeholder image" class="rounded-circle img-">
+			</div>
+		</div>
 	</div>
 </div>
 </main>

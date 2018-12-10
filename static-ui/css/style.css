@@ -22,7 +22,9 @@ body {
 
 }
 
-.jumbotron{background-color: #583d60};
+.jumbotron, .jumbotron-fluid, .card{
+background-color: #583d60
+}
 
 .eventCard{
 	margin-top: 75px;
@@ -34,15 +36,14 @@ body {
 	color: #000; ;
 }
 
-.scrollable {
-	height:150px;
-	overflow-y: scroll;
-}
-<<<<<<< Updated upstream
 .containerScroll {
 	height:150px;
 	overflow-y: scroll;
 }
-=======
 
->>>>>>> Stashed changes
+
+.card-img-top {
+	width: 100%;
+	height: 15vw;
+	object-fit: cover;
+}
