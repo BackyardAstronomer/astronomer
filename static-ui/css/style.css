@@ -32,12 +32,10 @@ body {
 	color: #000; ;
 }
 
-.card-img-top {
-	width: 100%;
-	height: 15vw;
-	object-fit: cover;
+.scrollable {
+	height:150px;
+	overflow-y: scroll;
 }
-
 .containerScroll {
 	height:150px;
 	overflow-y: scroll;
