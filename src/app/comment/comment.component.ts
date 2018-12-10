@@ -20,5 +20,5 @@ export class CommentComponent implements OnInit{
 	rsvp: Rsvp[];
 	status: Status = {status: null, message:null, type:null};
 
-	constructor(private )
+	constructor(private commentService: CommentService, private eventService: EventService, private profileService: ProfileService, private rsvpService: RsvpService, private jwt: JwtHelperService )
 }
