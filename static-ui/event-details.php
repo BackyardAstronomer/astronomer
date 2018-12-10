@@ -23,7 +23,7 @@
 	<div class="jumbotron containerScroll">
 		<div class="jumbotron">
 			<div class="media">
-				<img src="./img/planet-placeholders.jpg" alt="placeholder image" class="rounded-circle img-">
+				<img src="./img/planet-placeholders.jpg" alt="placeholder image" class="rounded-circle align-self-start">
 			</div>
 		</div>
 	</div>
