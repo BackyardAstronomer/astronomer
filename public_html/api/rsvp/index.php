@@ -9,13 +9,15 @@ require_once dirname(__DIR__, 3) . "/php/lib/jwt.php";
 require_once("/etc/apache2/capstone-mysql/Secrets.php");
 
 use BackyardAstronomer\Astronomer\ {
-	Rsvp, Profile
+	Rsvp, Profile, Event
 };
 /**
  * Api for the rsvp class
  *
  * @author Dayn Augustson
  */
+
+
 //verify the session, start if not active
 if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
@@ -24,6 +26,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
+
 try {
 	//grab the mySQL connection
 	$secrets = new \Secrets("/etc/apache2/capstone-mysql/cohort22/astronomers");
@@ -52,7 +55,13 @@ try {
 			$reply->data = Rsvp::getRsvpByRsvpEventId($pdo, $rsvpEventId)->toArray();
 			//get all the rsvp associated with the rsvpProfileId
 		} else if(empty($rsvpProfileId) === false) {
-			$reply->data = Rsvp::getRsvpByRsvpProfileId($pdo, $rsvpProfileId)->toArray();
+			$rsvps = Rsvp::getRsvpByRsvpProfileId($pdo, $rsvpProfileId)->toArray();
+			$events = [];
+
+			foreach($rsvps as $rsvp){
+				$events[] = Event::getEventByEventId($pdo, $rsvp->getRsvpEventId());
+			}
+			$reply->data = $events;
 		} else {
 			throw new \InvalidArgumentException("incorrect search parameters", 404);
 		}

@@ -34,6 +34,7 @@ export class SignInComponent implements OnInit {
 			.subscribe(status=> {
 				this.status = status;
 			if(status.status === 200) {
+				window.localStorage.clear();
 				this.sessionService.setSession();
 				this.signInForm.reset();
 				console.log("Sign In Success!");

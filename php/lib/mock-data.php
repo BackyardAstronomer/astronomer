@@ -58,3 +58,15 @@ $comment = new Comment($commentId, $event2->getEventId(), $profile2->getProfileI
 $comment->insert($pdo);
 echo "comment Id" . $comment->getCommentId();
 
+
+$rsvp = new Rsvp($profile->getProfileId(), $event->getEventId(), 1);
+$rsvp->insert($pdo);
+echo "rsvp profile id" . $rsvp->getRsvpProfileId();
+
+$rsvp = new Rsvp($profile->getProfileId(), $event2->getEventId(), 1);
+$rsvp->insert($pdo);
+echo "rsvp profile id" . $rsvp->getRsvpProfileId();
+
+$rsvp = new Rsvp($profile->getProfileId(), $event3->getEventId(), 1);
+$rsvp->insert($pdo);
+echo "rsvp profile id" . $rsvp->getRsvpProfileId();

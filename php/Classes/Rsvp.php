@@ -254,6 +254,7 @@ class Rsvp implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$rsvp = new Rsvp($row["rsvpProfileId"], $row["rsvpEventId"], $row["rsvpEventCounter"]);
+
 				$rsvps[$rsvps->key()] = $rsvp;
 				$rsvps->next();
 			} //determine what exception type was thrown

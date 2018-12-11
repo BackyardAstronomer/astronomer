@@ -32,6 +32,6 @@ export class ProfileComponent implements OnInit{
 		//this.eventService.getEventByProfileId(this.jwtToken.auth.profileId).subscribe(events => this.events = events)
 	}
 	loadRsvps() : void {
-		this.rsvpService.getRsvpByRsvpProfileId(this.jwtToken.auth.profileId).subscribe(rsvp => this.rsvps = rsvp)
+		this.rsvpService.getRsvpByRsvpProfileId(this.jwtToken.auth.profileId).subscribe(rsvp => this.events = rsvp)
 	}
 }
