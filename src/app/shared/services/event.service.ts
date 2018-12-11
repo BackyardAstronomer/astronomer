@@ -34,8 +34,8 @@ export class EventService {
 		return (this.http.get<EventUser[]>(this.eventUrl))
 	}
 	// call to the event API and get an array of events based off the familyId
-	getEventByEventId(eventId: string): Observable<any[]> {
-		return (this.http.get<any[]>(this.eventUrl, {params: new HttpParams().set("eventId", eventId)}));
+	getEventByEventId(eventId: string): Observable<Event> {
+		return (this.http.get<Event>(this.eventUrl+eventId ));
 	}
 	// call to the event API and get an array of events based off the userId
 	getEventByProfileId(eventProfileId: string): Observable<any[]> {

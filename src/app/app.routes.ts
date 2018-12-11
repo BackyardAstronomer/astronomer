@@ -21,10 +21,10 @@ export const allAppComponents = [SplashComponent, ProfileComponent, SignInCompon
 export const routes: Routes = [
 	{path: "", component: SplashComponent},
 	{path: "profile", component: ProfileComponent},
-	{path: "events", component: EventComponent},
+	//{path: "events", component: EventComponent},
 	{path: "sign-in", component: SignInComponent},
 	{path: "create-account", component: CreateAccountComponent},
-	{path: "detailed-event", component: EventComponent},
+	{path: "detailed-event/:eventId", component: EventComponent},
 
 ];
 

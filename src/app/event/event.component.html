@@ -4,11 +4,13 @@
 			<div class="card col-12 mt-5 px-0 justify-content-center">
 				<img class="card-img-top" src="planet-placeholders.jpg" alt="Planet cartoon image">
 				<div class="card-body text-center">
-					<h2 class="card-title">Event</h2>
-					<p class="card-text">Here is a short description of the event.</p>
+					<h2 class="card-title">{{event.eventTitle}}</h2>
+					<p class="card-text">{{event.eventContent}}</p>
 					<div class="row justify-content-center">
-						<span class="col-2">StartDate</span>
-						<span class="col-2">EndDate</span>
+						<span class="col-2">Start Time: {{event.eventStartDate | date: 'shortTime'}}</span>
+						<span class="col-2">End Date: {{event.eventEndDate | date: 'shortTime'}}</span>
+					 	<div><p> </p>
+						</div>
 					</div>
 					<button class="btn btn-primary">Rsvp</button>
 				</div>
@@ -20,8 +22,8 @@
 			<div class="media">
 				<img src="planet-placeholders.jpg" alt="placeholder image" class="rounded-circle align-self-start img-thumbnail ">
 				<div class="media-body m-2 p-2">
-					<h5 class="mt-0">Profile Name</h5>
-					This is the comment content
+					<h5 class="mt-0">{{profile.profileName}}</h5>
+					This is the comment content {{events | json}}
 				</div>
 			</div>
 		</div>

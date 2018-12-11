@@ -1,17 +1,18 @@
 import {Component, OnInit} from "@angular/core";
 import {EventService} from "../shared/services/event.service";
-import {RsvpService} from "../shared/services/rsvp.service";
+import {ActivatedRoute} from "@angular/router";
+import {Event} from "../shared/interfaces/event";
 
 @Component({
 	template: require("./event.component.html")
 })
 
 export class EventComponent implements OnInit {
-
-
-//constructor(private eventService: EventService ){}
+eventId : string =	 this.route.snapshot.params["eventId"];
+event : Event = {eventId: null, eventEventTypeId: null, eventProfileId: null, eventContent: null, eventEndDate: null, eventStartDate: null, eventTitle: null};
+constructor(private eventService: EventService, private route :ActivatedRoute ){}
 
 ngOnInit() {
-	//this.eventService.getEventByProfileId(this.jwtToken.auth.profileId).subscribe(events => this.events = events)
+	this.eventService.getEventByEventId(this.eventId).subscribe(events => this.event = events)
 }
 }
