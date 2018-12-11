@@ -16,15 +16,8 @@ h1{
 	color: white;
 }
 
-
-#carouselExampleIndicators {
-	position: center;
-	align-items: center;
-}
-
-
-body {
+/*body {
 	background: url(../../src/app/images/sky.jpg) no-repeat center top scroll;
 	background-size: cover;
-}
+}*/
 

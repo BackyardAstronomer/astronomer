@@ -6,6 +6,7 @@ import {allAppComponents, appRoutingProviders, routing} from "./app.routes";
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ReactiveFormsModule} from "@angular/forms";
 import {JwtModule} from "@auth0/angular-jwt";
+import {SlickModule} from "ngx-slick";
 
 const moduleDeclarations = [AppComponent];
 const JwtHelper = JwtModule.forRoot({
@@ -21,7 +22,7 @@ const JwtHelper = JwtModule.forRoot({
 });
 
 @NgModule({
-	imports:      [BrowserModule, HttpClientModule, routing, NgbModule, ReactiveFormsModule, JwtHelper],
+	imports:      [BrowserModule, HttpClientModule, routing, NgbModule, ReactiveFormsModule, JwtHelper, SlickModule.forRoot()],
 	declarations: [...moduleDeclarations, ...allAppComponents],
 	bootstrap:    [AppComponent],
 	providers:    [...appRoutingProviders]

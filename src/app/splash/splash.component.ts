@@ -1,7 +1,8 @@
-import {Status} from "../shared/interfaces/status";
 import {EventService} from "../shared/services/event.service";
 import {Component, OnInit} from "@angular/core";
 import {EventUser} from "../shared/interfaces/event-user";
+
+
 
 
 @Component({
@@ -9,13 +10,32 @@ import {EventUser} from "../shared/interfaces/event-user";
 })
 
 export class SplashComponent implements OnInit{
-	//createCarouselEvent: ;
-	//events: EventUser[];
-	//status: Status = {status:null, message:null, type:null};
 
-	//constructor(//private eventService: EventService) {}
+	eventUser: EventUser[];
+
+	constructor( private eventService: EventService) {}
 
 	ngOnInit() {
-		//this.eventService.getAllEvents().subscribe(events => this.events = events)
+		this.getUsers()
+	}
+
+	getUsers() {
+		this.eventService.getAllEvents().subscribe(events => this.eventUser = events);
+	}
+	slides = [
+		{img: "http://placehold.it/350x150/000000"},
+		{img: "http://placehold.it/350x150/111111"},
+		{img: "http://placehold.it/350x150/333333"},
+		{img: "http://placehold.it/350x150/666666"},
+		{img: "http://placehold.it/350x150/000000"},
+		{img: "http://placehold.it/350x150/111111"},
+		{img: "http://placehold.it/350x150/333333"},
+		{img: "http://placehold.it/350x150/666666"}
+	];
+
+	slideConfig = {"slidesToShow": 1, "slidesToScroll": 1};
+
+	afterChange(e) {
+		console.log('afterChange');
 	}
 }

@@ -22,7 +22,6 @@ export class ProfileComponent implements OnInit{
 
 	constructor(private commentService: CommentService, private profileService: ProfileService, private rsvpService: RsvpService, private jwt: JwtHelperService) {}
 
-
 	ngOnInit() {
 		this.profileService.getProfileByProfileId(this.jwtToken.auth.profileId).subscribe(profiles => this.profile = profiles);
 		this.loadEvents();

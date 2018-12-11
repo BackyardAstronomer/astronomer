@@ -25,7 +25,7 @@ export class EventService {
 		return (this.http.put<Status>(this.eventUrl + event.commentId, event));
 	}
 
-	// call to the event API and creat the event in question
+	// call to the event API and create the event in question
 	createEvent(event: Comment): Observable<Status> {
 		return (this.http.post<Status>(this.eventUrl, +event));
 	}

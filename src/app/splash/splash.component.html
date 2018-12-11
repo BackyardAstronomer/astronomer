@@ -1,11 +1,13 @@
-<!-- You can now use your library component in app.component.html -->
 
-<div class="card" style="width: 21.6rem;" *ngFor="let event of events">
-	<img src="" alt="" width="100%">
-	<div class="card-body">
-		<img src="https://placeimg.com/640/480/any" width="300px" height="300px">
-		<h5 class="card-title">{{event.eventName}}</h5>
-		<p class="card-text">{{event.eventContent}}</p>
-		<a href="#" class="btn btn-primary">Click for more information!</a>
-	</div>
-</div>
+<!-- You can now use your library component in app.component.html -->
+<ngx-slick class="carousel" [config]="slideConfig" #slickModal="slick-modal" (afterChange)="afterChange($event)">
+	<div ngxSlickItem *ngFor="let event of eventUser" class="slide">
+		<div class="card" style="width: 18rem;">
+			<img src="https://placeimg.com/640/480/any" width="300px" height="300px">
+			<h5 class="card-title">{{event.eventName}}</h5>
+			<p class="card-text">{{event.eventContent}}</p>
+			<a href="#" class="btn btn-primary">Click for more information!</a>
+			</div>
+		</div>
+</ngx-slick>
+
