@@ -73,9 +73,6 @@ try {
 		if(empty($requestObject->rsvpEventId) === true) {
 			throw (new \InvalidArgumentException("No Event linked to the RSVP", 405));
 		}
-		if(empty($requestObject->rsvpProfileId) === true) {
-			throw (new \InvalidArgumentException("No Profile linked to the RSVP", 405));
-		}
 		if($method === "POST") {
 			//enforce that the end user has a XSRF token.
 			verifyXsrf();

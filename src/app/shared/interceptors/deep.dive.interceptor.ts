@@ -37,7 +37,7 @@ export class DeepDiveInterceptor implements HttpInterceptor {
 				if(event.status === 200) {
 					// extract the JWT Header and put it in local storage
 					if(localStorage.getItem("jwt-token") === null) {
-						let jwtToken = event.headers.getAll("X-JWT-TOKEN");
+						let jwtToken = event.headers.getAll("x-jwt-token");
 
 						if(jwtToken !== null) {
 							let token : string = jwtToken[0];

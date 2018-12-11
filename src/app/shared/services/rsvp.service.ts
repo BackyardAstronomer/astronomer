@@ -10,14 +10,10 @@ export class RsvpService {
 
 	private rsvpUrl = "api/rsvp/";
 
-	postRsvp(rsvpId: Rsvp) : Observable<Status>{
-	return(this.http.post<Status>(this.rsvpUrl, + rsvpId));
+	postRsvp(rsvp: Rsvp) : Observable<Status>{
+	return(this.http.post<Status>(this.rsvpUrl, rsvp));
 	}
 
-	//call to the rsvp API and create the rsvp requested
-	insertRsvp(rsvpId: Rsvp): Observable<Status> {
-		return(this.http.post<Status>(this.rsvpUrl, + rsvpId));
-	}
 
 	deleteRsvp(rsvpId: string): Observable<Status> {
 		return (this.http.delete<Status>(this.rsvpUrl + rsvpId));

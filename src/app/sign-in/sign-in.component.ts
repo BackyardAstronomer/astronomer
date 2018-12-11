@@ -30,12 +30,12 @@ export class SignInComponent implements OnInit {
 	signIn() : void {
 		let signIn: SignIn = {profileEmail: this.signInForm.value.profileEmail, profilePassword: this.signInForm.value.profilePassword};
 
+		window.localStorage.removeItem("jwt-token");
+
 		this.signInService.postSignIn(signIn)
 			.subscribe(status=> {
 				this.status = status;
 			if(status.status === 200) {
-				window.localStorage.clear();
-				this.sessionService.setSession();
 				this.signInForm.reset();
 				console.log("Sign In Success!");
 			} else {
