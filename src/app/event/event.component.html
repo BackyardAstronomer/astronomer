@@ -18,12 +18,14 @@
 		</div>
 	</div>
 	<div class="container">
-		<div class="jumbotron containerScroll">
+		<div class="jumbotron containerScroll" *ngFor="let comment of comments">
 			<div class="media">
 				<img src="planet-placeholders.jpg" alt="placeholder image" class="rounded-circle align-self-start img-thumbnail ">
 				<div class="media-body m-2 p-2">
-					<h5 class="mt-0">{{profile.profileName}}</h5>
-					This is the comment content {{events | json}}
+					<h5 class="mt-0">{{comment.profileName}}</h5>
+					<p>{{comment.comment.commentContent}}</p>
+								<p>{{comment.comment.commentDate | date: 'shortTime'}}</p>
+
 				</div>
 			</div>
 		</div>

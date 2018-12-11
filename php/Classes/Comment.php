@@ -10,7 +10,7 @@ use Ramsey\Uuid\Uuid;
  * @package BackyardAstronomer\astronomer
  */
 
-class Comment {
+class Comment implements \JsonSerializable {
 	use ValidateDate;
 	use ValidateUuid;
 
