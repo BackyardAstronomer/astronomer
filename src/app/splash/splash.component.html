@@ -1,5 +1,5 @@
-
 <!-- You can now use your library component in app.component.html -->
+
 <ngx-slick class="carousel" [config]="slideConfig" #slickModal="slick-modal" (afterChange)="afterChange($event)">
 	<div ngxSlickItem *ngFor="let event of eventUser" class="slide">
 		<div class="card" style="width: 18rem;">
