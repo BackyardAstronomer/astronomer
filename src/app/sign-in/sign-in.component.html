@@ -5,7 +5,7 @@
 			<input type="email" class="form-control" formControlName="profileEmail" id="profileEmail" name="email" placeholder="Email">
 			<input type="password" class="form-control" formControlName="profilePassword" name="password" placeholder="Password">
 			<br>
-			<input class="btn" type="submit"  value="Sign In!">
+			<input class="btn" type="submit"  value="Sign In!" (click)="signIn()" routerLink="profile">
 		</div>
 	</form>
 </div>
