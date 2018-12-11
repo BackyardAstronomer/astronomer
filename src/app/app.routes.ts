@@ -23,8 +23,8 @@ export const routes: Routes = [
 	{path: "profile", component: ProfileComponent},
 	{path: "events", component: EventComponent},
 	{path: "sign-in", component: SignInComponent},
-	{path: "events", component: EventService},
-	{path: "create-account", component: CreateAccountComponent}
+	{path: "create-account", component: CreateAccountComponent},
+	{path: "detailed-event", component: EventComponent},
 
 ];
 
