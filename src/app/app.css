@@ -10,14 +10,46 @@
 	min-width: 100%;
 	min-height: 100%;
 }
-
-
 h1{
-	color: white;
+	color: #f5f2d0;
+}
+#carouselExampleIndicators {
+	position: center;
+	align-items: center;
 }
 
-/*body {
-	background: url(../../src/app/images/sky.jpg) no-repeat center top scroll;
+body {
+	background: linear-gradient(rgba(122, 15, 155, 0.25),rgba(68,9,86,0.45)), url(../../src/app/images/sky.jpg) no-repeat center top scroll;
 	background-size: cover;
-}*/
+	color: #f5f2d0;
+}
 
+.jumbotron, .jumbotron-fluid, .card{
+	background-color: #583d60
+}
+
+.eventCard{
+	margin-top: 75px;
+	width: 25rem;
+}
+
+.eventCard h1 {
+	color: #f5f2d0;
+}
+
+.containerScroll {
+	height:150px;
+	overflow-y: scroll;
+}
+
+
+.card-img-top {
+	width: 100%;
+	height: 15vw;
+	object-fit: cover;
+}
+
+.img-thumbnail{
+	width: 5em;
+	height: 5em;
+}
