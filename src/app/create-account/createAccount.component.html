@@ -1,16 +1,16 @@
 <div><br/><br/></div>
-<div class="container" >
+
 	<div id="create-account" class="container text-center">
 		<h1>Sign Up for Backyard Astronomer!</h1>
 		<form class="form-control-lg"  [formGroup]="createAccountForm" id="form" (ngSubmit)="createProfile()" novalidate>
 			<div class="info">
-				<input type="text" formControlName="profileName" id="profileName" name="name" placeholder="User Name"><br/>
-				<input type="email" formControlName="profileEmail" id="profileEmail" name="email" placeholder="Email" autocomplete=""><br/>
-				<input type="password" formControlName="profilePassword" id="profilePassword" name="password" placeholder="Password" autocomplete="new-password"><br/>
-				<input type="password" formControlName="profilePasswordConfirm" id="profilePasswordConfirm" name="password-confirm" placeholder="Re-enter Password" autocomplete="new-password">
-				<br/><br/>
+				<input type="text" class="form-control" formControlName="profileName" id="profileName" name="name" placeholder="User Name">
+				<input type="email" class="form-control" formControlName="profileEmail" id="profileEmail" name="email" placeholder="Email" autocomplete="">
+				<input type="password" class="form-control" formControlName="profilePassword" id="profilePassword" name="password" placeholder="Password" autocomplete="new-password">
+				<input type="password" class="form-control" formControlName="profilePasswordConfirm" id="profilePasswordConfirm" name="password-confirm" placeholder="Re-enter Password" autocomplete="new-password">
+				<br/>
 				<input class="btn" type="submit" value="Sign Up!">
 			</div>
 		</form>
 	</div>
-</div>
+
