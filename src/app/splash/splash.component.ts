@@ -33,7 +33,7 @@ export class SplashComponent implements OnInit{
 		{img: "http://placehold.it/350x150/666666"}
 	];
 
-	slideConfig = {"slidesToShow": 1, "slidesToScroll": 1};
+	slideConfig = {"slidesToShow": 2, "slidesToScroll": 1};
 
 	afterChange(e) {
 		console.log('afterChange');

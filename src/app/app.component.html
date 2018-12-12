@@ -1,7 +1,7 @@
-<title>ABQ Astronomers</title>
+
 
 <nav class="navbar navbar-expand-lg bg-light">
-	<a class="navbar-brand" href="#"><img src="/src/app/images/star.png" id="logo" /></a>
+	<a class="navbar-brand" routerLink=""><img src="/src/app/deepdive.png"/></a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
@@ -13,14 +13,15 @@
 							</form>-->
 		<ul class="navbar-nav ml-auto">
 			<li class="nav-item">
-				<a class="nav-link" href="#sign-in" routerLink="sign-in" >Sign in</a>
+				<a class="nav-link" routerLink="sign-in" >Sign in</a>
 			<li class="nav-item">
-				<a class="nav-link" href="#create-account" routerLink="create-account">Create Account</a>
+				<a class="nav-link" routerLink="create-account">Create Account</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#sign-out" routerLink="" (click)="signOut();">Sign Out</a>
+				<a class="nav-link" routerLink="" (click)="signOut()">Sign Out</a>
 			</li>
 		</ul>
 </nav>
 
 <router-outlet></router-outlet>
+

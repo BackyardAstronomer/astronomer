@@ -7,21 +7,22 @@
 					<h2 class="card-title">{{event.eventTitle}}</h2>
 					<p class="card-text">{{event.eventContent}}</p>
 					<div class="row justify-content-center">
-						<span class="col-2">Start Time: {{event.eventStartDate | date: 'shortTime'}}</span>
-						<span class="col-2">End Date: {{event.eventEndDate | date: 'shortTime'}}</span>
+						<span class="col-2">Starts: {{event.eventStartDate | date: 'shortTime'}}</span>
+						<span class="col-2">Ends: {{event.eventEndDate | date: 'shortTime'}}</span>
 					 	<div><p> </p>
 						</div>
 					</div>
 					<div class="my-2">
-						<button class="btn btn-primary " (click)="createRsvp()">Rsvp</button>
+						<button class="btn btn-primary" routerLink="">Rsvp</button>
 					</div>
 					<div class="my-2">
-						<button class="btn btn-primary ">Leave a comment</button>
+						<button class="btn btn-primary" routerLink="">Leave a comment</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<br/>
 	<div class="container">
 		<div class="jumbotron containerScroll" *ngFor="let comment of comments">
 			<div class="media">
