@@ -11,8 +11,9 @@ require_once( "uuid.php");
 $pdo =  new \Secrets("/etc/apache2/capstone-mysql/cohort22/astronomers");
 $pdo = $pdo->getPdoObject();
 
-	$hash = password_hash("abc123", PASSWORD_ARGON2I, ["time_cost" => 384]);
+$hash = password_hash("abc123", PASSWORD_ARGON2I, ["time_cost" => 384]);
 
+//adding new profiles and updated objects too
 $profile = new Profile(generateUuidV4(), null,  null, "amanda@nasa.com", $hash, null, "Amanda");
 $profile->insert($pdo);
 echo "Amanda's profile :". $profile->getProfileId() . PHP_EOL;

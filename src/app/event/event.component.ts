@@ -12,7 +12,7 @@ import {Rsvp} from "../shared/interfaces/rsvp";
 })
 
 export class EventComponent implements OnInit {
-eventId : string =	 this.route.snapshot.params["eventId"];
+eventId : string = this.route.snapshot.params["eventId"];
 comments : Comment[];
 status : Status = {status : null, message : null, type : null};
 event : Event = {eventId: null, eventEventTypeId: null, eventProfileId: null, eventContent: null, eventEndDate: null, eventStartDate: null, eventTitle: null};

@@ -59,7 +59,11 @@ try {
 			$events = [];
 
 			foreach($rsvps as $rsvp){
-				$events[] = Event::getEventByEventId($pdo, $rsvp->getRsvpEventId());
+				$events[] = (object) [
+					"sighting" => $sighting,
+					"bird" => $bird
+				];
+
 			}
 			$reply->data = $events;
 		} else {
